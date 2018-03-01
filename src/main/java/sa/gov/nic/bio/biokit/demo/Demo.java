@@ -123,7 +123,7 @@ public class Demo
 	private static JButton btnLeftSlapFindDuplicates;
 	private static JButton btnThumbsFindDuplicates;
 	
-	private static JTextField txtIcaoError;
+	private static JTextField txtIcaoResult;
 	private static JTextField txtIsWrongSlap;
 	
 	private static JLabel lblRightThumb;
@@ -558,14 +558,14 @@ public class Demo
 		cboApplyIcao.setSelected(true);
 		panInput.add(cboApplyIcao);
 		
-		JLabel lblIcaoError = new JLabel("ICAO Error:");
-		txtIcaoError = new JTextField(20);
-		txtIcaoError.setEditable(false);
-		panOutput.add(lblIcaoError);
-		panOutput.add(txtIcaoError);
+		JLabel lblIcaoResult = new JLabel("ICAO Result:");
+		txtIcaoResult = new JTextField(20);
+		txtIcaoResult.setEditable(false);
+		panOutput.add(lblIcaoResult);
+		panOutput.add(txtIcaoResult);
 		
-		JSplitPane innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panFaceCropped, panFaceCaptured);
-		innerSplitPane.setResizeWeight(0.3);
+		JSplitPane innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panFaceCaptured, panFaceCropped);
+		innerSplitPane.setResizeWeight(0.8);
 		
 		JSplitPane outerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panFacePreview, innerSplitPane);
 		outerSplitPane.setResizeWeight(0.35);
@@ -1022,7 +1022,7 @@ public class Demo
 		lblFacePreview.setIcon(null);
 		lblFaceCaptured.setIcon(null);
 		lblFaceCropped.setIcon(null);
-		txtIcaoError.setText("");
+		txtIcaoResult.setText("");
 	}
 	
 	private static void onFingerprintFieldsClear()
@@ -1839,7 +1839,7 @@ public class Demo
 							logDemo(sb.toString());
 						}
 						
-						txtIcaoError.setText(result.getIcaoErrorMessage());
+						txtIcaoResult.setText(result.getIcaoErrorMessage());
 					}
 					else
 					{
@@ -1868,7 +1868,7 @@ public class Demo
 			}
 		}.execute();
 		
-		txtIcaoError.setText("");
+		txtIcaoResult.setText("");
 		lblFaceCaptured.setIcon(null);
 		lblFaceCropped.setIcon(null);
 		logDemo("Fired the face capture command!");

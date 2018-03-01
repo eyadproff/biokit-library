@@ -1,5 +1,5 @@
 group 'sa.gov.nic.bio'
-version '1.0.1'
+version '2018.03.1'
 
 apply plugin: 'java-library'
 apply plugin: 'application'
@@ -27,7 +27,7 @@ dependencies {
     implementation name: "tomcat-websocket-9.0.2"
     implementation name: "javax.websocket-api-1.1"
     implementation name: "gson-2.8.2"
-    implementation name: "bcl-utils-1.0.0"
+    implementation name: "bcl-utils-2018.03.1"
 }
 
 jar {
