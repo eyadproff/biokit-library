@@ -1,0 +1,381 @@
+package sa.gov.nic.bio.biokit.fingerprint;
+
+import sa.gov.nic.bio.biokit.AsyncClientProxy;
+import sa.gov.nic.bio.biokit.ResponseProcessor;
+import sa.gov.nic.bio.biokit.beans.InitializeResponse;
+import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.biokit.beans.StartPreviewResponse;
+import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
+import sa.gov.nic.bio.biokit.exceptions.RequestException;
+import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
+import sa.gov.nic.bio.biokit.fingerprint.beans.CaptureFingerprintResponse;
+import sa.gov.nic.bio.biokit.fingerprint.beans.FingerprintStopPreviewResponse;
+import sa.gov.nic.bio.biokit.websocket.ServiceType;
+import sa.gov.nic.bio.biokit.websocket.WebsocketClient;
+import sa.gov.nic.bio.biokit.websocket.WebsocketCommand;
+import sa.gov.nic.bio.biokit.AsyncConsumer;
+import sa.gov.nic.bio.biokit.websocket.beans.Message;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+
+public class WebsocketFingerprintServiceImpl implements FingerprintService
+{
+	private ExecutorService executorService = Executors.newCachedThreadPool();
+    private AsyncClientProxy<Message> asyncClientProxy;
+
+    public WebsocketFingerprintServiceImpl(AsyncClientProxy<Message> asyncClientProxy)
+    {
+        this.asyncClientProxy = asyncClientProxy;
+    }
+	
+	@Override
+	public Future<ServiceResponse<InitializeResponse>> initialize(final int position)
+	{
+		Callable<ServiceResponse<InitializeResponse>> callable = new Callable<ServiceResponse<InitializeResponse>>()
+		{
+			@Override
+			public ServiceResponse<InitializeResponse> call() throws TimeoutException, NotConnectedException
+			{
+				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+				
+				Message message = new Message();
+				message.setTransactionId(transactionId);
+				message.setType(ServiceType.FINGERPRINT.getType());
+				message.setOperation(WebsocketCommand.INITIALIZE_DEVICE.getCommand());
+				message.setPosition(position);
+				
+				AsyncConsumer consumer = new AsyncConsumer();
+				consumer.setTransactionId(transactionId);
+				asyncClientProxy.registerConsumer(consumer);
+				
+				boolean successfullySent = false;
+				try
+				{
+					asyncClientProxy.sendCommandAsync(message);
+					successfullySent = true;
+				}
+				catch(RequestException e)
+				{
+					String errorCode = "L0003-00001";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				catch(NotConnectedException e)
+				{
+					throw e;
+				}
+				catch(Exception e)
+				{
+					String errorCode = "L0003-00002";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				finally
+				{
+					if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+				}
+				
+				try
+				{
+					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null, asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return ServiceResponse.cast(messageServiceResponse, new ServiceResponse.TypeCaster<InitializeResponse, Message>()
+					{
+						@Override
+						public InitializeResponse cast(Message m)
+						{
+							return new InitializeResponse(m);
+						}
+					});
+				}
+				catch(InterruptedException e)
+				{
+					String errorCode = "L0003-00003";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				catch(TimeoutException e)
+				{
+					throw e;
+				}
+				catch(Exception e)
+				{
+					String errorCode = "L0003-00004";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				finally
+				{
+					asyncClientProxy.unregisterConsumer(consumer);
+				}
+			}
+		};
+		
+		FutureTask<ServiceResponse<InitializeResponse>> futureTask = new FutureTask<ServiceResponse<InitializeResponse>>(callable);
+		executorService.submit(futureTask);
+		return futureTask;
+	}
+	
+	@Override
+	public Future<ServiceResponse<InitializeResponse>> deinitialize(final int position, final String currentDeviceName)
+	{
+		Callable<ServiceResponse<InitializeResponse>> callable = new Callable<ServiceResponse<InitializeResponse>>()
+		{
+			@Override
+			public ServiceResponse<InitializeResponse> call() throws TimeoutException, NotConnectedException
+			{
+				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+				
+				Message message = new Message();
+				message.setTransactionId(transactionId);
+				message.setType(ServiceType.FINGERPRINT.getType());
+				message.setOperation(WebsocketCommand.DEINITIALIZE_DEVICE.getCommand());
+				message.setCurrentDeviceName(currentDeviceName);
+				message.setPosition(position);
+				
+				AsyncConsumer consumer = new AsyncConsumer();
+				consumer.setTransactionId(transactionId);
+				asyncClientProxy.registerConsumer(consumer);
+				
+				boolean successfullySent = false;
+				try
+				{
+					asyncClientProxy.sendCommandAsync(message);
+					successfullySent = true;
+				}
+				catch(RequestException e)
+				{
+					String errorCode = "L0003-00005";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				catch(NotConnectedException e)
+				{
+					throw e;
+				}
+				catch(Exception e)
+				{
+					String errorCode = "L0003-00006";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				finally
+				{
+					if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+				}
+				
+				try
+				{
+					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null, asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return ServiceResponse.cast(messageServiceResponse, new ServiceResponse.TypeCaster<InitializeResponse, Message>()
+					{
+						@Override
+						public InitializeResponse cast(Message m)
+						{
+							return new InitializeResponse(m);
+						}
+					});
+				}
+				catch(InterruptedException e)
+				{
+					String errorCode = "L0003-00007";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				catch(TimeoutException e)
+				{
+					throw e;
+				}
+				catch(Exception e)
+				{
+					String errorCode = "L0003-00008";
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				finally
+				{
+					asyncClientProxy.unregisterConsumer(consumer);
+				}
+			}
+		};
+		
+		FutureTask<ServiceResponse<InitializeResponse>> futureTask = new FutureTask<ServiceResponse<InitializeResponse>>(callable);
+		executorService.submit(futureTask);
+		return futureTask;
+	}
+
+    @Override
+    public Future<ServiceResponse<CaptureFingerprintResponse>> startPreviewAndAutoCapture(final String currentDeviceName, final int position, final int expectedFingersCount, final List<Integer> missingFingers, final ResponseProcessor<StartPreviewResponse> responseProcessor)
+    {
+	    Callable<ServiceResponse<CaptureFingerprintResponse>> callable = new Callable<ServiceResponse<CaptureFingerprintResponse>>()
+	    {
+		    @Override
+		    public ServiceResponse<CaptureFingerprintResponse> call() throws TimeoutException, NotConnectedException
+		    {
+			    String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+			
+			    Message message = new Message();
+			    message.setTransactionId(transactionId);
+			    message.setType(ServiceType.FINGERPRINT.getType());
+			    message.setOperation(WebsocketCommand.CAPTURE.getCommand());
+			    message.setPosition(position);
+			    message.setSegmentationRequired(true);
+			    message.setWsqRequired(true);
+			    message.setExpectedFingersCount("" + expectedFingersCount);
+			    message.setMissingFingersList(missingFingers);
+			    message.setCurrentDeviceName(currentDeviceName);
+			
+			    AsyncConsumer consumer = new AsyncConsumer();
+			    consumer.setTransactionId(transactionId);
+			    asyncClientProxy.registerConsumer(consumer);
+			
+			    boolean successfullySent = false;
+			    try
+			    {
+				    asyncClientProxy.sendCommandAsync(message);
+				    successfullySent = true;
+			    }
+			    catch(RequestException e)
+			    {
+				    String errorCode = "L0003-00009";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    catch(NotConnectedException e)
+			    {
+				    throw e;
+			    }
+			    catch(Exception e)
+			    {
+				    String errorCode = "L0003-00010";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    finally
+			    {
+				    if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+			    }
+			
+			    try
+			    {
+				    ResponseProcessor<Message> rp = new ResponseProcessor<Message>()
+				    {
+					    @Override
+					    public void processResponse(Message response)
+					    {
+						    StartPreviewResponse startPreviewResponse = new StartPreviewResponse(response);
+						    responseProcessor.processResponse(startPreviewResponse);
+					    }
+				    };
+				
+				    ServiceResponse<Message> messageServiceResponse = consumer.processResponses(rp, asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+				    return ServiceResponse.cast(messageServiceResponse, new ServiceResponse.TypeCaster<CaptureFingerprintResponse, Message>()
+				    {
+					    @Override
+					    public CaptureFingerprintResponse cast(Message m)
+					    {
+						    return new CaptureFingerprintResponse(m);
+					    }
+				    });
+			    }
+			    catch(InterruptedException e)
+			    {
+				    String errorCode = "L0003-00011";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    catch(TimeoutException e)
+			    {
+				    throw e;
+			    }
+			    catch(Exception e)
+			    {
+				    String errorCode = "L0003-00012";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    finally
+			    {
+				    asyncClientProxy.unregisterConsumer(consumer);
+			    }
+		    }
+	    };
+	
+	    FutureTask<ServiceResponse<CaptureFingerprintResponse>> futureTask = new FutureTask<ServiceResponse<CaptureFingerprintResponse>>(callable);
+	    executorService.submit(futureTask);
+	    return futureTask;
+    }
+
+    @Override
+    public Future<ServiceResponse<FingerprintStopPreviewResponse>> cancelCapture(final String currentDeviceName, final int position)
+    {
+	    Callable<ServiceResponse<FingerprintStopPreviewResponse>> callable = new Callable<ServiceResponse<FingerprintStopPreviewResponse>>()
+	    {
+		    @Override
+		    public ServiceResponse<FingerprintStopPreviewResponse> call() throws TimeoutException, NotConnectedException
+		    {
+			    String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+			
+			    Message message = new Message();
+			    message.setTransactionId(transactionId);
+			    message.setType(ServiceType.FINGERPRINT.getType());
+			    message.setOperation(WebsocketCommand.CANCEL_CAPTURE.getCommand());
+			    message.setPosition(position);
+			    message.setCurrentDeviceName(currentDeviceName);
+			
+			    AsyncConsumer consumer = new AsyncConsumer();
+			    consumer.setTransactionId(transactionId);
+			    asyncClientProxy.registerConsumer(consumer);
+			
+			    boolean successfullySent = false;
+			    try
+			    {
+				    asyncClientProxy.sendCommandAsync(message);
+				    successfullySent = true;
+			    }
+			    catch(RequestException e)
+			    {
+				    String errorCode = "L0003-00013";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    catch(NotConnectedException e)
+			    {
+				    throw e;
+			    }
+			    catch(Exception e)
+			    {
+				    String errorCode = "L0003-00014";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    finally
+			    {
+				    if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+			    }
+			
+			    try
+			    {
+				    ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null, asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+				    return ServiceResponse.cast(messageServiceResponse, new ServiceResponse.TypeCaster<FingerprintStopPreviewResponse, Message>()
+				    {
+					    @Override
+					    public FingerprintStopPreviewResponse cast(Message m)
+					    {
+						    return new FingerprintStopPreviewResponse(m);
+					    }
+				    });
+			    }
+			    catch(InterruptedException e)
+			    {
+				    String errorCode = "L0003-00015";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    catch(TimeoutException e)
+			    {
+				    throw e;
+			    }
+			    catch(Exception e)
+			    {
+				    String errorCode = "L0003-00016";
+				    return ServiceResponse.failureResponse(errorCode, e);
+			    }
+			    finally
+			    {
+				    asyncClientProxy.unregisterConsumer(consumer);
+			    }
+		    }
+	    };
+	
+	    FutureTask<ServiceResponse<FingerprintStopPreviewResponse>> futureTask = new FutureTask<ServiceResponse<FingerprintStopPreviewResponse>>(callable);
+	    executorService.submit(futureTask);
+	    return futureTask;
+    }
+}

@@ -1,0 +1,43 @@
+group 'sa.gov.nic.bio'
+version '1.0.1'
+
+apply plugin: 'java-library'
+apply plugin: 'application'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+mainClassName = 'sa.gov.nic.bio.biokit.demo.Demo';
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.setBootstrapClasspath(files('libs/provided/rt-1.6.0_23.jar'))
+}
+
+repositories {
+    flatDir {
+        dirs "libs/compile"
+        dirs "libs/provided"
+    }
+}
+
+dependencies {
+    implementation name: "tomcat-api-9.0.2"
+    implementation name: "tomcat-juli-9.0.2"
+    implementation name: "tomcat-util-9.0.2"
+    implementation name: "tomcat-websocket-9.0.2"
+    implementation name: "javax.websocket-api-1.1"
+    implementation name: "gson-2.8.2"
+    implementation name: "bcl-utils-1.0.0"
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'NIC',
+                'Application-Name': 'Biometrics Kit Library Demo',
+                'Built-By': 'Biometrics Team',
+                'Main-Class': 'sa.gov.nic.bio.biokit.demo.Demo',
+                'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' '))
+    }
+}
