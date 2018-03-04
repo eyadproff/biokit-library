@@ -10,6 +10,7 @@ public class UpdateResponse
 		public static final int NO_UPDATE_AVAILABLE = 701;
 	}
 	private int returnCode;
+	private String returnMessage;
     
     public UpdateResponse(){}
     
@@ -18,15 +19,19 @@ public class UpdateResponse
     	if(message != null)
 	    {
 		    this.returnCode = message.getReturnCode();
+		    this.returnMessage = message.getReturnMessage();
 	    }
     }
 	
 	public int getReturnCode(){return returnCode;}
 	public void setReturnCode(int returnCode){this.returnCode = returnCode;}
 	
+	public String getReturnMessage(){return returnMessage;}
+	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
+	
 	@Override
 	public String toString()
 	{
-		return "UpdateResponse{" + "returnCode=" + returnCode + '}';
+		return "UpdateResponse{" + "returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + '}';
 	}
 }

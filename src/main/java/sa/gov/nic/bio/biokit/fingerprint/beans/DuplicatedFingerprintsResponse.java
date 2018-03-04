@@ -17,6 +17,7 @@ public class DuplicatedFingerprintsResponse
 	}
 	
 	private int returnCode;
+	private String returnMessage;
 	private Map<Integer, Boolean> duplicatedFingers;
 	
 	public DuplicatedFingerprintsResponse(Message message)
@@ -24,6 +25,7 @@ public class DuplicatedFingerprintsResponse
 		if(message != null)
 		{
 			this.returnCode = message.getReturnCode();
+			this.returnMessage = message.getReturnMessage();
 			this.duplicatedFingers = message.getDuplicateList();
 		}
 	}
@@ -31,13 +33,16 @@ public class DuplicatedFingerprintsResponse
 	public int getReturnCode(){return returnCode;}
 	public void setReturnCode(int returnCode){this.returnCode = returnCode;}
 	
+	public String getReturnMessage(){return returnMessage;}
+	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
+	
 	public Map<Integer, Boolean> getDuplicatedFingers(){return duplicatedFingers;}
 	public void setDuplicatedFingers(Map<Integer, Boolean> duplicatedFingers){this.duplicatedFingers = duplicatedFingers;}
 	
 	@Override
 	public String toString()
 	{
-		return "DuplicatedFingerprintsResponse{" + "returnCode=" + returnCode +
-				", duplicatedFingers=" + duplicatedFingers + '}';
+		return "DuplicatedFingerprintsResponse{" + "returnCode=" + returnCode + ", returnMessage='" + returnMessage +
+			   '\'' + ", duplicatedFingers=" + duplicatedFingers + '}';
 	}
 }

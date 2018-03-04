@@ -9,6 +9,7 @@ public class ShutdownResponse
 		public static final int BIOKIT_IS_SHUTTING_DOWN = 300;
 	}
 	private int returnCode;
+	private String returnMessage;
     
     public ShutdownResponse(){}
     
@@ -17,15 +18,19 @@ public class ShutdownResponse
     	if(message != null)
 	    {
 		    this.returnCode = message.getReturnCode();
+		    this.returnMessage = message.getReturnMessage();
 	    }
     }
 	
 	public int getReturnCode(){return returnCode;}
 	public void setReturnCode(int returnCode){this.returnCode = returnCode;}
 	
+	public String getReturnMessage(){return returnMessage;}
+	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
+	
 	@Override
 	public String toString()
 	{
-		return "ShutdownResponse{" + "returnCode=" + returnCode + '}';
+		return "ShutdownResponse{" + "returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + '}';
 	}
 }

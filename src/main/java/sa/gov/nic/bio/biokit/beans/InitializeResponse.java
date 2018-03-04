@@ -18,6 +18,7 @@ public class InitializeResponse
 	}
 	
     private int returnCode;
+    private String returnMessage;
     private String currentDeviceName;
     
     public InitializeResponse(){}
@@ -27,6 +28,7 @@ public class InitializeResponse
     	if(message != null)
 	    {
 		    this.returnCode = message.getReturnCode();
+		    this.returnMessage = message.getReturnMessage();
 		    this.currentDeviceName = message.getCurrentDeviceName();
 	    }
     }
@@ -34,12 +36,16 @@ public class InitializeResponse
 	public int getReturnCode(){return returnCode;}
 	public void setReturnCode(int returnCode){this.returnCode = returnCode;}
 	
+	public String getReturnMessage(){return returnMessage;}
+	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
+	
 	public String getCurrentDeviceName(){return currentDeviceName;}
 	public void setCurrentDeviceName(String currentDeviceName){this.currentDeviceName = currentDeviceName;}
 	
 	@Override
 	public String toString()
 	{
-		return "InitializeResponse{" + "returnCode=" + returnCode + ", currentDeviceName='" + currentDeviceName + '\'' + '}';
+		return "InitializeResponse{" + "returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' +
+			   ", currentDeviceName='" + currentDeviceName + '\'' + '}';
 	}
 }

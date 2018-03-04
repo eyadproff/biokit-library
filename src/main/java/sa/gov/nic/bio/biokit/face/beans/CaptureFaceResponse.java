@@ -31,6 +31,7 @@ public class CaptureFaceResponse
 	
 	private String transactionId;
 	private int returnCode;
+	private String returnMessage;
     private String capturedImage;
 	private String croppedImage;
 	private String icaoErrorMessage;
@@ -43,6 +44,7 @@ public class CaptureFaceResponse
 		{
 			this.transactionId = message.getTransactionId();
 			this.returnCode = message.getReturnCode();
+			this.returnMessage = message.getReturnMessage();
 			this.capturedImage = message.getFinalImage();
 			this.croppedImage = message.getIcaoImage();
 			this.icaoErrorMessage = message.getIcaoErrorMessage();
@@ -54,6 +56,9 @@ public class CaptureFaceResponse
 	
 	public int getReturnCode(){return returnCode;}
 	public void setReturnCode(int returnCode){this.returnCode = returnCode;}
+	
+	public String getReturnMessage(){return returnMessage;}
+	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
 	
 	public String getCapturedImage(){return capturedImage;}
 	public void setCapturedImage(String capturedImage){this.capturedImage = capturedImage;}
@@ -68,14 +73,15 @@ public class CaptureFaceResponse
 	public String toString()
 	{
 		return "CaptureFaceResponse{" + "transactionId='" + transactionId + '\'' + ", returnCode=" + returnCode +
-			   ", capturedImage='" + capturedImage + '\'' + ", croppedImage='" + croppedImage + '\'' +
-			   ", icaoErrorMessage='" + icaoErrorMessage + '\'' + '}';
+			   ", returnMessage='" + returnMessage + '\'' + ", capturedImage='" + capturedImage + '\'' +
+			   ", croppedImage='" + croppedImage + '\'' + ", icaoErrorMessage='" + icaoErrorMessage + '\'' + '}';
 	}
 	
 	public String toShortString()
 	{
 		return "CaptureFaceResponse{" + "transactionId='" + transactionId + '\'' + ", returnCode=" + returnCode +
-				", capturedImage=isNull?'" + (capturedImage == null) + '\'' + ", croppedImage=isNull?'" +
-				(croppedImage == null) + '\'' + ", icaoErrorMessage='" + icaoErrorMessage + '\'' + '}';
+			   ", returnMessage='" + returnMessage + '\'' + ", capturedImage=isNull?'" + (capturedImage == null) +
+			   '\'' + ", croppedImage=isNull?'" + (croppedImage == null) + '\'' + ", icaoErrorMessage='" +
+			   icaoErrorMessage + '\'' + '}';
 	}
 }

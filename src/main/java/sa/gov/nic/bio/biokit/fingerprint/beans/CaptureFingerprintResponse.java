@@ -26,7 +26,8 @@ public class CaptureFingerprintResponse
 	private String transactionId;
 	private int position;
     private int returnCode;
-    private String capturedImage;
+	private String returnMessage;
+	private String capturedImage;
 	private boolean isWrongSlap;
 	private List<DMFingerData> fingerData;
     
@@ -39,6 +40,7 @@ public class CaptureFingerprintResponse
 			this.transactionId = message.getTransactionId();
 			this.position = message.getPosition();
 			this.returnCode = message.getReturnCode();
+			this.returnMessage = message.getReturnMessage();
 			this.capturedImage = message.getFinalImage();
 			this.isWrongSlap = message.isWrongSlap();
 			this.fingerData = message.getDmSegmentedFingers();
@@ -54,6 +56,9 @@ public class CaptureFingerprintResponse
 	public int getReturnCode(){return returnCode;}
 	public void setReturnCode(int returnCode){this.returnCode = returnCode;}
 	
+	public String getReturnMessage(){return returnMessage;}
+	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
+	
 	public String getCapturedImage(){return capturedImage;}
 	public void setCapturedImage(String capturedImage){this.capturedImage = capturedImage;}
 	
@@ -67,14 +72,15 @@ public class CaptureFingerprintResponse
 	public String toString()
 	{
 		return "CaptureFingerprintResponse{" + "transactionId='" + transactionId + '\'' + ", position=" + position +
-				", returnCode=" + returnCode + ", capturedImage='" + capturedImage + '\'' + ", isWrongSlap=" +
-				isWrongSlap + ", fingerData=" + fingerData + '}';
+			   ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", capturedImage='" +
+			   capturedImage + '\'' + ", isWrongSlap=" + isWrongSlap + ", fingerData=" + fingerData + '}';
 	}
 	
 	public String toShortString()
 	{
 		return "CaptureFingerprintResponse{" + "transactionId='" + transactionId + '\'' + ", position=" + position +
-				", returnCode=" + returnCode + ", capturedImage='" + capturedImage + '\'' + ", isWrongSlap=" +
-				isWrongSlap + ", fingerData=" + DMFingerData.shortenDMFingerDataList(fingerData) + '}';
+			   ", returnMessage='" + returnMessage + '\'' + ", returnCode=" + returnCode + ", capturedImage='" +
+			   capturedImage + '\'' + ", isWrongSlap=" + isWrongSlap + ", fingerData=" +
+			   DMFingerData.shortenDMFingerDataList(fingerData) + '}';
 	}
 }

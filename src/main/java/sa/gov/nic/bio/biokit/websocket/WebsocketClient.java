@@ -53,8 +53,12 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         this.jsonMapper = jsonMapper;
         this.closureListener = closureListener;
         this.websocketLogger = websocketLogger;
+        this.updateListener = updateListener;
     }
-
+    
+    public void setClosureListener(ClosureListener closureListener){this.closureListener = closureListener;}
+    public void setUpdateListener(UpdateListener updateListener){this.updateListener = updateListener;}
+    
     @Override
     public synchronized void connect() throws AlreadyConnectedException, ConnectionException
     {
