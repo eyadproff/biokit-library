@@ -9,9 +9,9 @@ import sa.gov.nic.bio.biokit.DeviceServiceFactory;
 import sa.gov.nic.bio.biokit.DeviceUtilitiesServiceFactory;
 import sa.gov.nic.bio.biokit.ResponseProcessor;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
+import sa.gov.nic.bio.biokit.beans.LivePreviewingResponse;
 import sa.gov.nic.bio.biokit.beans.ServiceResponse;
 import sa.gov.nic.bio.biokit.beans.ShutdownResponse;
-import sa.gov.nic.bio.biokit.beans.StartPreviewResponse;
 import sa.gov.nic.bio.biokit.beans.UpdateResponse;
 import sa.gov.nic.bio.biokit.exceptions.AlreadyConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.AlreadyStartedException;
@@ -22,6 +22,7 @@ import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
 import sa.gov.nic.bio.biokit.face.FaceService;
 import sa.gov.nic.bio.biokit.face.FaceStopPreviewResponse;
 import sa.gov.nic.bio.biokit.face.beans.CaptureFaceResponse;
+import sa.gov.nic.bio.biokit.face.beans.FaceStartPreviewResponse;
 import sa.gov.nic.bio.biokit.fingerprint.FingerprintService;
 import sa.gov.nic.bio.biokit.fingerprint.beans.DuplicatedFingerprintsResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.FingerprintStopPreviewResponse;
@@ -1715,27 +1716,27 @@ public class Demo
 	
 	private static void onFaceStartPreview()
 	{
-		new SwingWorker<ServiceResponse<Void>, StartPreviewResponse>()
+		new SwingWorker<ServiceResponse<FaceStartPreviewResponse>, LivePreviewingResponse>()
 		{
 			@Override
-			protected ServiceResponse<Void> doInBackground() throws Exception
+			protected ServiceResponse<FaceStartPreviewResponse> doInBackground() throws Exception
 			{
-				ResponseProcessor<StartPreviewResponse> responseProcessor = new ResponseProcessor<StartPreviewResponse>()
+				ResponseProcessor<LivePreviewingResponse> responseProcessor = new ResponseProcessor<LivePreviewingResponse>()
 				{
 					@Override
-					public void processResponse(StartPreviewResponse response)
+					public void processResponse(LivePreviewingResponse response)
 					{
 						publish(response);
 					}
 				};
-				Future<ServiceResponse<Void>> future = faceService.startPreview(faceDeviceName, responseProcessor);
+				Future<ServiceResponse<FaceStartPreviewResponse>> future = faceService.startPreview(faceDeviceName, responseProcessor);
 				return future.get();
 			}
 			
 			@Override
-			protected void process(List<StartPreviewResponse> chunks)
+			protected void process(List<LivePreviewingResponse> chunks)
 			{
-				for(StartPreviewResponse chunk : chunks) attachImage(lblFacePreview, chunk.getPreviewImage(), null, null);
+				for(LivePreviewingResponse chunk : chunks) attachImage(lblFacePreview, chunk.getPreviewImage(), null, null);
 			}
 			
 			@Override
@@ -1743,11 +1744,25 @@ public class Demo
 			{
 				try
 				{
-					ServiceResponse<Void> serviceResponse = get();
+					ServiceResponse<FaceStartPreviewResponse> serviceResponse = get();
 					
 					if(serviceResponse.isSuccess())
 					{
-						logDemo("FaceStartPreview() completes successfully.");
+						logDemo("FaceStartPreview() receives a response.");
+						
+						FaceStartPreviewResponse result = serviceResponse.getResult();
+						
+						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
+						{
+							logDemo("FaceStartPreview() completes successfully.");
+						}
+						else
+						{
+							String sb = "FaceStartPreview()'s response: FAILURE - " + "code = " +
+										result.getReturnCode() + " (UNKNOWN).";
+							
+							logDemo(sb);
+						}
 					}
 					else
 					{
@@ -1781,7 +1796,7 @@ public class Demo
 	
 	private static void onFaceCapture()
 	{
-		new SwingWorker<ServiceResponse<CaptureFaceResponse>, StartPreviewResponse>()
+		new SwingWorker<ServiceResponse<CaptureFaceResponse>, LivePreviewingResponse>()
 		{
 			@Override
 			protected ServiceResponse<CaptureFaceResponse> doInBackground() throws Exception
@@ -1876,7 +1891,7 @@ public class Demo
 	
 	private static void onFaceStopPreview()
 	{
-		new SwingWorker<ServiceResponse<FaceStopPreviewResponse>, StartPreviewResponse>()
+		new SwingWorker<ServiceResponse<FaceStopPreviewResponse>, LivePreviewingResponse>()
 		{
 			@Override
 			protected ServiceResponse<FaceStopPreviewResponse> doInBackground() throws Exception
@@ -2312,16 +2327,16 @@ public class Demo
 	
 	private static void onFingerprintStartPreviewAndAutoCapture(final int position, final int expectedFingersCount, final List<Integer> missingFingers)
 	{
-		new SwingWorker<ServiceResponse<CaptureFingerprintResponse>, StartPreviewResponse>()
+		new SwingWorker<ServiceResponse<CaptureFingerprintResponse>, LivePreviewingResponse>()
 		{
 			@Override
 			protected ServiceResponse<CaptureFingerprintResponse> doInBackground() throws Exception
 			{
 				currentFingerprintDeviceCapturingPosition = position;
-				ResponseProcessor<StartPreviewResponse> responseProcessor = new ResponseProcessor<StartPreviewResponse>()
+				ResponseProcessor<LivePreviewingResponse> responseProcessor = new ResponseProcessor<LivePreviewingResponse>()
 				{
 					@Override
-					public void processResponse(StartPreviewResponse response)
+					public void processResponse(LivePreviewingResponse response)
 					{
 						publish(response);
 					}
@@ -2331,9 +2346,9 @@ public class Demo
 			}
 			
 			@Override
-			protected void process(List<StartPreviewResponse> chunks)
+			protected void process(List<LivePreviewingResponse> chunks)
 			{
-				for(StartPreviewResponse chunk : chunks) attachImage(lblFingerprintPreview, chunk.getPreviewImage(), null, null);
+				for(LivePreviewingResponse chunk : chunks) attachImage(lblFingerprintPreview, chunk.getPreviewImage(), null, null);
 			}
 			
 			@Override
@@ -2513,7 +2528,7 @@ public class Demo
 	
 	private static void onFingerprintStopPreview()
 	{
-		new SwingWorker<ServiceResponse<FingerprintStopPreviewResponse>, StartPreviewResponse>()
+		new SwingWorker<ServiceResponse<FingerprintStopPreviewResponse>, LivePreviewingResponse>()
 		{
 			@Override
 			protected ServiceResponse<FingerprintStopPreviewResponse> doInBackground() throws Exception

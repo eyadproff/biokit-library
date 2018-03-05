@@ -3,8 +3,8 @@ package sa.gov.nic.bio.biokit.fingerprint;
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.ResponseProcessor;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
+import sa.gov.nic.bio.biokit.beans.LivePreviewingResponse;
 import sa.gov.nic.bio.biokit.beans.ServiceResponse;
-import sa.gov.nic.bio.biokit.beans.StartPreviewResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
@@ -16,7 +16,6 @@ import sa.gov.nic.bio.biokit.websocket.WebsocketCommand;
 import sa.gov.nic.bio.biokit.AsyncConsumer;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -198,7 +197,7 @@ public class WebsocketFingerprintServiceImpl implements FingerprintService
 	}
 
     @Override
-    public Future<ServiceResponse<CaptureFingerprintResponse>> startPreviewAndAutoCapture(final String currentDeviceName, final int position, final int expectedFingersCount, final List<Integer> missingFingers, final ResponseProcessor<StartPreviewResponse> responseProcessor)
+    public Future<ServiceResponse<CaptureFingerprintResponse>> startPreviewAndAutoCapture(final String currentDeviceName, final int position, final int expectedFingersCount, final List<Integer> missingFingers, final ResponseProcessor<LivePreviewingResponse> responseProcessor)
     {
 	    Callable<ServiceResponse<CaptureFingerprintResponse>> callable = new Callable<ServiceResponse<CaptureFingerprintResponse>>()
 	    {
@@ -254,8 +253,8 @@ public class WebsocketFingerprintServiceImpl implements FingerprintService
 					    @Override
 					    public void processResponse(Message response)
 					    {
-						    StartPreviewResponse startPreviewResponse = new StartPreviewResponse(response);
-						    responseProcessor.processResponse(startPreviewResponse);
+						    LivePreviewingResponse livePreviewingResponse = new LivePreviewingResponse(response);
+						    responseProcessor.processResponse(livePreviewingResponse);
 					    }
 				    };
 				

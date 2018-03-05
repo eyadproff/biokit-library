@@ -3,11 +3,12 @@ package sa.gov.nic.bio.biokit.face;
 import sa.gov.nic.bio.biokit.*;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
 import sa.gov.nic.bio.biokit.beans.ServiceResponse;
-import sa.gov.nic.bio.biokit.beans.StartPreviewResponse;
+import sa.gov.nic.bio.biokit.beans.LivePreviewingResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
 import sa.gov.nic.bio.biokit.face.beans.CaptureFaceResponse;
+import sa.gov.nic.bio.biokit.face.beans.FaceStartPreviewResponse;
 import sa.gov.nic.bio.biokit.websocket.ServiceType;
 import sa.gov.nic.bio.biokit.websocket.WebsocketClient;
 import sa.gov.nic.bio.biokit.websocket.WebsocketCommand;
@@ -277,12 +278,12 @@ public class WebsocketFaceServiceImpl implements FaceService
     }
     
     @Override
-    public Future<ServiceResponse<Void>> startPreview(final String currentDeviceName, final ResponseProcessor<StartPreviewResponse> responseProcessor)
+    public Future<ServiceResponse<FaceStartPreviewResponse>> startPreview(final String currentDeviceName, final ResponseProcessor<LivePreviewingResponse> responseProcessor)
     {
-        Callable<ServiceResponse<Void>> callable = new Callable<ServiceResponse<Void>>()
+        Callable<ServiceResponse<FaceStartPreviewResponse>> callable = new Callable<ServiceResponse<FaceStartPreviewResponse>>()
         {
             @Override
-            public ServiceResponse<Void> call() throws TimeoutException, NotConnectedException
+            public ServiceResponse<FaceStartPreviewResponse> call() throws TimeoutException, NotConnectedException
             {
                 String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
                 
@@ -328,13 +329,20 @@ public class WebsocketFaceServiceImpl implements FaceService
                         @Override
                         public void processResponse(Message response)
                         {
-                            StartPreviewResponse startPreviewResponse = new StartPreviewResponse(response);
-                            responseProcessor.processResponse(startPreviewResponse);
+                            LivePreviewingResponse livePreviewingResponse = new LivePreviewingResponse(response);
+                            responseProcessor.processResponse(livePreviewingResponse);
                         }
                     };
                     
                     ServiceResponse<Message> messageServiceResponse = consumer.processResponses(rp, asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return ServiceResponse.cast(messageServiceResponse, null);
+                    return ServiceResponse.cast(messageServiceResponse, new ServiceResponse.TypeCaster<FaceStartPreviewResponse, Message>()
+                    {
+                        @Override
+                        public FaceStartPreviewResponse cast(Message m)
+                        {
+                            return new FaceStartPreviewResponse(m);
+                        }
+                    });
                 }
                 catch(InterruptedException e)
                 {
@@ -357,7 +365,7 @@ public class WebsocketFaceServiceImpl implements FaceService
             }
         };
         
-        FutureTask<ServiceResponse<Void>> futureTask = new FutureTask<ServiceResponse<Void>>(callable);
+        FutureTask<ServiceResponse<FaceStartPreviewResponse>> futureTask = new FutureTask<ServiceResponse<FaceStartPreviewResponse>>(callable);
         executorService.submit(futureTask);
         return futureTask;
     }

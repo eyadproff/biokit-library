@@ -2,13 +2,13 @@ package sa.gov.nic.bio.biokit.beans;
 
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
-public class StartPreviewResponse
+public class LivePreviewingResponse
 {
 	private String previewImage;
     
-    public StartPreviewResponse(){}
+    public LivePreviewingResponse(){}
     
-    public StartPreviewResponse(Message message)
+    public LivePreviewingResponse(Message message)
     {
     	if(message != null)
 	    {
@@ -22,6 +22,6 @@ public class StartPreviewResponse
 	@Override
 	public String toString()
 	{
-		return "StartPreviewResponse{" + "previewImage='" + previewImage + '\'' + '}';
+		return "LivePreviewingResponse{" + "previewImage='" + previewImage + '\'' + '}';
 	}
 }
