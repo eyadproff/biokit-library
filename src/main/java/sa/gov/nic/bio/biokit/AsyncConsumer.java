@@ -5,8 +5,10 @@ import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 public class AsyncConsumer
@@ -68,14 +70,23 @@ public class AsyncConsumer
     }
 
     private String transactionId;
+    private AtomicBoolean cancelled = new AtomicBoolean();
     private BlockingQueue<Response> queue = new LinkedBlockingQueue<Response>();
+    
+    public void cancel()
+    {
+        cancelled.set(true);
+    }
 
-    public ServiceResponse<Message> processResponses(ResponseProcessor<Message> responseProcessor, long timeout, TimeUnit unit) throws InterruptedException, TimeoutException
+    public ServiceResponse<Message> processResponses(ResponseProcessor<Message> responseProcessor, long timeout,
+                                                     TimeUnit unit) throws InterruptedException, TimeoutException,
+                                                                           CancellationException
     {
         while(true)
         {
             Response response = queue.poll(timeout, unit);
-
+            
+            if(cancelled.get()) throw new CancellationException();
             if(response == null) throw new TimeoutException();
 
             if(response.isSuccess())

@@ -96,7 +96,8 @@ public class Message implements Serializable
 	public void setEnd(boolean end){isEnd = end;}
 	
 	public List<DMFingerData> getDmSegmentedFingers(){return dmSegmentedFingers;}
-	public void setDmSegmentedFingers(List<DMFingerData> dmSegmentedFingers){this.dmSegmentedFingers = dmSegmentedFingers;}
+	public void setDmSegmentedFingers(List<DMFingerData> dmSegmentedFingers)
+																	{this.dmSegmentedFingers = dmSegmentedFingers;}
 	
 	public boolean isWrongSlap(){return isWrongSlap;}
 	public void setWrongSlap(boolean wrongSlap){isWrongSlap = wrongSlap;}

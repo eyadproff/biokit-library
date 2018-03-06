@@ -37,7 +37,8 @@ public class DuplicatedFingerprintsResponse
 	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
 	
 	public Map<Integer, Boolean> getDuplicatedFingers(){return duplicatedFingers;}
-	public void setDuplicatedFingers(Map<Integer, Boolean> duplicatedFingers){this.duplicatedFingers = duplicatedFingers;}
+	public void setDuplicatedFingers(Map<Integer, Boolean> duplicatedFingers)
+																		{this.duplicatedFingers = duplicatedFingers;}
 	
 	@Override
 	public String toString()

@@ -229,7 +229,8 @@ public class Demo
 			    CloseReason.CloseCode closeCode = closeReason.getCloseCode();
 			    String reasonPhrase = closeReason.getReasonPhrase();
 			
-			    logWebsocket("Closed the websocket connection: closeCode = " + closeCode + (reasonPhrase != null && !reasonPhrase.isEmpty() ? ", reasonPhrase = " + reasonPhrase : ""));
+			    logWebsocket("Closed the websocket connection: closeCode = " + closeCode +
+		                 (reasonPhrase != null && !reasonPhrase.isEmpty() ? ", reasonPhrase = " + reasonPhrase : ""));
 		    }
 		
 		    @Override
@@ -241,13 +242,15 @@ public class Demo
 		    @Override
 		    public void logNewMessage(final Message message)
 		    {
-			    if(cboTrimBase64Text.isSelected()) logWebsocket("New websocket message: " + message.toShortString() + ".");
+			    if(cboTrimBase64Text.isSelected()) logWebsocket("New websocket message: " +
+			                                                    message.toShortString() + ".");
 			    else logWebsocket("New websocket message: " + message + ".");
 		    }
 	    };
 	    
 	    websocketClient = new WebsocketClient(websocketServerUrl, maxTextMessageBufferSize, maxBinaryMessageBufferSize,
-	                                          responseTimeoutSeconds, jsonMapper, closureListener, websocketLogger, new UpdateListener()
+	                                          responseTimeoutSeconds, jsonMapper, closureListener, websocketLogger,
+	                                          new UpdateListener()
 	    {
 		    @Override
 		    public void newUpdate()
@@ -476,7 +479,8 @@ public class Demo
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if(cboAutoScrollDemoLogger.isSelected()) txtDemoLogger.setCaretPosition(txtDemoLogger.getDocument().getLength());
+				if(cboAutoScrollDemoLogger.isSelected()) txtDemoLogger.setCaretPosition(
+																			txtDemoLogger.getDocument().getLength());
 			}
 		});
 		
@@ -487,7 +491,8 @@ public class Demo
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if(cboAutoScrollWebsocketLogger.isSelected()) txtWebsocketLogger.setCaretPosition(txtWebsocketLogger.getDocument().getLength());
+				if(cboAutoScrollWebsocketLogger.isSelected()) txtWebsocketLogger.setCaretPosition(
+																		txtWebsocketLogger.getDocument().getLength());
 			}
 		});
 		
@@ -666,10 +671,12 @@ public class Demo
 		panFingerprintCaptured.setBorder(BorderFactory.createTitledBorder("Fingerprint Captured"));
 		panFingerprintCaptured.setPreferredSize(new Dimension(0, 189));
 		
-		JSplitPane horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panFingerprintPreview, panFingerprintCaptured);
+		JSplitPane horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panFingerprintPreview,
+		                                                panFingerprintCaptured);
 		horizontalSplitPane.setResizeWeight(0.3);
 		
-		JSplitPane verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, horizontalSplitPane, panSegmentedFingers);
+		JSplitPane verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, horizontalSplitPane,
+		                                              panSegmentedFingers);
 		verticalSplitPane.setResizeWeight(0.7);
 		panCenter.add(verticalSplitPane, BorderLayout.CENTER);
 		
@@ -745,11 +752,16 @@ public class Demo
 		txtMinutiaeCountRightLittle = new JTextField(TEXT_WIDTH);
 		txtIntensityRightLittle = new JTextField(TEXT_WIDTH);
 		
-		JPanel panRightThumb = createSegmentedFingerPanel("Right Thumb", lblRightThumb, txtNfiqRightThuumb, txtMinutiaeCountRightThuumb, txtIntensityRightThuumb);
-		JPanel panRightIndex = createSegmentedFingerPanel("Right Index", lblRightIndex, txtNfiqRightIndex, txtMinutiaeCountRightIndex, txtIntensityRightIndex);
-		JPanel panRightMiddle = createSegmentedFingerPanel("Right Middle", lblRightMiddle, txtNfiqRightMiddle, txtMinutiaeCountRightMiddle, txtIntensityRightMiddle);
-		JPanel panRightRing = createSegmentedFingerPanel("Right Ring", lblRightRing, txtNfiqRightRing, txtMinutiaeCountRightRing, txtIntensityRightRing);
-		JPanel panRightLittle = createSegmentedFingerPanel("Right Little", lblRightLittle, txtNfiqRightLittle, txtMinutiaeCountRightLittle, txtIntensityRightLittle);
+		JPanel panRightThumb = createSegmentedFingerPanel("Right Thumb", lblRightThumb, txtNfiqRightThuumb,
+		                                                  txtMinutiaeCountRightThuumb, txtIntensityRightThuumb);
+		JPanel panRightIndex = createSegmentedFingerPanel("Right Index", lblRightIndex, txtNfiqRightIndex,
+		                                                  txtMinutiaeCountRightIndex, txtIntensityRightIndex);
+		JPanel panRightMiddle = createSegmentedFingerPanel("Right Middle", lblRightMiddle, txtNfiqRightMiddle,
+		                                                   txtMinutiaeCountRightMiddle, txtIntensityRightMiddle);
+		JPanel panRightRing = createSegmentedFingerPanel("Right Ring", lblRightRing, txtNfiqRightRing,
+		                                                 txtMinutiaeCountRightRing, txtIntensityRightRing);
+		JPanel panRightLittle = createSegmentedFingerPanel("Right Little", lblRightLittle, txtNfiqRightLittle,
+		                                                   txtMinutiaeCountRightLittle, txtIntensityRightLittle);
 		
 		lblLeftThumb = new JLabel();
 		txtNfiqLeftThuumb = new JTextField(TEXT_WIDTH);
@@ -772,11 +784,16 @@ public class Demo
 		txtMinutiaeCountLeftLittle = new JTextField(TEXT_WIDTH);
 		txtIntensityLeftLittle = new JTextField(TEXT_WIDTH);
 		
-		JPanel panLeftThumb = createSegmentedFingerPanel("Left Thumb", lblLeftThumb, txtNfiqLeftThuumb, txtMinutiaeCountLeftThuumb, txtIntensityLeftThuumb);
-		JPanel panLeftIndex = createSegmentedFingerPanel("Left Index", lblLeftIndex, txtNfiqLeftIndex, txtMinutiaeCountLeftIndex, txtIntensityLeftIndex);
-		JPanel panLeftMiddle = createSegmentedFingerPanel("Left Middle", lblLeftMiddle, txtNfiqLeftMiddle, txtMinutiaeCountLeftMiddle, txtIntensityLeftMiddle);
-		JPanel panLeftRing = createSegmentedFingerPanel("Left Ring", lblLeftRing, txtNfiqLeftRing, txtMinutiaeCountLeftRing, txtIntensityLeftRing);
-		JPanel panLeftLittle = createSegmentedFingerPanel("Left Little", lblLeftLittle, txtNfiqLeftLittle, txtMinutiaeCountLeftLittle, txtIntensityLeftLittle);
+		JPanel panLeftThumb = createSegmentedFingerPanel("Left Thumb", lblLeftThumb, txtNfiqLeftThuumb,
+		                                                 txtMinutiaeCountLeftThuumb, txtIntensityLeftThuumb);
+		JPanel panLeftIndex = createSegmentedFingerPanel("Left Index", lblLeftIndex, txtNfiqLeftIndex,
+		                                                 txtMinutiaeCountLeftIndex, txtIntensityLeftIndex);
+		JPanel panLeftMiddle = createSegmentedFingerPanel("Left Middle", lblLeftMiddle, txtNfiqLeftMiddle,
+		                                                  txtMinutiaeCountLeftMiddle, txtIntensityLeftMiddle);
+		JPanel panLeftRing = createSegmentedFingerPanel("Left Ring", lblLeftRing, txtNfiqLeftRing,
+		                                                txtMinutiaeCountLeftRing, txtIntensityLeftRing);
+		JPanel panLeftLittle = createSegmentedFingerPanel("Left Little", lblLeftLittle, txtNfiqLeftLittle,
+		                                                  txtMinutiaeCountLeftLittle, txtIntensityLeftLittle);
 		
 		btnRightSlapFindDuplicates = new JButton("Find duplicates in right slap");
 		btnRightSlapFindDuplicates.setEnabled(false);
@@ -966,7 +983,8 @@ public class Demo
 		return panMain;
 	}
 	
-	private static JPanel createSegmentedFingerPanel(String title, JLabel lblFinger, JTextField txtNfiq, JTextField txtMinutiaeCount, JTextField txtIntensity)
+	private static JPanel createSegmentedFingerPanel(String title, JLabel lblFinger, JTextField txtNfiq,
+	                                                 JTextField txtMinutiaeCount, JTextField txtIntensity)
 	{
 		txtNfiq.setEditable(false);
 		txtMinutiaeCount.setEditable(false);
@@ -1106,7 +1124,8 @@ public class Demo
 				else
 				{
 					publish("Bio-Kit is not running! Launching via BCL...");
-					BclUtils.launchAppByBCL("10.0.73.80", "biokit", BIO_KIT_PORT, 1000, cancelCommand);
+					BclUtils.launchAppByBCL("10.0.73.80", "biokit", BIO_KIT_PORT, 1000,
+					                        cancelCommand);
 				}
 				
 				return null;
@@ -1193,7 +1212,8 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<Future<ServiceResponse<ShutdownResponse>>, String> swingWorker = new SwingWorker<Future<ServiceResponse<ShutdownResponse>>, String>()
+		final SwingWorker<Future<ServiceResponse<ShutdownResponse>>, String> swingWorker =
+												new SwingWorker<Future<ServiceResponse<ShutdownResponse>>, String>()
 		{
 			@Override
 			protected Future<ServiceResponse<ShutdownResponse>> doInBackground()
@@ -1285,7 +1305,8 @@ public class Demo
 								}
 								else
 								{
-									logDemo("BiokitShutdown() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+									logDemo("BiokitShutdown() failed to receive a response. errorCode = " +
+									        serviceResponse.getErrorCode());
 									Exception exception = serviceResponse.getException();
 									if(exception != null) exception.printStackTrace();
 								}
@@ -1296,7 +1317,8 @@ public class Demo
 								if(cause instanceof ExecutionException) cause = cause.getCause();
 								
 								if(cause instanceof TimeoutException) logDemo("BiokitShutdown() timeout.");
-								else if(cause instanceof NotConnectedException) logDemo("BiokitShutdown(): Websocket is not connected.");
+								else if(cause instanceof NotConnectedException) logDemo(
+																"BiokitShutdown(): Websocket is not connected.");
 								else
 								{
 									logDemo("BiokitShutdown(): Exception.");
@@ -1362,7 +1384,8 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<UpdateResponse>, String> swingWorker = new SwingWorker<ServiceResponse<UpdateResponse>, String>()
+		final SwingWorker<ServiceResponse<UpdateResponse>, String> swingWorker =
+															new SwingWorker<ServiceResponse<UpdateResponse>, String>()
 		{
 			@Override
 			protected ServiceResponse<UpdateResponse> doInBackground() throws Exception
@@ -1414,7 +1437,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("BiokitUpdate() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("BiokitUpdate() failed to receive a response. errorCode = " +
+						        serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -1485,7 +1509,8 @@ public class Demo
 				else
 				{
 					publish("Bio-Kit is not running! Launching via BCL...");
-					BclUtils.launchAppByBCL("10.0.73.80", "biokit", BIO_KIT_PORT, 1000, cancelCommand);
+					BclUtils.launchAppByBCL("10.0.73.80", "biokit", BIO_KIT_PORT, 1000,
+					                        cancelCommand);
 				}
 				
 				if(cancelCommand.isCanceled()) return null;
@@ -1607,7 +1632,8 @@ public class Demo
 	{
 		final Future<ServiceResponse<InitializeResponse>> future = faceService.initialize();
 		final JLabel lblStatus = new JLabel("Initializing the Face Device...");
-		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus, new ActionListener()
+		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
+		                                            new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -1616,7 +1642,8 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker = new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
 		{
 			@Override
 			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
@@ -1646,7 +1673,8 @@ public class Demo
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
 							faceDeviceName = result.getCurrentDeviceName();
-							logDemo("FaceDeviceInitialize()'s response: SUCCESS - faceDeviceName = " + faceDeviceName);
+							logDemo("FaceDeviceInitialize()'s response: SUCCESS - faceDeviceName = " +
+							        faceDeviceName);
 						}
 						else
 						{
@@ -1658,7 +1686,8 @@ public class Demo
 							switch(result.getReturnCode())
 							{
 								case InitializeResponse.FailureCodes.DEVICE_BUSY: sb.append("(DEVICE_BUSY)."); break;
-								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED: sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
+																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION: sb.append("(EXCEPTION)."); break;
 								default: sb.append("(UNKNOWN)."); break;
 							}
@@ -1668,7 +1697,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FaceDeviceInitialize() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FaceDeviceInitialize() failed to receive a response. errorCode = " +
+								                                                    serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -1679,7 +1709,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FaceDeviceInitialize() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FaceDeviceInitialize(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+														"FaceDeviceInitialize(): Websocket is not connected.");
 					else
 					{
 						logDemo("FaceDeviceInitialize(): Exception.");
@@ -1729,14 +1760,16 @@ public class Demo
 						publish(response);
 					}
 				};
-				Future<ServiceResponse<FaceStartPreviewResponse>> future = faceService.startPreview(faceDeviceName, responseProcessor);
+				Future<ServiceResponse<FaceStartPreviewResponse>> future = faceService.startPreview(faceDeviceName,
+			                                                                                        responseProcessor);
 				return future.get();
 			}
 			
 			@Override
 			protected void process(List<LivePreviewingResponse> chunks)
 			{
-				for(LivePreviewingResponse chunk : chunks) attachImage(lblFacePreview, chunk.getPreviewImage(), null, null);
+				for(LivePreviewingResponse chunk : chunks) attachImage(lblFacePreview, chunk.getPreviewImage(),
+				                                                       null, null);
 			}
 			
 			@Override
@@ -1766,7 +1799,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FaceStartPreview() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FaceStartPreview() failed to receive a response. errorCode = " +
+						        serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -1777,7 +1811,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FaceStartPreview() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FaceStartPreview(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+															"FaceStartPreview(): Websocket is not connected.");
 					else
 					{
 						logDemo("FaceStartPreview(): Exception.");
@@ -1826,15 +1861,21 @@ public class Demo
 							
 							if(CaptureFaceResponse.IcaoCodes.SUCCESS.equals(icaoCode))
 							{
-								logDemo("FaceCapture()'s response: SUCCESS - CaptureFaceResponse = " + (cboTrimBase64Text.isSelected() ? result.toShortString() : result));
-								attachImage(lblFaceCropped, result.getCroppedImage(), RUNTIME_ID + "/", "face_cropped_" + result.getTransactionId() + ".jpg");
-								attachImage(lblFaceCaptured, result.getCapturedImage(), RUNTIME_ID + "/", "face_captured_" + result.getTransactionId() + ".jpg");
+								logDemo("FaceCapture()'s response: SUCCESS - CaptureFaceResponse = " +
+									            (cboTrimBase64Text.isSelected() ? result.toShortString() : result));
+								attachImage(lblFaceCropped, result.getCroppedImage(), RUNTIME_ID + "/",
+								                        "face_cropped_" + result.getTransactionId() + ".jpg");
+								attachImage(lblFaceCaptured, result.getCapturedImage(), RUNTIME_ID + "/",
+								                        "face_captured_" + result.getTransactionId() + ".jpg");
 							}
 							else
 							{
-								logDemo("FaceCapture()'s response: FAILURE - CaptureFaceResponse = " + (cboTrimBase64Text.isSelected() ? result.toShortString() : result));
-								attachImage(lblFaceCropped, result.getCroppedImage(), RUNTIME_ID + "/", "face_cropped_" + result.getTransactionId() + ".jpg");
-								attachImage(lblFaceCaptured, result.getCapturedImage(), RUNTIME_ID + "/", "face_captured_" + result.getTransactionId() + ".jpg");
+								logDemo("FaceCapture()'s response: FAILURE - CaptureFaceResponse = " +
+										            (cboTrimBase64Text.isSelected() ? result.toShortString() : result));
+								attachImage(lblFaceCropped, result.getCroppedImage(), RUNTIME_ID + "/",
+								                        "face_cropped_" + result.getTransactionId() + ".jpg");
+								attachImage(lblFaceCaptured, result.getCapturedImage(), RUNTIME_ID + "/",
+								                        "face_captured_" + result.getTransactionId() + ".jpg");
 							}
 						}
 						else
@@ -1846,8 +1887,10 @@ public class Demo
 							
 							switch(result.getReturnCode())
 							{
-								case CaptureFaceResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED: sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
-								case CaptureFaceResponse.FailureCodes.EXCEPTION_WHILE_CAPTURING: sb.append("(EXCEPTION_WHILE_CAPTURING)."); break;
+								case CaptureFaceResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
+																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case CaptureFaceResponse.FailureCodes.EXCEPTION_WHILE_CAPTURING:
+																	sb.append("(EXCEPTION_WHILE_CAPTURING)."); break;
 								default: sb.append("(UNKNOWN)."); break;
 							}
 							
@@ -1858,7 +1901,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FaceCapture() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FaceCapture() failed to receive a response. errorCode = " +
+								                                                    serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -1869,7 +1913,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FaceCapture() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FaceCapture(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+																"FaceCapture(): Websocket is not connected.");
 					else
 					{
 						logDemo("FaceCapture(): Exception.");
@@ -1934,7 +1979,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FaceStopPreview() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FaceStopPreview() failed to receive a response. errorCode = " +
+								                                                    serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -1945,7 +1991,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FaceStopPreview() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FaceStopPreview(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+																"FaceStopPreview(): Websocket is not connected.");
 					else
 					{
 						logDemo("FaceStopPreview(): Exception.");
@@ -1964,7 +2011,8 @@ public class Demo
 	{
 		final Future<ServiceResponse<InitializeResponse>> future = faceService.deinitialize(faceDeviceName);
 		final JLabel lblStatus = new JLabel("Deinitializing the Face Device...");
-		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus, new ActionListener()
+		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
+	                                                new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -1973,7 +2021,8 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker = new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
 		{
 			@Override
 			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
@@ -2003,7 +2052,8 @@ public class Demo
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
 							fingerprintDeviceName = result.getCurrentDeviceName();
-							logDemo("FaceDeviceDeinitialize()'s response: SUCCESS - faceDeviceName = " + faceDeviceName);
+							logDemo("FaceDeviceDeinitialize()'s response: SUCCESS - faceDeviceName = " +
+							        faceDeviceName);
 						}
 						else
 						{
@@ -2015,7 +2065,8 @@ public class Demo
 							switch(result.getReturnCode())
 							{
 								case InitializeResponse.FailureCodes.DEVICE_BUSY: sb.append("(DEVICE_BUSY)."); break;
-								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED: sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
+																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION: sb.append("(EXCEPTION)."); break;
 								default: sb.append("(UNKNOWN)."); break;
 							}
@@ -2025,7 +2076,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FaceDeviceDeinitialize() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FaceDeviceDeinitialize() failed to receive a response. errorCode = " +
+						        serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -2036,7 +2088,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FaceDeviceDeinitialize() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FaceDeviceDeinitialize(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+							"FaceDeviceDeinitialize(): Websocket is not connected.");
 					else
 					{
 						logDemo("FaceDeviceDeinitialize(): Exception.");
@@ -2104,9 +2157,11 @@ public class Demo
 			}
 		}
 		
-		final Future<ServiceResponse<DuplicatedFingerprintsResponse>> future = fingerprintUtilitiesService.findDuplicatedFingerprints(gallery, probes);
+		final Future<ServiceResponse<DuplicatedFingerprintsResponse>> future =
+											fingerprintUtilitiesService.findDuplicatedFingerprints(gallery, probes);
 		final JLabel lblStatus = new JLabel("Initializing the Fingerprint Device...");
-		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus, new ActionListener()
+		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
+		                                            new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -2115,7 +2170,8 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<DuplicatedFingerprintsResponse>, String> swingWorker = new SwingWorker<ServiceResponse<DuplicatedFingerprintsResponse>, String>()
+		final SwingWorker<ServiceResponse<DuplicatedFingerprintsResponse>, String> swingWorker =
+											new SwingWorker<ServiceResponse<DuplicatedFingerprintsResponse>, String>()
 		{
 			@Override
 			protected ServiceResponse<DuplicatedFingerprintsResponse> doInBackground() throws Exception
@@ -2145,7 +2201,8 @@ public class Demo
 						if(result.getReturnCode() == DuplicatedFingerprintsResponse.SuccessCodes.SUCCESS)
 						{
 							Map<Integer, Boolean> duplicatedFingers = result.getDuplicatedFingers();
-							logDemo("FingerprintFindDuplicates()'s response: SUCCESS - duplicatedFingers = " + duplicatedFingers);
+							logDemo("FingerprintFindDuplicates()'s response: SUCCESS - duplicatedFingers = " +
+							        duplicatedFingers);
 						}
 						else
 						{
@@ -2156,7 +2213,8 @@ public class Demo
 							
 							switch(result.getReturnCode())
 							{
-								case DuplicatedFingerprintsResponse.FailureCodes.FAILED_TO_FIND_DUPLICATES: sb.append("(FAILED_TO_FIND_DUPLICATES)."); break;
+								case DuplicatedFingerprintsResponse.FailureCodes.FAILED_TO_FIND_DUPLICATES:
+																	sb.append("(FAILED_TO_FIND_DUPLICATES)."); break;
 								default: sb.append("(UNKNOWN)."); break;
 							}
 							
@@ -2165,7 +2223,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FingerprintFindDuplicates() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FingerprintFindDuplicates() failed to receive a response. errorCode = " +
+						        serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -2176,7 +2235,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FingerprintFindDuplicates() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FingerprintFindDuplicates(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+													"FingerprintFindDuplicates(): Websocket is not connected.");
 					else
 					{
 						logDemo("FingerprintFindDuplicates(): Exception.");
@@ -2210,14 +2270,16 @@ public class Demo
 		});
 		dialog.setVisible(true);
 		
-		logDemo("Finding duplicated for gallery = " + gallery.keySet() + " and probes = " + probes.keySet() + "...");
+		logDemo("Finding duplicated for gallery = " + gallery.keySet() + " and probes = " +
+		        probes.keySet() + "...");
 	}
 	
 	private static void onFingerprintDeviceInitialize(int position)
 	{
 		final Future<ServiceResponse<InitializeResponse>> future = fingerprintService.initialize(position);
 		final JLabel lblStatus = new JLabel("Initializing the Fingerprint Device...");
-		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus, new ActionListener()
+		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
+		                                            new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -2226,7 +2288,8 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker = new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
 		{
 			@Override
 			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
@@ -2256,11 +2319,14 @@ public class Demo
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
 							fingerprintDeviceName = result.getCurrentDeviceName();
-							logDemo("FingerprintDeviceInitialize()'s response: SUCCESS - fingerprintDeviceName = " + fingerprintDeviceName);
+							logDemo(
+								"FingerprintDeviceInitialize()'s response: SUCCESS - fingerprintDeviceName = " +
+								fingerprintDeviceName);
 						}
 						else
 						{
-							StringBuilder sb = new StringBuilder("FingerprintDeviceInitialize()'s response: FAILURE - ");
+							StringBuilder sb = new StringBuilder(
+															"FingerprintDeviceInitialize()'s response: FAILURE - ");
 							sb.append("code = ");
 							sb.append(result.getReturnCode());
 							sb.append(" ");
@@ -2268,7 +2334,8 @@ public class Demo
 							switch(result.getReturnCode())
 							{
 								case InitializeResponse.FailureCodes.DEVICE_BUSY: sb.append("(DEVICE_BUSY)."); break;
-								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED: sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
+																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION: sb.append("(EXCEPTION)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION2: sb.append("(EXCEPTION2)."); break;
 								default: sb.append("(UNKNOWN)."); break;
@@ -2279,7 +2346,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FingerprintDeviceInitialize() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FingerprintDeviceInitialize() failed to receive a response. errorCode = " +
+								                                                    serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -2290,7 +2358,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FingerprintDeviceInitialize() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FingerprintDeviceInitialize(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+												"FingerprintDeviceInitialize(): Websocket is not connected.");
 					else
 					{
 						logDemo("FingerprintDeviceInitialize(): Exception.");
@@ -2325,7 +2394,8 @@ public class Demo
 		dialog.setVisible(true);
 	}
 	
-	private static void onFingerprintStartPreviewAndAutoCapture(final int position, final int expectedFingersCount, final List<Integer> missingFingers)
+	private static void onFingerprintStartPreviewAndAutoCapture(final int position, final int expectedFingersCount,
+                                                                final List<Integer> missingFingers)
 	{
 		new SwingWorker<ServiceResponse<CaptureFingerprintResponse>, LivePreviewingResponse>()
 		{
@@ -2333,7 +2403,8 @@ public class Demo
 			protected ServiceResponse<CaptureFingerprintResponse> doInBackground() throws Exception
 			{
 				currentFingerprintDeviceCapturingPosition = position;
-				ResponseProcessor<LivePreviewingResponse> responseProcessor = new ResponseProcessor<LivePreviewingResponse>()
+				ResponseProcessor<LivePreviewingResponse> responseProcessor =
+																	new ResponseProcessor<LivePreviewingResponse>()
 				{
 					@Override
 					public void processResponse(LivePreviewingResponse response)
@@ -2341,14 +2412,18 @@ public class Demo
 						publish(response);
 					}
 				};
-				Future<ServiceResponse<CaptureFingerprintResponse>> future = fingerprintService.startPreviewAndAutoCapture(fingerprintDeviceName, position, expectedFingersCount, missingFingers, responseProcessor);
+				Future<ServiceResponse<CaptureFingerprintResponse>> future =
+						fingerprintService.startPreviewAndAutoCapture(fingerprintDeviceName, position,
+						                                              expectedFingersCount, missingFingers,
+						                                              responseProcessor);
 				return future.get();
 			}
 			
 			@Override
 			protected void process(List<LivePreviewingResponse> chunks)
 			{
-				for(LivePreviewingResponse chunk : chunks) attachImage(lblFingerprintPreview, chunk.getPreviewImage(), null, null);
+				for(LivePreviewingResponse chunk : chunks) attachImage(lblFingerprintPreview, chunk.getPreviewImage(),
+				                                                       null, null);
 			}
 			
 			@Override
@@ -2366,9 +2441,14 @@ public class Demo
 						
 						if(result.getReturnCode() == CaptureFingerprintResponse.SuccessCodes.SUCCESS)
 						{
-							logDemo("FingerprintStartPreviewAndAutoCapture()'s response: SUCCESS - CaptureFingerprintResponse = " + (cboTrimBase64Text.isSelected() ? result.toShortString() : result));
+							logDemo(
+								"FingerprintStartPreviewAndAutoCapture()'s response: SUCCESS - " +
+								"CaptureFingerprintResponse = " +
+								(cboTrimBase64Text.isSelected() ? result.toShortString() : result));
 							
-							attachImage(lblFingerprintCaptured, result.getCapturedImage(), RUNTIME_ID + "/", "full_fingers_" + result.getPosition() + "_" + result.getTransactionId() + ".jpg");
+							attachImage(lblFingerprintCaptured, result.getCapturedImage(),
+							            RUNTIME_ID + "/", "full_fingers_" +
+							            result.getPosition() + "_" + result.getTransactionId() + ".jpg");
 							txtIsWrongSlap.setText(String.valueOf(result.isWrongSlap()));
 							List<DMFingerData> fingerData = result.getFingerData();
 							
@@ -2376,97 +2456,148 @@ public class Demo
 							{
 								for(DMFingerData dmFingerData : fingerData)
 								{
-									segmentedFingerTemplateMap.put(dmFingerData.getPosition(), dmFingerData.getTemplate());
+									segmentedFingerTemplateMap.put(dmFingerData.getPosition(),
+									                               dmFingerData.getTemplate());
 									
 									switch(dmFingerData.getPosition())
 									{
 										case 1:
 										{
-											attachImage(lblRightThumb, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblRightThumb, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqRightThuumb.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountRightThuumb.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityRightThuumb.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountRightThuumb.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityRightThuumb.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnThumbsFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 2:
 										{
-											attachImage(lblRightIndex, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblRightIndex, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqRightIndex.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountRightIndex.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityRightIndex.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountRightIndex.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityRightIndex.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnRightSlapFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 3:
 										{
-											attachImage(lblRightMiddle, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblRightMiddle, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqRightMiddle.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountRightMiddle.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityRightMiddle.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountRightMiddle.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityRightMiddle.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnRightSlapFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 4:
 										{
-											attachImage(lblRightRing, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblRightRing, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqRightRing.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountRightRing.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityRightRing.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountRightRing.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityRightRing.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnRightSlapFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 5:
 										{
-											attachImage(lblRightLittle, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblRightLittle, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqRightLittle.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountRightLittle.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityRightLittle.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountRightLittle.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityRightLittle.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnRightSlapFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 6:
 										{
-											attachImage(lblLeftThumb, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblLeftThumb, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqLeftThuumb.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountLeftThuumb.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityLeftThuumb.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountLeftThuumb.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityLeftThuumb.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnThumbsFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 7:
 										{
-											attachImage(lblLeftIndex, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblLeftIndex, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqLeftIndex.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountLeftIndex.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityLeftIndex.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountLeftIndex.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityLeftIndex.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnLeftSlapFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 8:
 										{
-											attachImage(lblLeftMiddle, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblLeftMiddle, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqLeftMiddle.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountLeftMiddle.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityLeftMiddle.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountLeftMiddle.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityLeftMiddle.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnLeftSlapFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 9:
 										{
-											attachImage(lblLeftRing, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblLeftRing, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqLeftRing.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountLeftRing.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityLeftRing.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountLeftRing.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityLeftRing.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnLeftSlapFindDuplicates.setEnabled(true);
 											break;
 										}
 										case 10:
 										{
-											attachImage(lblLeftLittle, dmFingerData.getFinger(), RUNTIME_ID + "/", "segmented_finger_" + dmFingerData.getPosition() + "_" + result.getTransactionId() + ".jpg");
+											attachImage(lblLeftLittle, dmFingerData.getFinger(),
+											            RUNTIME_ID + "/", "segmented_finger_" +
+											            dmFingerData.getPosition() + "_" + result.getTransactionId() +
+											            ".jpg");
 											txtNfiqLeftLittle.setText(String.valueOf(dmFingerData.getNfiqQuality()));
-											txtMinutiaeCountLeftLittle.setText(String.valueOf(dmFingerData.getMinutiaeCount()));
-											txtIntensityLeftLittle.setText(String.valueOf(dmFingerData.getIntensity()) + "%");
+											txtMinutiaeCountLeftLittle.setText(
+																	String.valueOf(dmFingerData.getMinutiaeCount()));
+											txtIntensityLeftLittle.setText(
+																	String.valueOf(dmFingerData.getIntensity()) + "%");
 											btnLeftSlapFindDuplicates.setEnabled(true);
 											break;
 										}
@@ -2476,20 +2607,28 @@ public class Demo
 						}
 						else
 						{
-							StringBuilder sb = new StringBuilder("FingerprintStartPreviewAndAutoCapture()'s response: FAILURE - ");
+							StringBuilder sb = new StringBuilder(
+													"FingerprintStartPreviewAndAutoCapture()'s response: FAILURE - ");
 							sb.append("code = ");
 							sb.append(result.getReturnCode());
 							sb.append(" ");
 							
 							switch(result.getReturnCode())
 							{
-								case CaptureFingerprintResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED: sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
-								case CaptureFingerprintResponse.FailureCodes.DEVICE_BUSY: sb.append("(DEVICE_BUSY)."); break;
-								case CaptureFingerprintResponse.FailureCodes.WRONG_NUMBER_OF_EXPECTED_FINGERS: sb.append("(WRONG_NUMBER_OF_EXPECTED_FINGERS)."); break;
-								case CaptureFingerprintResponse.FailureCodes.SEGMENTATION_FAILED: sb.append("(SEGMENTATION_FAILED)."); break;
-								case CaptureFingerprintResponse.FailureCodes.WSQ_CONVERSION_FAILED: sb.append("(WSQ_CONVERSION_FAILED)."); break;
-								case CaptureFingerprintResponse.FailureCodes.FAILED_TO_CAPTURE_FINAL_IMAGE: sb.append("(FAILED_TO_CAPTURE_FINAL_IMAGE)."); break;
-								case CaptureFingerprintResponse.FailureCodes.EXCEPTION_IN_FINGER_HANDLER_CAPTURE: sb.append("(EXCEPTION_IN_FINGER_HANDLER_CAPTURE)."); break;
+								case CaptureFingerprintResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
+																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case CaptureFingerprintResponse.FailureCodes.DEVICE_BUSY:
+																					sb.append("(DEVICE_BUSY)."); break;
+								case CaptureFingerprintResponse.FailureCodes.WRONG_NUMBER_OF_EXPECTED_FINGERS:
+																sb.append("(WRONG_NUMBER_OF_EXPECTED_FINGERS)."); break;
+								case CaptureFingerprintResponse.FailureCodes.SEGMENTATION_FAILED:
+																			sb.append("(SEGMENTATION_FAILED)."); break;
+								case CaptureFingerprintResponse.FailureCodes.WSQ_CONVERSION_FAILED:
+																		sb.append("(WSQ_CONVERSION_FAILED)."); break;
+								case CaptureFingerprintResponse.FailureCodes.FAILED_TO_CAPTURE_FINAL_IMAGE:
+																sb.append("(FAILED_TO_CAPTURE_FINAL_IMAGE)."); break;
+								case CaptureFingerprintResponse.FailureCodes.EXCEPTION_IN_FINGER_HANDLER_CAPTURE:
+															sb.append("(EXCEPTION_IN_FINGER_HANDLER_CAPTURE)."); break;
 								default: sb.append("(UNKNOWN)."); break;
 							}
 							
@@ -2498,7 +2637,9 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FingerprintStartPreviewAndAutoCapture() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo(
+							"FingerprintStartPreviewAndAutoCapture() failed to receive a response. errorCode = " +
+							serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -2508,8 +2649,10 @@ public class Demo
 					Throwable cause = e.getCause();
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
-					if(cause instanceof TimeoutException) logDemo("FingerprintStartPreviewAndAutoCapture() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FingerprintStartPreviewAndAutoCapture(): Websocket is not connected.");
+					if(cause instanceof TimeoutException) logDemo(
+															"FingerprintStartPreviewAndAutoCapture() timeout.");
+					else if(cause instanceof NotConnectedException) logDemo(
+										"FingerprintStartPreviewAndAutoCapture(): Websocket is not connected.");
 					else
 					{
 						logDemo("FingerprintStartPreviewAndAutoCapture(): Exception.");
@@ -2533,7 +2676,8 @@ public class Demo
 			@Override
 			protected ServiceResponse<FingerprintStopPreviewResponse> doInBackground() throws Exception
 			{
-				Future<ServiceResponse<FingerprintStopPreviewResponse>> future = fingerprintService.cancelCapture(fingerprintDeviceName, currentFingerprintDeviceCapturingPosition);
+				Future<ServiceResponse<FingerprintStopPreviewResponse>> future =
+					fingerprintService.cancelCapture(fingerprintDeviceName, currentFingerprintDeviceCapturingPosition);
 				return future.get();
 			}
 			
@@ -2563,9 +2707,13 @@ public class Demo
 							
 							switch(result.getReturnCode())
 							{
-								case FingerprintStopPreviewResponse.FailureCodes.NOT_CAPTURING_NOW: sb.append("(NOT_CAPTURING_NOW)."); break;
-								case FingerprintStopPreviewResponse.FailureCodes.EXCEPTION_IN_FINGER_HANDLER_CANCEL_CAPTURE: sb.append("(EXCEPTION_IN_FINGER_HANDLER_CANCEL_CAPTURE)."); break;
-								case FingerprintStopPreviewResponse.FailureCodes.EXCEPTION: sb.append("(EXCEPTION)."); break;
+								case FingerprintStopPreviewResponse.FailureCodes.NOT_CAPTURING_NOW:
+																			sb.append("(NOT_CAPTURING_NOW)."); break;
+								case FingerprintStopPreviewResponse.FailureCodes.
+													EXCEPTION_IN_FINGER_HANDLER_CANCEL_CAPTURE:
+													sb.append("(EXCEPTION_IN_FINGER_HANDLER_CANCEL_CAPTURE)."); break;
+								case FingerprintStopPreviewResponse.FailureCodes.EXCEPTION:
+																					sb.append("(EXCEPTION)."); break;
 								default: sb.append("(UNKNOWN)."); break;
 							}
 							
@@ -2574,7 +2722,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FingerprintStopPreview() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FingerprintStopPreview() failed to receive a response. errorCode = " +
+		                        serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -2585,7 +2734,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FingerprintStopPreview() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FingerprintStopPreview(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+													"FingerprintStopPreview(): Websocket is not connected.");
 					else
 					{
 						logDemo("FingerprintStopPreview(): Exception.");
@@ -2602,9 +2752,11 @@ public class Demo
 	
 	private static void onDeinitializeFingerprintDevice(int position)
 	{
-		final Future<ServiceResponse<InitializeResponse>> future = fingerprintService.deinitialize(position, fingerprintDeviceName);
+		final Future<ServiceResponse<InitializeResponse>> future = fingerprintService.deinitialize(position,
+	                                                                                           fingerprintDeviceName);
 		final JLabel lblStatus = new JLabel("Deinitializing the Fingerprint Device...");
-		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus, new ActionListener()
+		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
+		                                            new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -2613,7 +2765,8 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker = new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
 		{
 			@Override
 			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
@@ -2643,11 +2796,14 @@ public class Demo
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
 							fingerprintDeviceName = result.getCurrentDeviceName();
-							logDemo("FingerprintDeviceDeinitialize()'s response: SUCCESS - fingerprintDeviceName = " + fingerprintDeviceName);
+							logDemo(
+								"FingerprintDeviceDeinitialize()'s response: SUCCESS - fingerprintDeviceName = " +
+								fingerprintDeviceName);
 						}
 						else
 						{
-							StringBuilder sb = new StringBuilder("FingerprintDeviceDeinitialize()'s response: FAILURE - ");
+							StringBuilder sb = new StringBuilder(
+															"FingerprintDeviceDeinitialize()'s response: FAILURE - ");
 							sb.append("code = ");
 							sb.append(result.getReturnCode());
 							sb.append(" ");
@@ -2655,7 +2811,8 @@ public class Demo
 							switch(result.getReturnCode())
 							{
 								case InitializeResponse.FailureCodes.DEVICE_BUSY: sb.append("(DEVICE_BUSY)."); break;
-								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED: sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
+																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION: sb.append("(EXCEPTION)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION2: sb.append("(EXCEPTION2)."); break;
 								default: sb.append("(UNKNOWN)."); break;
@@ -2666,7 +2823,8 @@ public class Demo
 					}
 					else
 					{
-						logDemo("FingerprintDeviceDeinitialize() failed to receive a response. errorCode = " + serviceResponse.getErrorCode());
+						logDemo("FingerprintDeviceDeinitialize() failed to receive a response. errorCode = " +
+						        serviceResponse.getErrorCode());
 						Exception exception = serviceResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
@@ -2677,7 +2835,8 @@ public class Demo
 					if(cause instanceof ExecutionException) cause = cause.getCause();
 					
 					if(cause instanceof TimeoutException) logDemo("FingerprintDeviceDeinitialize() timeout.");
-					else if(cause instanceof NotConnectedException) logDemo("FingerprintDeviceDeinitialize(): Websocket is not connected.");
+					else if(cause instanceof NotConnectedException) logDemo(
+											"FingerprintDeviceDeinitialize(): Websocket is not connected.");
 					else
 					{
 						logDemo("FingerprintDeviceDeinitialize(): Exception.");
@@ -2730,7 +2889,8 @@ public class Demo
 			
 			if(directoryName != null && fileName != null)
 			{
-				File directory = new File("C:/bio/user-apps/" + System.getProperty("user.name") + "/biokit-library/demo/" + directoryName);
+				File directory = new File("C:/bio/user-apps/" + System.getProperty("user.name") +
+						                                                    "/biokit-library/demo/" + directoryName);
 				directory.mkdirs();
 				File file = new File(directory, fileName);
 				
@@ -2744,7 +2904,8 @@ public class Demo
 		}
 	}
 	
-	private static JDialog createProgressDialog(Window owner, String dialogTitle, JLabel lblStatus, ActionListener onCancelButtonClicked)
+	private static JDialog createProgressDialog(Window owner, String dialogTitle, JLabel lblStatus,
+                                                ActionListener onCancelButtonClicked)
 	{
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setIndeterminate(true);

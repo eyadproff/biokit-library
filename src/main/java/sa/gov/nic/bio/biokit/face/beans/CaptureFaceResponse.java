@@ -18,7 +18,7 @@ public class CaptureFaceResponse
 	public static class IcaoCodes
 	{
 		public static final String SUCCESS = "SUCCESS";
-		public static final String NO_FACE_DETECTED = "NO_FACE_DETECTED";
+		public static final String FACE_NOT_DETECTED = "FACE_NOT_DETECTED";
 		public static final String MULTIPLE_FACES_DETECTED = "MULTIPLE_FACES_DETECTED";
 		public static final String YAW_ERROR = "YAW_ERROR";
 		public static final String PITCH_ERROR = "PITCH_ERROR";

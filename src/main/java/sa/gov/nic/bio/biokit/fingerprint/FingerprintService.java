@@ -15,6 +15,8 @@ public interface FingerprintService extends DeviceService
 {
 	Future<ServiceResponse<InitializeResponse>> initialize(int position);
 	Future<ServiceResponse<InitializeResponse>> deinitialize(final int position, String currentDeviceName);
-	Future<ServiceResponse<CaptureFingerprintResponse>> startPreviewAndAutoCapture(String currentDeviceName, int position, int expectedFingersCount, List<Integer> missingFingers, ResponseProcessor<LivePreviewingResponse> responseProcessor);
+	Future<ServiceResponse<CaptureFingerprintResponse>> startPreviewAndAutoCapture(String currentDeviceName,
+                                               int position, int expectedFingersCount, List<Integer> missingFingers,
+                                               ResponseProcessor<LivePreviewingResponse> responseProcessor);
 	Future<ServiceResponse<FingerprintStopPreviewResponse>> cancelCapture(String currentDeviceName, int position);
 }

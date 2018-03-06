@@ -82,13 +82,21 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     {
         if(!isConnected()) throw new NotConnectedException();
     
+        for(Iterator<AsyncConsumer> iterator = consumers.iterator(); iterator.hasNext();)
+        {
+            AsyncConsumer consumer = iterator.next();
+            consumer.cancel();
+            iterator.remove();
+        }
+    
         try
         {
             session.close();
         }
         catch(IOException e)
         {
-            throw new ConnectionException("Failure occurs on closing the connection with the websocket server: " + serverUrl, e);
+            throw new ConnectionException("Failure occurs on closing the connection with the websocket server: " +
+                                          serverUrl, e);
         }
         finally
         {
@@ -132,7 +140,8 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         CloseReason.CloseCode closeCode = closeReason.getCloseCode();
         String reasonPhrase = closeReason.getReasonPhrase();
     
-        LOGGER.info("WebsocketClient.onClose(): closeCode = " + closeCode + (reasonPhrase != null && !reasonPhrase.isEmpty() ? ", reasonPhrase = " + reasonPhrase : ""));
+        LOGGER.info("WebsocketClient.onClose(): closeCode = " + closeCode + (reasonPhrase != null &&
+                                                !reasonPhrase.isEmpty() ? ", reasonPhrase = " + reasonPhrase : ""));
         
         this.session = null;
         closureListener.onClose(closeReason);
@@ -143,7 +152,7 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     {
         if(websocketLogger != null) websocketLogger.logError(t);
         
-        String errorCode = "L0001-00001";
+        String errorCode = WebsocketErrorCodes.L0001_00001.getCode();
         
         if(t instanceof Exception) publishFailureResponse(errorCode, (Exception) t);
         else t.printStackTrace();
@@ -171,12 +180,12 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         }
         catch(JsonMappingException e)
         {
-            String errorCode = "L0001-00002";
+            String errorCode = WebsocketErrorCodes.L0001_00002.getCode();
             publishFailureResponse(errorCode, e);
         }
         catch(Exception e)
         {
-            String errorCode = "L0001-00003";
+            String errorCode = WebsocketErrorCodes.L0001_00003.getCode();
             publishFailureResponse(errorCode, e);
         }
     }

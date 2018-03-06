@@ -37,7 +37,8 @@ public class ServiceResponse<T>
     
     public static <T1, T2> ServiceResponse<T1> cast(ServiceResponse<T2> input, TypeCaster<T1, T2> typeCaster)
     {
-        return new ServiceResponse<T1>(input.success, typeCaster != null ? typeCaster.cast(input.result) : null, input.errorCode, input.exception);
+        return new ServiceResponse<T1>(input.success, typeCaster != null ? typeCaster.cast(input.result) : null,
+                                       input.errorCode, input.exception);
     }
 
     @Override

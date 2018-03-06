@@ -47,9 +47,10 @@ public class DMFingerData
 	
 	public String toShortString()
 	{
-		return "DMFingerData{" + "minutiaeCount=" + minutiaeCount + ", nfiqQuality=" + nfiqQuality + ", finger=isNull?'" +
-				(finger == null) + '\'' + ", position=" + position + ", intensity=" + intensity + ", roundingBox='" +
-				roundingBox + '\'' + ", duplicate=" + duplicate + ", template=isNull?'" + (template == null) + '\'' + '}';
+		return "DMFingerData{" + "minutiaeCount=" + minutiaeCount + ", nfiqQuality=" + nfiqQuality +
+			   ", finger=isNull?'" + (finger == null) + '\'' + ", position=" + position + ", intensity=" + intensity +
+			   ", roundingBox='" + roundingBox + '\'' + ", duplicate=" + duplicate + ", template=isNull?'" +
+			   (template == null) + '\'' + '}';
 	}
 	
 	public static String shortenDMFingerDataList(List<DMFingerData> list)
