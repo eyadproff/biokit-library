@@ -82,13 +82,6 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     {
         if(!isConnected()) throw new NotConnectedException();
     
-        for(Iterator<AsyncConsumer> iterator = consumers.iterator(); iterator.hasNext();)
-        {
-            AsyncConsumer consumer = iterator.next();
-            consumer.cancel();
-            iterator.remove();
-        }
-    
         try
         {
             session.close();
@@ -144,6 +137,14 @@ public class WebsocketClient extends AsyncClientProxy<Message>
                                                 !reasonPhrase.isEmpty() ? ", reasonPhrase = " + reasonPhrase : ""));
         
         this.session = null;
+    
+        for(Iterator<AsyncConsumer> iterator = consumers.iterator(); iterator.hasNext();)
+        {
+            AsyncConsumer consumer = iterator.next();
+            consumer.cancel();
+            iterator.remove();
+        }
+        
         closureListener.onClose(closeReason);
     }
 
