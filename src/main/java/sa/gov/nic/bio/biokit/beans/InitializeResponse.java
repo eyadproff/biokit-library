@@ -13,6 +13,7 @@ public class InitializeResponse
 	{
 		public static final int DEVICE_BUSY = 106;
 		public static final int DEVICE_NOT_FOUND_OR_UNPLUGGED = 105;
+		public static final int DRIVER_NOT_INSTALLED = 116;
 		public static final int EXCEPTION = -1005;
 		public static final int EXCEPTION2 = -2;
 	}

@@ -31,6 +31,7 @@ public class Message implements Serializable
 	private boolean isWrongSlap;
 	private Map<Integer, Boolean> duplicateList;
 	private String currentDeviceName;
+	private boolean noTimeout;
 	
 	public String getType(){return type;}
 	public void setType(String type){this.type = type;}
@@ -108,20 +109,23 @@ public class Message implements Serializable
 	public String getCurrentDeviceName(){return currentDeviceName;}
 	public void setCurrentDeviceName(String currentDeviceName){this.currentDeviceName = currentDeviceName;}
 	
+	public boolean isNoTimeout(){return noTimeout;}
+	public void setNoTimeout(boolean noTimeout){this.noTimeout = noTimeout;}
+	
 	@Override
 	public String toString()
 	{
 		return "Message{" + "type='" + type + '\'' + ", position=" + position + ", operation='" + operation + '\'' +
-			   ", expectedFingersCount='" + expectedFingersCount + '\'' + ", needIcaoCropping=" + needIcaoCropping +
-			   ", initDevicesList=" + initDevicesList + ", galleryFingers=" + galleryFingers + ", probeFingers=" +
-			   probeFingers + ", transactionId='" + transactionId + '\'' + ", segmentationRequired=" +
-			   segmentationRequired + ", wsqRequired=" + wsqRequired + ", missingFingersList=" + missingFingersList +
-			   ", finalImage='" + finalImage + '\'' + ", previewImage='" + previewImage + '\'' + ", finalWSQImage='" +
-			   finalWSQImage + '\'' + ", icaoImage='" + icaoImage + '\'' + ", status='" + status + '\'' +
-			   ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", icaoErrorMessage='" +
-			   icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" + dmSegmentedFingers +
-			   ", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList + ", currentDeviceName='"
-			   + currentDeviceName + '\'' + '}';
+				", expectedFingersCount='" + expectedFingersCount + '\'' + ", needIcaoCropping=" + needIcaoCropping +
+				", initDevicesList=" + initDevicesList + ", galleryFingers=" + galleryFingers + ", probeFingers=" +
+				probeFingers + ", transactionId='" + transactionId + '\'' + ", segmentationRequired=" +
+				segmentationRequired + ", wsqRequired=" + wsqRequired + ", missingFingersList=" + missingFingersList +
+				", finalImage='" + finalImage + '\'' + ", previewImage='" + previewImage + '\'' + ", finalWSQImage='" +
+				finalWSQImage + '\'' + ", icaoImage='" + icaoImage + '\'' + ", status='" + status + '\'' +
+				", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", icaoErrorMessage='" +
+				icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" + dmSegmentedFingers +
+				", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList + ", currentDeviceName='" +
+				currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '}';
 	}
 	
 	public String toShortString()
@@ -138,6 +142,6 @@ public class Message implements Serializable
 				status + '\'' + ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' +
 				", icaoErrorMessage='" + icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" +
 				dmSegmentedFingers + ", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList +
-				", currentDeviceName='" + currentDeviceName + '\'' + '}';
+				", currentDeviceName='" + currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '}';
 	}
 }

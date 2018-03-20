@@ -2336,6 +2336,8 @@ public class Demo
 								case InitializeResponse.FailureCodes.DEVICE_BUSY: sb.append("(DEVICE_BUSY)."); break;
 								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
 																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case InitializeResponse.FailureCodes.DRIVER_NOT_INSTALLED:
+																sb.append("(DRIVER_NOT_INSTALLED)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION: sb.append("(EXCEPTION)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION2: sb.append("(EXCEPTION2)."); break;
 								default: sb.append("(UNKNOWN)."); break;
@@ -2415,7 +2417,7 @@ public class Demo
 				Future<ServiceResponse<CaptureFingerprintResponse>> future =
 						fingerprintService.startPreviewAndAutoCapture(fingerprintDeviceName, position,
 						                                              expectedFingersCount, missingFingers,
-						                                              responseProcessor);
+						                                              true, responseProcessor);
 				return future.get();
 			}
 			
@@ -2813,6 +2815,8 @@ public class Demo
 								case InitializeResponse.FailureCodes.DEVICE_BUSY: sb.append("(DEVICE_BUSY)."); break;
 								case InitializeResponse.FailureCodes.DEVICE_NOT_FOUND_OR_UNPLUGGED:
 																sb.append("(DEVICE_NOT_FOUND_OR_UNPLUGGED)."); break;
+								case InitializeResponse.FailureCodes.DRIVER_NOT_INSTALLED:
+																sb.append("(DRIVER_NOT_INSTALLED)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION: sb.append("(EXCEPTION)."); break;
 								case InitializeResponse.FailureCodes.EXCEPTION2: sb.append("(EXCEPTION2)."); break;
 								default: sb.append("(UNKNOWN)."); break;
