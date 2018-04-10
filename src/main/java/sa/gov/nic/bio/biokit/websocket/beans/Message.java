@@ -32,6 +32,7 @@ public class Message implements Serializable
 	private Map<Integer, Boolean> duplicateList;
 	private String currentDeviceName;
 	private boolean noTimeout;
+	private boolean segmentedWsqRequired;
 	
 	public String getType(){return type;}
 	public void setType(String type){this.type = type;}
@@ -112,6 +113,9 @@ public class Message implements Serializable
 	public boolean isNoTimeout(){return noTimeout;}
 	public void setNoTimeout(boolean noTimeout){this.noTimeout = noTimeout;}
 	
+	public boolean isSegmentedWsqRequired(){return segmentedWsqRequired;}
+	public void setSegmentedWsqRequired(boolean segmentedWsqRequired){this.segmentedWsqRequired = segmentedWsqRequired;}
+	
 	@Override
 	public String toString()
 	{
@@ -125,7 +129,8 @@ public class Message implements Serializable
 				", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", icaoErrorMessage='" +
 				icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" + dmSegmentedFingers +
 				", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList + ", currentDeviceName='" +
-				currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '}';
+				currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '\'' + ", segmentedWsqRequired=" +
+				segmentedWsqRequired + '}';
 	}
 	
 	public String toShortString()
@@ -142,6 +147,7 @@ public class Message implements Serializable
 				status + '\'' + ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' +
 				", icaoErrorMessage='" + icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" +
 				dmSegmentedFingers + ", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList +
-				", currentDeviceName='" + currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '}';
+				", currentDeviceName='" + currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '\'' +
+				", segmentedWsqRequired=" + segmentedWsqRequired + '}';
 	}
 }

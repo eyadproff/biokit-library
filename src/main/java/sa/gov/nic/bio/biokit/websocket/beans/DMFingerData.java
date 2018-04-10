@@ -12,6 +12,7 @@ public class DMFingerData
 	private String roundingBox;
 	private boolean duplicate;
 	private String template;
+	private String fingerWsqImage;
 	
 	public int getMinutiaeCount(){return minutiaeCount;}
 	public void setMinutiaeCount(int minutiaeCount){this.minutiaeCount = minutiaeCount;}
@@ -37,12 +38,16 @@ public class DMFingerData
 	public String getTemplate(){return template;}
 	public void setTemplate(String template){this.template = template;}
 	
+	public String getFingerWsqImage(){return fingerWsqImage;}
+	public void setFingerWsqImage(String fingerWsqImage){this.fingerWsqImage = fingerWsqImage;}
+	
 	@Override
 	public String toString()
 	{
 		return "DMFingerData{" + "minutiaeCount=" + minutiaeCount + ", nfiqQuality=" + nfiqQuality + ", finger='" +
 				finger + '\'' + ", position=" + position + ", intensity=" + intensity + ", roundingBox='" +
-				roundingBox + '\'' + ", duplicate=" + duplicate + ", template='" + template + '\'' + '}';
+				roundingBox + '\'' + ", duplicate=" + duplicate + ", template='" + template + '\'' +
+				", fingerWsqImage='" + fingerWsqImage + '\'' + '}';
 	}
 	
 	public String toShortString()
@@ -50,7 +55,7 @@ public class DMFingerData
 		return "DMFingerData{" + "minutiaeCount=" + minutiaeCount + ", nfiqQuality=" + nfiqQuality +
 			   ", finger=isNull?'" + (finger == null) + '\'' + ", position=" + position + ", intensity=" + intensity +
 			   ", roundingBox='" + roundingBox + '\'' + ", duplicate=" + duplicate + ", template=isNull?'" +
-			   (template == null) + '\'' + '}';
+			   (template == null) + '\'' + ", fingerWsqImage=isNull?'" + (fingerWsqImage == null) + '\'' + '}';
 	}
 	
 	public static String shortenDMFingerDataList(List<DMFingerData> list)

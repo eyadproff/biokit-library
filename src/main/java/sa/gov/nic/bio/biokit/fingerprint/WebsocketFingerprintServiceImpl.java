@@ -218,7 +218,7 @@ public class WebsocketFingerprintServiceImpl implements FingerprintService
     @Override
     public Future<ServiceResponse<CaptureFingerprintResponse>> startPreviewAndAutoCapture(
     		final String currentDeviceName, final int position, final int expectedFingersCount,
-		    final List<Integer> missingFingers, final boolean noTimeout,
+		    final List<Integer> missingFingers, final boolean noTimeout, final boolean segmentedWsqRequired,
 		    final ResponseProcessor<LivePreviewingResponse> responseProcessor)
     {
 	    Callable<ServiceResponse<CaptureFingerprintResponse>> callable =
@@ -241,6 +241,7 @@ public class WebsocketFingerprintServiceImpl implements FingerprintService
 			    message.setMissingFingersList(missingFingers);
 			    message.setCurrentDeviceName(currentDeviceName);
 			    message.setNoTimeout(noTimeout);
+			    message.setSegmentationRequired(segmentedWsqRequired);
 			
 			    AsyncConsumer consumer = new AsyncConsumer();
 			    consumer.setTransactionId(transactionId);
