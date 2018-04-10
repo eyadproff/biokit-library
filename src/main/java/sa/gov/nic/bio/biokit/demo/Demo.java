@@ -2417,7 +2417,8 @@ public class Demo
 				Future<ServiceResponse<CaptureFingerprintResponse>> future =
 						fingerprintService.startPreviewAndAutoCapture(fingerprintDeviceName, position,
 						                                              expectedFingersCount, missingFingers,
-						                                              true, responseProcessor);
+						                                              true, true,
+						                                              responseProcessor);
 				return future.get();
 			}
 			
