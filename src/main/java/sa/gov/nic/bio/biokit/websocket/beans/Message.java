@@ -3,6 +3,7 @@ package sa.gov.nic.bio.biokit.websocket.beans;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Message implements Serializable
 {
@@ -33,6 +34,8 @@ public class Message implements Serializable
 	private String currentDeviceName;
 	private boolean noTimeout;
 	private boolean segmentedWsqRequired;
+	private Map<String,String> fingerDeviceStatus;
+	private Map<String,String> faceDeviceStatus;
 	
 	public String getType(){return type;}
 	public void setType(String type){this.type = type;}
@@ -116,6 +119,13 @@ public class Message implements Serializable
 	public boolean isSegmentedWsqRequired(){return segmentedWsqRequired;}
 	public void setSegmentedWsqRequired(boolean segmentedWsqRequired){this.segmentedWsqRequired = segmentedWsqRequired;}
 	
+	public Map<String, String> getFingerDeviceStatus(){return fingerDeviceStatus;}
+	public void setFingerDeviceStatus(Map<String, String> fingerDeviceStatus)
+																		{this.fingerDeviceStatus = fingerDeviceStatus;}
+	
+	public Map<String, String> getFaceDeviceStatus(){return faceDeviceStatus;}
+	public void setFaceDeviceStatus(Map<String, String> faceDeviceStatus){this.faceDeviceStatus = faceDeviceStatus;}
+	
 	@Override
 	public String toString()
 	{
@@ -130,7 +140,8 @@ public class Message implements Serializable
 				icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" + dmSegmentedFingers +
 				", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList + ", currentDeviceName='" +
 				currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '\'' + ", segmentedWsqRequired=" +
-				segmentedWsqRequired + '}';
+				segmentedWsqRequired  + '\'' + ", fingerDeviceStatus=" + fingerDeviceStatus  + '\'' +
+				", faceDeviceStatus=" + faceDeviceStatus + '}';
 	}
 	
 	public String toShortString()
