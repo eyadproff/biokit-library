@@ -111,7 +111,7 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         try
         {
             String json = jsonMapper.toJson(message);
-            session.getAsyncRemote().sendText(json);
+            session.getBasicRemote().sendText(json);
         }
         catch(Exception e)
         {

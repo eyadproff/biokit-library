@@ -9,6 +9,8 @@ public enum WebsocketCommand
     INITIALIZE_DEVICE("init_device"),
     DEINITIALIZE_DEVICE("deinitialize"),
     FIND_DUPLICATES("find_duplicate"),
+    GET_SEGMENTED_FINGERS("GET_SEGMENTED_FINGERS"),
+    CONVERT_WSQ_TO_IMAGE("CONVERT_WSQ_TO_IMAGE"),
     SHUTDOWN("shutdown"),
     UPDATER("update");
 

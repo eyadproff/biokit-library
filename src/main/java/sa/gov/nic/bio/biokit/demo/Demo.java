@@ -307,8 +307,6 @@ public class Demo
 			
 			    frame.setLocationRelativeTo(null);
 			    frame.setVisible(true);
-			
-			    System.out.println(frame.getSize());
 			    frame.setMinimumSize(frame.getSize());
 		    }
 	    });

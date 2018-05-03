@@ -241,7 +241,7 @@ public class WebsocketFingerprintServiceImpl implements FingerprintService
 			    message.setMissingFingersList(missingFingers);
 			    message.setCurrentDeviceName(currentDeviceName);
 			    message.setNoTimeout(noTimeout);
-			    message.setSegmentationRequired(segmentedWsqRequired);
+			    message.setSegmentedWsqRequired(segmentedWsqRequired);
 			
 			    AsyncConsumer consumer = new AsyncConsumer();
 			    consumer.setTransactionId(transactionId);

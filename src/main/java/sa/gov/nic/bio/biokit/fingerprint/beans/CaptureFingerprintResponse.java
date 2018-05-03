@@ -14,19 +14,24 @@ public class CaptureFingerprintResponse
 	
 	public static class FailureCodes
 	{
-		public static final int DEVICE_NOT_FOUND_OR_UNPLUGGED = -11;
+		public static final int EXCEPTION_WHILE_CAPTURING = -11;
+		public static final int DEVICE_NOT_FOUND_OR_UNPLUGGED = 105;
 		public static final int DEVICE_BUSY = 106;
 		public static final int WRONG_NUMBER_OF_EXPECTED_FINGERS = 108;
 		public static final int SEGMENTATION_FAILED = 114;
 		public static final int WSQ_CONVERSION_FAILED = 109;
 		public static final int FAILED_TO_CAPTURE_FINAL_IMAGE = 113;
 		public static final int EXCEPTION_IN_FINGER_HANDLER_CAPTURE = -1001;
+		public static final int POOR_IMAGE_QUALITY = 117;
+		public static final int SENSOR_IS_DIRTY = 118;
+		public static final int CAPTURE_TIMEOUT = 115;
 	}
 	
 	private String transactionId;
 	private int position;
     private int returnCode;
 	private String returnMessage;
+	private String capturedWsq;
 	private String capturedImage;
 	private boolean isWrongSlap;
 	private List<DMFingerData> fingerData;
@@ -41,6 +46,7 @@ public class CaptureFingerprintResponse
 			this.position = message.getPosition();
 			this.returnCode = message.getReturnCode();
 			this.returnMessage = message.getReturnMessage();
+			this.capturedWsq = message.getFinalWSQImage();
 			this.capturedImage = message.getFinalImage();
 			this.isWrongSlap = message.isWrongSlap();
 			this.fingerData = message.getDmSegmentedFingers();
@@ -59,6 +65,9 @@ public class CaptureFingerprintResponse
 	public String getReturnMessage(){return returnMessage;}
 	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
 	
+	public String getCapturedWsq(){return capturedWsq;}
+	public void setCapturedWsq(String capturedWsq){this.capturedWsq = capturedWsq;}
+	
 	public String getCapturedImage(){return capturedImage;}
 	public void setCapturedImage(String capturedImage){this.capturedImage = capturedImage;}
 	
@@ -72,15 +81,16 @@ public class CaptureFingerprintResponse
 	public String toString()
 	{
 		return "CaptureFingerprintResponse{" + "transactionId='" + transactionId + '\'' + ", position=" + position +
-			   ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", capturedImage='" +
-			   capturedImage + '\'' + ", isWrongSlap=" + isWrongSlap + ", fingerData=" + fingerData + '}';
+			   ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", capturedWsq='" +
+			   capturedWsq + '\'' + ", capturedImage='" + capturedImage + '\'' + ", isWrongSlap=" + isWrongSlap +
+			   ", fingerData=" + fingerData + '}';
 	}
 	
 	public String toShortString()
 	{
 		return "CaptureFingerprintResponse{" + "transactionId='" + transactionId + '\'' + ", position=" + position +
-			   ", returnMessage='" + returnMessage + '\'' + ", returnCode=" + returnCode + ", capturedImage='" +
-			   capturedImage + '\'' + ", isWrongSlap=" + isWrongSlap + ", fingerData=" +
-			   DMFingerData.shortenDMFingerDataList(fingerData) + '}';
+			   ", returnMessage='" + returnMessage + '\'' + ", returnCode=" + returnCode + ", capturedWsq='" +
+			   capturedWsq + '\'' + ", capturedImage='" + capturedImage + '\'' + ", isWrongSlap=" + isWrongSlap +
+			   ", fingerData=" + DMFingerData.shortenDMFingerDataList(fingerData) + '}';
 	}
 }

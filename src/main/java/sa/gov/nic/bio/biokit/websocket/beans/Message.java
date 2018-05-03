@@ -36,6 +36,8 @@ public class Message implements Serializable
 	private boolean segmentedWsqRequired;
 	private Map<String,String> fingerDeviceStatus;
 	private Map<String,String> faceDeviceStatus;
+	private String slapImageForSegmentation;
+	private String imageFormat;
 	
 	public String getType(){return type;}
 	public void setType(String type){this.type = type;}
@@ -126,39 +128,49 @@ public class Message implements Serializable
 	public Map<String, String> getFaceDeviceStatus(){return faceDeviceStatus;}
 	public void setFaceDeviceStatus(Map<String, String> faceDeviceStatus){this.faceDeviceStatus = faceDeviceStatus;}
 	
+	public String getSlapImageForSegmentation(){return slapImageForSegmentation;}
+	public void setSlapImageForSegmentation(String slapImageForSegmentation)
+															{this.slapImageForSegmentation = slapImageForSegmentation;}
+	
+	public String getImageFormat(){return imageFormat;}
+	public void setImageFormat(String imageFormat){this.imageFormat = imageFormat;}
+	
 	@Override
 	public String toString()
 	{
 		return "Message{" + "type='" + type + '\'' + ", position=" + position + ", operation='" + operation + '\'' +
-				", expectedFingersCount='" + expectedFingersCount + '\'' + ", needIcaoCropping=" + needIcaoCropping +
-				", initDevicesList=" + initDevicesList + ", galleryFingers=" + galleryFingers + ", probeFingers=" +
-				probeFingers + ", transactionId='" + transactionId + '\'' + ", segmentationRequired=" +
-				segmentationRequired + ", wsqRequired=" + wsqRequired + ", missingFingersList=" + missingFingersList +
-				", finalImage='" + finalImage + '\'' + ", previewImage='" + previewImage + '\'' + ", finalWSQImage='" +
-				finalWSQImage + '\'' + ", icaoImage='" + icaoImage + '\'' + ", status='" + status + '\'' +
-				", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", icaoErrorMessage='" +
-				icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" + dmSegmentedFingers +
-				", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList + ", currentDeviceName='" +
-				currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '\'' + ", segmentedWsqRequired=" +
-				segmentedWsqRequired  + '\'' + ", fingerDeviceStatus=" + fingerDeviceStatus  + '\'' +
-				", faceDeviceStatus=" + faceDeviceStatus + '}';
+			   ", expectedFingersCount='" + expectedFingersCount + '\'' + ", needIcaoCropping=" + needIcaoCropping +
+			   ", initDevicesList=" + initDevicesList + ", galleryFingers=" + galleryFingers + ", probeFingers=" +
+			   probeFingers + ", transactionId='" + transactionId + '\'' + ", segmentationRequired=" +
+			   segmentationRequired + ", wsqRequired=" + wsqRequired + ", missingFingersList=" + missingFingersList +
+			   ", finalImage='" + finalImage + '\'' + ", previewImage='" + previewImage + '\'' + ", finalWSQImage='" +
+			   finalWSQImage + '\'' + ", icaoImage='" + icaoImage + '\'' + ", status='" + status + '\'' +
+			   ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' + ", icaoErrorMessage='" +
+			   icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" + dmSegmentedFingers +
+			   ", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList + ", currentDeviceName='" +
+			   currentDeviceName + '\'' + ", noTimeout=" + noTimeout + ", segmentedWsqRequired=" +
+			   segmentedWsqRequired + ", fingerDeviceStatus=" + fingerDeviceStatus + ", faceDeviceStatus=" +
+			   faceDeviceStatus + ", slapImageForSegmentation='" + slapImageForSegmentation + '\'' +
+			   ", imageFormat='" + imageFormat + '\'' + '}';
 	}
 	
 	public String toShortString()
 	{
 		return "Message{" + "type='" + type + '\'' + ", position=" + position + ", operation='" + operation + '\'' +
-				", expectedFingersCount='" + expectedFingersCount + '\'' + ", needIcaoCropping=" + needIcaoCropping +
-				", initDevicesList=" + initDevicesList + ", galleryFingers=" +
-				DMFingerData.shortenDMFingerDataList(galleryFingers) + ", probeFingers=" +
-				DMFingerData.shortenDMFingerDataList(probeFingers) + ", transactionId='" + transactionId + '\'' +
-				", segmentationRequired=" + segmentationRequired + ", wsqRequired=" + wsqRequired +
-				", missingFingersList=" + missingFingersList + ", finalImage=isNull?'" + (finalImage == null) + '\'' +
-				", previewImage=isNull?'" + (previewImage == null) + '\'' + ", finalWSQImage=isNull?'" +
-				(finalWSQImage == null) + '\'' + ", icaoImage=isNull?'" + (icaoImage == null) + '\'' + ", status='" +
-				status + '\'' + ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' +
-				", icaoErrorMessage='" + icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" +
-				dmSegmentedFingers + ", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList +
-				", currentDeviceName='" + currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '\'' +
-				", segmentedWsqRequired=" + segmentedWsqRequired + '}';
+			   ", expectedFingersCount='" + expectedFingersCount + '\'' + ", needIcaoCropping=" + needIcaoCropping +
+			   ", initDevicesList=" + initDevicesList + ", galleryFingers=" +
+			   DMFingerData.shortenDMFingerDataList(galleryFingers) + ", probeFingers=" +
+			   DMFingerData.shortenDMFingerDataList(probeFingers) + ", transactionId='" + transactionId + '\'' +
+			   ", segmentationRequired=" + segmentationRequired + ", wsqRequired=" + wsqRequired +
+			   ", missingFingersList=" + missingFingersList + ", finalImage=isNull?'" + (finalImage == null) + '\'' +
+			   ", previewImage=isNull?'" + (previewImage == null) + '\'' + ", finalWSQImage=isNull?'" +
+			   (finalWSQImage == null) + '\'' + ", icaoImage=isNull?'" + (icaoImage == null) + '\'' + ", status='" +
+			   status + '\'' + ", returnCode=" + returnCode + ", returnMessage='" + returnMessage + '\'' +
+			   ", icaoErrorMessage='" + icaoErrorMessage + '\'' + ", isEnd=" + isEnd + ", dmSegmentedFingers=" +
+			   dmSegmentedFingers + ", isWrongSlap=" + isWrongSlap + ", duplicateList=" + duplicateList +
+			   ", currentDeviceName='" + currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '\'' +
+			   ", segmentedWsqRequired=" + segmentedWsqRequired + ", fingerDeviceStatus=" + fingerDeviceStatus +
+			   ", faceDeviceStatus=" + faceDeviceStatus + ", slapImageForSegmentation=isNull?='" +
+			   (slapImageForSegmentation == null) + '\'' + ", imageFormat='" + imageFormat + '\'' + '}';
 	}
 }

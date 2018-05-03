@@ -9,6 +9,13 @@ public class FaceStartPreviewResponse
 		public static final int SUCCESS = 100;
 	}
 	
+	public static class FailureCodes
+	{
+		public static final int EXCEPTION_WHILE_GETTING_PREVIEW_IMAGE = -3;
+		public static final int DEVICE_NOT_FOUND_OR_UNPLUGGED = 105;
+		public static final int DEVICE_BUSY = 106;
+	}
+	
 	private int returnCode;
 	private String returnMessage;
     
