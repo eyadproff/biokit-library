@@ -16,6 +16,7 @@ public class InitializeResponse
 		public static final int DRIVER_NOT_INSTALLED = 116;
 		public static final int EXCEPTION = -1005;
 		public static final int EXCEPTION2 = -2;
+		public static final int EXCEPTION3 = -2006;
 	}
 	
     private int returnCode;

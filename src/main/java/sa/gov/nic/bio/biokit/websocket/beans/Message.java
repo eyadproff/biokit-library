@@ -38,6 +38,7 @@ public class Message implements Serializable
 	private Map<String,String> faceDeviceStatus;
 	private String slapImageForSegmentation;
 	private String imageFormat;
+	private MRZData mrzData;
 	
 	public String getType(){return type;}
 	public void setType(String type){this.type = type;}
@@ -135,6 +136,9 @@ public class Message implements Serializable
 	public String getImageFormat(){return imageFormat;}
 	public void setImageFormat(String imageFormat){this.imageFormat = imageFormat;}
 	
+	public MRZData getMrzData(){return mrzData;}
+	public void setMrzData(MRZData mrzData){this.mrzData = mrzData;}
+	
 	@Override
 	public String toString()
 	{
@@ -151,7 +155,7 @@ public class Message implements Serializable
 			   currentDeviceName + '\'' + ", noTimeout=" + noTimeout + ", segmentedWsqRequired=" +
 			   segmentedWsqRequired + ", fingerDeviceStatus=" + fingerDeviceStatus + ", faceDeviceStatus=" +
 			   faceDeviceStatus + ", slapImageForSegmentation='" + slapImageForSegmentation + '\'' +
-			   ", imageFormat='" + imageFormat + '\'' + '}';
+			   ", imageFormat='" + imageFormat + '\'' + ", mrzData='" + mrzData + '\'' + '}';
 	}
 	
 	public String toShortString()
@@ -171,6 +175,7 @@ public class Message implements Serializable
 			   ", currentDeviceName='" + currentDeviceName + '\'' + ", noTimeout=" + noTimeout + '\'' +
 			   ", segmentedWsqRequired=" + segmentedWsqRequired + ", fingerDeviceStatus=" + fingerDeviceStatus +
 			   ", faceDeviceStatus=" + faceDeviceStatus + ", slapImageForSegmentation=isNull?='" +
-			   (slapImageForSegmentation == null) + '\'' + ", imageFormat='" + imageFormat + '\'' + '}';
+			   (slapImageForSegmentation == null) + '\'' + ", imageFormat='" + imageFormat + '\'' + ", mrzData='" +
+			   mrzData + '\'' + '}';
 	}
 }

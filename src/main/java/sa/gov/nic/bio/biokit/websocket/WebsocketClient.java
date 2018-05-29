@@ -1,5 +1,6 @@
 package sa.gov.nic.bio.biokit.websocket;
 
+import javafx.scene.layout.Pane;
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.AsyncConsumer;
 import sa.gov.nic.bio.biokit.exceptions.AlreadyConnectedException;
@@ -22,6 +23,7 @@ import javax.websocket.WebSocketContainer;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
@@ -31,6 +33,10 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     public static final AtomicLong ID_GENERATOR = new AtomicLong();
     private static final Logger LOGGER = Logger.getLogger(WebsocketClient.class.getName());
     private static final int UPDATE_RETURN_CODE = 777;
+    
+    // modifying the same list through multiple iterators will throw ConcurrentModificationException, that's why
+    // we have this lock.
+    private static final Object CONSUMER_ITERATOR_LOCK = new Object();
     
     private int maxTextMessageBufferSize;
     private int maxBinaryMessageBufferSize;
@@ -138,11 +144,14 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         
         this.session = null;
     
-        for(Iterator<AsyncConsumer> iterator = consumers.iterator(); iterator.hasNext();)
+        synchronized(CONSUMER_ITERATOR_LOCK)
         {
-            AsyncConsumer consumer = iterator.next();
-            consumer.cancel();
-            iterator.remove();
+            for(ListIterator<AsyncConsumer> iterator = consumers.listIterator(); iterator.hasNext();)
+            {
+                AsyncConsumer consumer = iterator.next();
+                consumer.cancel();
+                iterator.remove();
+            }
         }
         
         closureListener.onClose(closeReason);
@@ -193,24 +202,30 @@ public class WebsocketClient extends AsyncClientProxy<Message>
 
     private void publishSuccessResponse(String transactionId, Message message)
     {
-        for(Iterator<AsyncConsumer> iterator = consumers.iterator(); iterator.hasNext();)
+        synchronized(CONSUMER_ITERATOR_LOCK)
         {
-            AsyncConsumer consumer = iterator.next();
-            if(consumer.getTransactionId().equals(transactionId))
+            for(ListIterator<AsyncConsumer> iterator = consumers.listIterator(); iterator.hasNext();)
             {
-                consumer.consume(message);
-                if(message.isEnd()) iterator.remove();
+                AsyncConsumer consumer = iterator.next();
+                if(consumer.getTransactionId().equals(transactionId))
+                {
+                    consumer.consume(message);
+                    if(message.isEnd()) iterator.remove();
+                }
             }
         }
     }
 
     private void publishFailureResponse(String errorCode, Exception exception)
     {
-        for(Iterator<AsyncConsumer> iterator = consumers.iterator(); iterator.hasNext();)
+        synchronized(CONSUMER_ITERATOR_LOCK)
         {
-            AsyncConsumer consumer = iterator.next();
-            consumer.reportError(errorCode, exception);
-            iterator.remove();
+            for(ListIterator<AsyncConsumer> iterator = consumers.listIterator(); iterator.hasNext();)
+            {
+                AsyncConsumer consumer = iterator.next();
+                consumer.reportError(errorCode, exception);
+                iterator.remove();
+            }
         }
     }
 }

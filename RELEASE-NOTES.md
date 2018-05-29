@@ -1,5 +1,13 @@
 # Release Notes:
 
+## v2018.05.2
+
+- Fix bug: add synchronized lock around updating the consumers list's iterator.
+
+## v2018.05.1
+
+- Add support for passport scanner.
+
 ## v2018.04.1
 
 - Add FingerprintUtilitiesService.segmentSlap() and FingerprintUtilitiesService.convertWsqToImages().
