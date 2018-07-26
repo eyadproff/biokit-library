@@ -1,5 +1,9 @@
 # Release Notes:
 
+## v2018.08.1
+
+- Fix bug: Change FingerprintStopPreviewResponse.FailureCodes.NOT_CAPTURING_NOW from 11 to 111.
+
 ## v2018.05.2
 
 - Fix bug: add synchronized lock around updating the consumers list's iterator.
