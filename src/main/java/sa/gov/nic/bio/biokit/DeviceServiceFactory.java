@@ -6,6 +6,8 @@ import sa.gov.nic.bio.biokit.fingerprint.FingerprintService;
 import sa.gov.nic.bio.biokit.fingerprint.WebsocketFingerprintServiceImpl;
 import sa.gov.nic.bio.biokit.passport.PassportScannerService;
 import sa.gov.nic.bio.biokit.passport.WebsocketPassportScannerServiceImpl;
+import sa.gov.nic.bio.biokit.scanner.ScannerService;
+import sa.gov.nic.bio.biokit.scanner.WebsocketScannerServiceImpl;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
 public final class DeviceServiceFactory
@@ -23,5 +25,10 @@ public final class DeviceServiceFactory
     public static PassportScannerService getPassportScannerService(AsyncClientProxy<Message> asyncClientProxy)
     {
         return new WebsocketPassportScannerServiceImpl(asyncClientProxy);
+    }
+    
+    public static ScannerService getScannerService(AsyncClientProxy<Message> asyncClientProxy)
+    {
+        return new WebsocketScannerServiceImpl(asyncClientProxy);
     }
 }

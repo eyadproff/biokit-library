@@ -1,10 +1,10 @@
 package sa.gov.nic.bio.biokit.fingerprint;
 
 import sa.gov.nic.bio.biokit.beans.ServiceResponse;
-import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintsResponse;
+import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintImagesResponse;
+import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintWsqResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.DuplicatedFingerprintsResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.SegmentFingerprintsResponse;
-import sa.gov.nic.bio.biokit.websocket.beans.DMFingerData;
 
 import java.util.List;
 import java.util.Map;
@@ -17,5 +17,6 @@ public interface FingerprintUtilitiesService
     Future<ServiceResponse<SegmentFingerprintsResponse>> segmentSlap(String slapImageBase64, String slapImageFormat,
                                                                      int position, int expectedFingersCount,
                                                                      List<Integer> missingFingers);
-    Future<ServiceResponse<ConvertedFingerprintsResponse>> convertWsqToImages(Map<Integer, String> fingerprintWsqMap);
+    Future<ServiceResponse<ConvertedFingerprintImagesResponse>> convertWsqToImages(Map<Integer, String> fingerprintWsqMap);
+    Future<ServiceResponse<ConvertedFingerprintWsqResponse>> convertImagesToWsq(Map<Integer, String> fingerprintImagesMap);
 }

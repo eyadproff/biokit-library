@@ -1,5 +1,10 @@
 # Release Notes:
 
+## v2018.08.2
+
+- Add support for scanners.
+- Add Convert-Image-To-Wsq service.
+
 ## v2018.08.1
 
 - Fix bug: Change FingerprintStopPreviewResponse.FailureCodes.NOT_CAPTURING_NOW from 11 to 111.

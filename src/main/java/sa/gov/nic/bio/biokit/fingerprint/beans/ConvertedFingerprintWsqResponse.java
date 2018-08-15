@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConvertedFingerprintsResponse
+public class ConvertedFingerprintWsqResponse
 {
 	public static class SuccessCodes
 	{
@@ -16,25 +16,25 @@ public class ConvertedFingerprintsResponse
 	
 	public static class FailureCodes
 	{
-		public static final int FAILED_TO_CONVERT_WSQ_TO_IMAGE = 119;
+	
 	}
 	
 	private int returnCode;
 	private String returnMessage;
-	private Map<Integer, String> fingerprintImagesMap;
+	private Map<Integer, String> fingerprintWsqMap;
 	
-	public ConvertedFingerprintsResponse(Message message)
+	public ConvertedFingerprintWsqResponse(Message message)
 	{
 		if(message != null)
 		{
 			this.returnCode = message.getReturnCode();
 			this.returnMessage = message.getReturnMessage();
-			this.fingerprintImagesMap = new HashMap<Integer, String>();
+			this.fingerprintWsqMap = new HashMap<Integer, String>();
 			
 			List<DMFingerData> dmSegmentedFingers = message.getDmSegmentedFingers();
 			for(DMFingerData dmFingerData : dmSegmentedFingers)
 			{
-				fingerprintImagesMap.put(dmFingerData.getPosition(), dmFingerData.getFinger());
+				fingerprintWsqMap.put(dmFingerData.getPosition(), dmFingerData.getFingerWsqImage());
 			}
 		}
 	}
@@ -45,21 +45,21 @@ public class ConvertedFingerprintsResponse
 	public String getReturnMessage(){return returnMessage;}
 	public void setReturnMessage(String returnMessage){this.returnMessage = returnMessage;}
 	
-	public Map<Integer, String> getFingerprintImagesMap(){return fingerprintImagesMap;}
-	public void setFingerprintImagesMap(Map<Integer, String> fingerprintImagesMap)
-																	{this.fingerprintImagesMap = fingerprintImagesMap;}
+	public Map<Integer, String> getFingerprintWsqMap(){return fingerprintWsqMap;}
+	public void setFingerprintWsqMap(Map<Integer, String> fingerprintWsqMap)
+																	{this.fingerprintWsqMap = fingerprintWsqMap;}
 	
 	@Override
 	public String toString()
 	{
-		return "ConvertedFingerprintsResponse{" + "returnCode=" + returnCode + ", returnMessage='" + returnMessage +
-			   '\'' + ", fingerprintImagesMap=" + fingerprintImagesMap + '}';
+		return "ConvertedFingerprintWsqResponse{" + "returnCode=" + returnCode + ", returnMessage='" +
+			   returnMessage + '\'' + ", fingerprintWsqMap=" + fingerprintWsqMap + '}';
 	}
 	
 	public String toShortString()
 	{
-		return "ConvertedFingerprintsResponse{" + "returnCode=" + returnCode + ", returnMessage='" + returnMessage +
-			   '\'' + ", fingerprintImagesMap.size()=" +
-			   (fingerprintImagesMap != null ? fingerprintImagesMap.size() : null) + '}';
+		return "ConvertedFingerprintWsqResponse{" + "returnCode=" + returnCode + ", returnMessage='" +
+			   returnMessage + '\'' + ", fingerprintWsqMap.size()=" +
+			   (fingerprintWsqMap != null ? fingerprintWsqMap.size() : null) + '}';
 	}
 }

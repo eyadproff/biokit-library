@@ -5,7 +5,8 @@ import sa.gov.nic.bio.biokit.beans.ServiceResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
-import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintsResponse;
+import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintImagesResponse;
+import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintWsqResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.DuplicatedFingerprintsResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.SegmentFingerprintsResponse;
 import sa.gov.nic.bio.biokit.websocket.ServiceType;
@@ -253,16 +254,16 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 	}
 	
 	@Override
-	public Future<ServiceResponse<ConvertedFingerprintsResponse>> convertWsqToImages(
+	public Future<ServiceResponse<ConvertedFingerprintImagesResponse>> convertWsqToImages(
 																final Map<Integer, String> fingerprintWsqMap)
 	{
-		final Callable<ServiceResponse<ConvertedFingerprintsResponse>> callable =
-												new Callable<ServiceResponse<ConvertedFingerprintsResponse>>()
+		final Callable<ServiceResponse<ConvertedFingerprintImagesResponse>> callable =
+												new Callable<ServiceResponse<ConvertedFingerprintImagesResponse>>()
 		{
 			@Override
-			public ServiceResponse<ConvertedFingerprintsResponse> call() throws TimeoutException,
-			                                                                  NotConnectedException,
-			                                                                  CancellationException
+			public ServiceResponse<ConvertedFingerprintImagesResponse> call() throws TimeoutException,
+			                                                                         NotConnectedException,
+			                                                                         CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -316,12 +317,12 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
                                                         asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
 					return ServiceResponse.cast(messageServiceResponse,
-					new ServiceResponse.TypeCaster<ConvertedFingerprintsResponse, Message>()
+					new ServiceResponse.TypeCaster<ConvertedFingerprintImagesResponse, Message>()
 					{
 					    @Override
-					    public ConvertedFingerprintsResponse cast(Message m)
+					    public ConvertedFingerprintImagesResponse cast(Message m)
 					    {
-					        return new ConvertedFingerprintsResponse(m);
+					        return new ConvertedFingerprintImagesResponse(m);
 					    }
 					});
 				}
@@ -350,8 +351,112 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 			}
 		};
 		
-		FutureTask<ServiceResponse<ConvertedFingerprintsResponse>> futureTask =
-											new FutureTask<ServiceResponse<ConvertedFingerprintsResponse>>(callable);
+		FutureTask<ServiceResponse<ConvertedFingerprintImagesResponse>> futureTask =
+											new FutureTask<ServiceResponse<ConvertedFingerprintImagesResponse>>(callable);
+		executorService.submit(futureTask);
+		return futureTask;
+	}
+	
+	@Override
+	public Future<ServiceResponse<ConvertedFingerprintWsqResponse>> convertImagesToWsq(
+																		final Map<Integer, String> fingerprintImagesMap)
+	{
+		final Callable<ServiceResponse<ConvertedFingerprintWsqResponse>> callable =
+														new Callable<ServiceResponse<ConvertedFingerprintWsqResponse>>()
+		{
+			@Override
+			public ServiceResponse<ConvertedFingerprintWsqResponse> call() throws TimeoutException,
+			                                                                      NotConnectedException,
+			                                                                      CancellationException
+			{
+				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+				
+				List<DMFingerData> dmFingerDataList = new ArrayList<DMFingerData>();
+				
+				for(Map.Entry<Integer, String> entry : fingerprintImagesMap.entrySet())
+				{
+					DMFingerData dmFingerData = new DMFingerData();
+					dmFingerData.setPosition(entry.getKey());
+					dmFingerData.setFinger(entry.getValue());
+					dmFingerDataList.add(dmFingerData);
+				}
+				
+				Message message = new Message();
+				message.setTransactionId(transactionId);
+				message.setType(ServiceType.FINGERPRINT.getType());
+				message.setOperation(WebsocketCommand.CONVERT_IMAGE_TO_WSQ.getCommand());
+				message.setDmSegmentedFingers(dmFingerDataList);
+				
+				AsyncConsumer consumer = new AsyncConsumer();
+				consumer.setTransactionId(transactionId);
+				asyncClientProxy.registerConsumer(consumer);
+				
+				boolean successfullySent = false;
+				try
+				{
+					asyncClientProxy.sendCommandAsync(message);
+					successfullySent = true;
+				}
+				catch(RequestException e)
+				{
+					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00013.getCode();
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				catch(NotConnectedException e)
+				{
+					throw e;
+				}
+				catch(Exception e)
+				{
+					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00014.getCode();
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				finally
+				{
+					if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+				}
+				
+				try
+				{
+					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
+                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return ServiceResponse.cast(messageServiceResponse,
+				                            new ServiceResponse.TypeCaster<ConvertedFingerprintWsqResponse, Message>()
+					{
+					    @Override
+					    public ConvertedFingerprintWsqResponse cast(Message m)
+					    {
+					        return new ConvertedFingerprintWsqResponse(m);
+					    }
+					});
+				}
+				catch(InterruptedException e)
+				{
+					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00015.getCode();
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				catch(TimeoutException e)
+				{
+					throw e;
+				}
+				catch(CancellationException e)
+				{
+					throw e;
+				}
+				catch(Exception e)
+				{
+					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00016.getCode();
+					return ServiceResponse.failureResponse(errorCode, e);
+				}
+				finally
+				{
+					asyncClientProxy.unregisterConsumer(consumer);
+				}
+			}
+		};
+		
+		FutureTask<ServiceResponse<ConvertedFingerprintWsqResponse>> futureTask =
+											new FutureTask<ServiceResponse<ConvertedFingerprintWsqResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}

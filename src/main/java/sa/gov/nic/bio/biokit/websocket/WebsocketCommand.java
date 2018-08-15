@@ -11,8 +11,10 @@ public enum WebsocketCommand
     FIND_DUPLICATES("find_duplicate"),
     GET_SEGMENTED_FINGERS("GET_SEGMENTED_FINGERS"),
     CONVERT_WSQ_TO_IMAGE("CONVERT_WSQ_TO_IMAGE"),
+    CONVERT_IMAGE_TO_WSQ("CONVERT_IMAGE_TO_WSQ"),
     SHUTDOWN("shutdown"),
-    UPDATER("update");
+    UPDATER("update"),
+    SCAN_TENPRINT("SCAN_TENPRINT");
 
     private final String command;
 
