@@ -2,7 +2,7 @@ package sa.gov.nic.bio.biokit.scanner;
 
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.AsyncConsumer;
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
@@ -59,7 +59,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00001.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -68,7 +68,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(Exception e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00002.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -92,7 +92,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00003.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -105,7 +105,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(Exception e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00004.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{

@@ -4,7 +4,7 @@ import sa.gov.nic.bio.biokit.DeviceService;
 import sa.gov.nic.bio.biokit.ResponseProcessor;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
 import sa.gov.nic.bio.biokit.beans.LivePreviewingResponse;
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.face.beans.CaptureFaceResponse;
 import sa.gov.nic.bio.biokit.face.beans.FaceStartPreviewResponse;
 

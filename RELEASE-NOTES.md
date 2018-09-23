@@ -1,5 +1,22 @@
 # Release Notes:
 
+# Release Notes:
+
+| prefix |         description          |
+|:------ |:-----------------------------|
+| FIX    | bug fixes note               |
+| ENH    | enhancement on existing code |
+| NEW    | new feature added            |
+| CHN    | change functionality         |
+
+**VERSION SCHEMA:** vYYYY.MM.#SEQ
+
+---
+
+## v2018.09.1
+
+- ENH: move the class ServiceResponse from sa.gov.nic.bio.biokit.beans to sa.gov.nic.bio.commons.
+
 ## v2018.08.2
 
 - Add support for scanners.

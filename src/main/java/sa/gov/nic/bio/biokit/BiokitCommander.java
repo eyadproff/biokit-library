@@ -1,6 +1,6 @@
 package sa.gov.nic.bio.biokit;
 
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.beans.ShutdownResponse;
 import sa.gov.nic.bio.biokit.beans.UpdateResponse;
 

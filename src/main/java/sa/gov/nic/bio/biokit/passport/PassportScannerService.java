@@ -2,7 +2,7 @@ package sa.gov.nic.bio.biokit.passport;
 
 import sa.gov.nic.bio.biokit.DeviceService;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.passport.beans.CapturePassportResponse;
 
 import java.util.concurrent.Future;

@@ -3,7 +3,7 @@ package sa.gov.nic.bio.biokit.passport;
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.AsyncConsumer;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
@@ -60,7 +60,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00001.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -69,7 +69,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(Exception e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00002.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -93,7 +93,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00003.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -106,7 +106,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(Exception e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00004.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -151,7 +151,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00005.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -160,7 +160,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(Exception e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00006.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -184,7 +184,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00007.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -197,7 +197,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 				catch(Exception e)
 				{
 					String errorCode = WebsocketPassportErrorCodes.L0006_00008.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -243,7 +243,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 			    catch(RequestException e)
 			    {
 				    String errorCode = WebsocketPassportErrorCodes.L0006_00009.getCode();
-				    return ServiceResponse.failureResponse(errorCode, e);
+				    return ServiceResponse.failure(errorCode, e);
 			    }
 			    catch(NotConnectedException e)
 			    {
@@ -252,7 +252,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 			    catch(Exception e)
 			    {
 				    String errorCode = WebsocketPassportErrorCodes.L0006_00010.getCode();
-				    return ServiceResponse.failureResponse(errorCode, e);
+				    return ServiceResponse.failure(errorCode, e);
 			    }
 			    finally
 			    {
@@ -276,7 +276,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 			    catch(InterruptedException e)
 			    {
 				    String errorCode = WebsocketPassportErrorCodes.L0006_00011.getCode();
-				    return ServiceResponse.failureResponse(errorCode, e);
+				    return ServiceResponse.failure(errorCode, e);
 			    }
 			    catch(TimeoutException e)
 			    {
@@ -289,7 +289,7 @@ public class WebsocketPassportScannerServiceImpl implements PassportScannerServi
 			    catch(Exception e)
 			    {
 				    String errorCode = WebsocketPassportErrorCodes.L0006_00012.getCode();
-				    return ServiceResponse.failureResponse(errorCode, e);
+				    return ServiceResponse.failure(errorCode, e);
 			    }
 			    finally
 			    {

@@ -1,6 +1,6 @@
 package sa.gov.nic.bio.biokit.fingerprint;
 
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintImagesResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.ConvertedFingerprintWsqResponse;
 import sa.gov.nic.bio.biokit.fingerprint.beans.DuplicatedFingerprintsResponse;

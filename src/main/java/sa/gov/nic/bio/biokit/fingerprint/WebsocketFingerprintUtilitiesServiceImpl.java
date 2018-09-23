@@ -1,7 +1,7 @@
 package sa.gov.nic.bio.biokit.fingerprint;
 
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
@@ -91,7 +91,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00001.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -100,7 +100,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00002.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -124,7 +124,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00003.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -137,7 +137,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00004.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -192,7 +192,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00005.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -201,7 +201,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00006.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -225,7 +225,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00007.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -238,7 +238,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00008.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -296,7 +296,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00009.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -305,7 +305,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00010.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -329,7 +329,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00011.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -342,7 +342,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00012.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -400,7 +400,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00013.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -409,7 +409,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00014.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -433,7 +433,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00015.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -446,7 +446,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00016.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{

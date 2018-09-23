@@ -3,7 +3,7 @@ package sa.gov.nic.bio.biokit.face;
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.ResponseProcessor;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.beans.LivePreviewingResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
@@ -62,7 +62,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00001.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -71,7 +71,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00002.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -95,7 +95,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00003.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -104,7 +104,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00004.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -147,7 +147,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00005.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -156,7 +156,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00006.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -180,7 +180,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00007.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -193,7 +193,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00008.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -240,7 +240,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00009.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -249,7 +249,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00010.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -273,7 +273,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00011.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -286,7 +286,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00012.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -333,7 +333,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00013.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -342,7 +342,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00014.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -376,7 +376,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00015.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -389,7 +389,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00016.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -435,7 +435,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00017.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -444,7 +444,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00018.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -468,7 +468,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00019.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -481,7 +481,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00020.getCode();
-                    return ServiceResponse.failureResponse(errorCode, e);
+                    return ServiceResponse.failure(errorCode, e);
                 }
                 finally
                 {

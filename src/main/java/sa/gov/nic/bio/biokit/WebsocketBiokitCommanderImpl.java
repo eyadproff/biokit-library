@@ -1,6 +1,6 @@
 package sa.gov.nic.bio.biokit;
 
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.beans.ShutdownResponse;
 import sa.gov.nic.bio.biokit.beans.UpdateResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
@@ -56,7 +56,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00001.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -65,7 +65,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00002.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -89,7 +89,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00003.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -102,7 +102,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00004.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -144,7 +144,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00005.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -153,7 +153,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00006.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -177,7 +177,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00007.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -190,7 +190,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00008.getCode();
-					return ServiceResponse.failureResponse(errorCode, e);
+					return ServiceResponse.failure(errorCode, e);
 				}
 				finally
 				{

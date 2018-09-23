@@ -1,6 +1,6 @@
 package sa.gov.nic.bio.biokit;
 
-import sa.gov.nic.bio.biokit.beans.ServiceResponse;
+import sa.gov.nic.bio.commons.ServiceResponse;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
@@ -93,11 +93,11 @@ public class AsyncConsumer
             {
                 Message message = response.getMessage();
 
-                if(message.isEnd()) return ServiceResponse.successfulResponse(message);
+                if(message.isEnd()) return ServiceResponse.success(message);
                 else if(responseProcessor != null) responseProcessor.processResponse(message);
                 else LOGGER.warning("It is not a final response and the response processor is null!");
             }
-            else return ServiceResponse.failureResponse(response.errorCode, response.exception);
+            else return ServiceResponse.failure(response.errorCode, response.exception);
         }
     }
 
