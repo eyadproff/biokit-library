@@ -224,11 +224,8 @@ public class Demo
 		    }
 		
 		    @Override
-		    public void logConnectionClosure(CloseReason closeReason)
+		    public void logConnectionClosure(String closeCode, String reasonPhrase)
 		    {
-			    CloseReason.CloseCode closeCode = closeReason.getCloseCode();
-			    String reasonPhrase = closeReason.getReasonPhrase();
-			
 			    logWebsocket("Closed the websocket connection: closeCode = " + closeCode +
 		                 (reasonPhrase != null && !reasonPhrase.isEmpty() ? ", reasonPhrase = " + reasonPhrase : ""));
 		    }
