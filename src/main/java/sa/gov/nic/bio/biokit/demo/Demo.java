@@ -208,7 +208,7 @@ public class Demo
 	    ClosureListener closureListener = new ClosureListener()
 	    {
 		    @Override
-		    public void onClose(CloseReason closeReason)
+		    public void onClose(String closeCode, String reasonPhrase)
 		    {
 		    	logDemo("Websocket is disconnected!");
 			    lblDeviceConnectivity.setText("Disconnected");

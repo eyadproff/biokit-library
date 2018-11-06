@@ -135,23 +135,17 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     @OnClose
     public void onClose(CloseReason closeReason)
     {
-        if(websocketLogger != null)
+        String closeCode = null;
+        String reasonPhrase = null;
+    
+        if(closeReason != null)
         {
-            if(closeReason != null)
-            {
-                CloseCode closeCode = closeReason.getCloseCode();
-                if(closeCode != null) websocketLogger.logConnectionClosure(closeCode.toString(),
-                                                                           closeReason.getReasonPhrase());
-                else websocketLogger.logConnectionClosure(null, closeReason.getReasonPhrase());
-            }
-            else websocketLogger.logConnectionClosure(null, null);
+            if(closeReason.getCloseCode() != null) closeCode = closeReason.getCloseCode().toString();
+            reasonPhrase = closeReason.getReasonPhrase();
         }
         
-        CloseReason.CloseCode closeCode = closeReason.getCloseCode();
-        String reasonPhrase = closeReason.getReasonPhrase();
-    
-        LOGGER.info("WebsocketClient.onClose(): closeCode = " + closeCode + (reasonPhrase != null &&
-                                                !reasonPhrase.isEmpty() ? ", reasonPhrase = " + reasonPhrase : ""));
+        if(websocketLogger != null) websocketLogger.logConnectionClosure(closeCode, reasonPhrase);
+        LOGGER.info("WebsocketClient.onClose(): closeCode = " + closeCode + ", reasonPhrase = " + reasonPhrase);
         
         this.session = null;
     
@@ -165,7 +159,7 @@ public class WebsocketClient extends AsyncClientProxy<Message>
             }
         }
         
-        closureListener.onClose(closeReason);
+        closureListener.onClose(closeCode, reasonPhrase);
     }
 
     @OnError
