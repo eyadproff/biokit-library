@@ -3,7 +3,7 @@ package sa.gov.nic.bio.biokit.face;
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.ResponseProcessor;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
-import sa.gov.nic.bio.commons.ServiceResponse;
+import sa.gov.nic.bio.commons.TaskResponse;
 import sa.gov.nic.bio.biokit.beans.LivePreviewingResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
@@ -35,12 +35,12 @@ public class WebsocketFaceServiceImpl implements FaceService
     }
     
     @Override
-    public Future<ServiceResponse<InitializeResponse>> initialize()
+    public Future<TaskResponse<InitializeResponse>> initialize()
     {
-        Callable<ServiceResponse<InitializeResponse>> callable = new Callable<ServiceResponse<InitializeResponse>>()
+        Callable<TaskResponse<InitializeResponse>> callable = new Callable<TaskResponse<InitializeResponse>>()
         {
             @Override
-            public ServiceResponse<InitializeResponse> call() throws TimeoutException, NotConnectedException
+            public TaskResponse<InitializeResponse> call() throws TimeoutException, NotConnectedException
             {
                 String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
                 
@@ -62,7 +62,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00001.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -71,7 +71,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00002.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -80,10 +80,10 @@ public class WebsocketFaceServiceImpl implements FaceService
                 
                 try
                 {
-                    ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                                                                asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return ServiceResponse.cast(messageServiceResponse,
-                                                        new ServiceResponse.TypeCaster<InitializeResponse, Message>()
+                    TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                    return TaskResponse.cast(taskResponse,
+                                             new TaskResponse.TypeCaster<InitializeResponse, Message>()
                     {
                         @Override
                         public InitializeResponse cast(Message m)
@@ -95,7 +95,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00003.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -104,7 +104,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00004.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -113,18 +113,18 @@ public class WebsocketFaceServiceImpl implements FaceService
             }
         };
         
-        FutureTask<ServiceResponse<InitializeResponse>> futureTask = new FutureTask<ServiceResponse<InitializeResponse>>(callable);
+        FutureTask<TaskResponse<InitializeResponse>> futureTask = new FutureTask<TaskResponse<InitializeResponse>>(callable);
         executorService.submit(futureTask);
         return futureTask;
     }
     
     @Override
-    public Future<ServiceResponse<InitializeResponse>> deinitialize(final String currentDeviceName)
+    public Future<TaskResponse<InitializeResponse>> deinitialize(final String currentDeviceName)
     {
-        Callable<ServiceResponse<InitializeResponse>> callable = new Callable<ServiceResponse<InitializeResponse>>()
+        Callable<TaskResponse<InitializeResponse>> callable = new Callable<TaskResponse<InitializeResponse>>()
         {
             @Override
-            public ServiceResponse<InitializeResponse> call() throws TimeoutException, NotConnectedException, CancellationException
+            public TaskResponse<InitializeResponse> call() throws TimeoutException, NotConnectedException, CancellationException
             {
                 String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
                 
@@ -147,7 +147,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00005.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -156,7 +156,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00006.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -165,10 +165,10 @@ public class WebsocketFaceServiceImpl implements FaceService
                 
                 try
                 {
-                    ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return ServiceResponse.cast(messageServiceResponse,
-                                                        new ServiceResponse.TypeCaster<InitializeResponse, Message>()
+                    TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                    return TaskResponse.cast(taskResponse,
+                                             new TaskResponse.TypeCaster<InitializeResponse, Message>()
                     {
                         @Override
                         public InitializeResponse cast(Message m)
@@ -180,7 +180,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00007.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -193,7 +193,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00008.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -202,21 +202,21 @@ public class WebsocketFaceServiceImpl implements FaceService
             }
         };
         
-        FutureTask<ServiceResponse<InitializeResponse>> futureTask =
-                                                        new FutureTask<ServiceResponse<InitializeResponse>>(callable);
+        FutureTask<TaskResponse<InitializeResponse>> futureTask =
+                                                        new FutureTask<TaskResponse<InitializeResponse>>(callable);
         executorService.submit(futureTask);
         return futureTask;
     }
     
     @Override
-    public Future<ServiceResponse<CaptureFaceResponse>> captureFace(final String currentDeviceName,
-                                                                    final boolean applyIcao)
+    public Future<TaskResponse<CaptureFaceResponse>> captureFace(final String currentDeviceName,
+                                                                 final boolean applyIcao)
     {
-        Callable<ServiceResponse<CaptureFaceResponse>> callable = new Callable<ServiceResponse<CaptureFaceResponse>>()
+        Callable<TaskResponse<CaptureFaceResponse>> callable = new Callable<TaskResponse<CaptureFaceResponse>>()
         {
             @Override
-            public ServiceResponse<CaptureFaceResponse> call() throws TimeoutException, NotConnectedException,
-                                                                      CancellationException
+            public TaskResponse<CaptureFaceResponse> call() throws TimeoutException, NotConnectedException,
+                                                                   CancellationException
             {
                 String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
                 
@@ -240,7 +240,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00009.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -249,7 +249,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00010.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -258,10 +258,10 @@ public class WebsocketFaceServiceImpl implements FaceService
                 
                 try
                 {
-                    ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return ServiceResponse.cast(messageServiceResponse,
-                                                        new ServiceResponse.TypeCaster<CaptureFaceResponse, Message>()
+                    TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                    return TaskResponse.cast(taskResponse,
+                                             new TaskResponse.TypeCaster<CaptureFaceResponse, Message>()
                     {
                         @Override
                         public CaptureFaceResponse cast(Message m)
@@ -273,7 +273,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00011.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -286,7 +286,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00012.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -295,22 +295,22 @@ public class WebsocketFaceServiceImpl implements FaceService
             }
         };
         
-        FutureTask<ServiceResponse<CaptureFaceResponse>> futureTask =
-                                                    new FutureTask<ServiceResponse<CaptureFaceResponse>>(callable);
+        FutureTask<TaskResponse<CaptureFaceResponse>> futureTask =
+                                                    new FutureTask<TaskResponse<CaptureFaceResponse>>(callable);
         executorService.submit(futureTask);
         return futureTask;
     }
     
     @Override
-    public Future<ServiceResponse<FaceStartPreviewResponse>> startPreview(final String currentDeviceName,
-                                                  final ResponseProcessor<LivePreviewingResponse> responseProcessor)
+    public Future<TaskResponse<FaceStartPreviewResponse>> startPreview(final String currentDeviceName,
+                                                                       final ResponseProcessor<LivePreviewingResponse> responseProcessor)
     {
-        Callable<ServiceResponse<FaceStartPreviewResponse>> callable =
-                                                            new Callable<ServiceResponse<FaceStartPreviewResponse>>()
+        Callable<TaskResponse<FaceStartPreviewResponse>> callable =
+                                                            new Callable<TaskResponse<FaceStartPreviewResponse>>()
         {
             @Override
-            public ServiceResponse<FaceStartPreviewResponse> call() throws TimeoutException, NotConnectedException,
-                                                                           CancellationException
+            public TaskResponse<FaceStartPreviewResponse> call() throws TimeoutException, NotConnectedException,
+                                                                        CancellationException
             {
                 String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
                 
@@ -333,7 +333,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00013.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -342,7 +342,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00014.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -361,10 +361,10 @@ public class WebsocketFaceServiceImpl implements FaceService
                         }
                     };
                     
-                    ServiceResponse<Message> messageServiceResponse = consumer.processResponses(rp,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return ServiceResponse.cast(messageServiceResponse,
-                                                    new ServiceResponse.TypeCaster<FaceStartPreviewResponse, Message>()
+                    TaskResponse<Message> taskResponse = consumer.processResponses(rp,
+                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                    return TaskResponse.cast(taskResponse,
+                                             new TaskResponse.TypeCaster<FaceStartPreviewResponse, Message>()
                     {
                         @Override
                         public FaceStartPreviewResponse cast(Message m)
@@ -376,7 +376,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00015.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -389,7 +389,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00016.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -398,21 +398,21 @@ public class WebsocketFaceServiceImpl implements FaceService
             }
         };
         
-        FutureTask<ServiceResponse<FaceStartPreviewResponse>> futureTask =
-                                                    new FutureTask<ServiceResponse<FaceStartPreviewResponse>>(callable);
+        FutureTask<TaskResponse<FaceStartPreviewResponse>> futureTask =
+                                                    new FutureTask<TaskResponse<FaceStartPreviewResponse>>(callable);
         executorService.submit(futureTask);
         return futureTask;
     }
     
     @Override
-    public Future<ServiceResponse<FaceStopPreviewResponse>> stopPreview(final String currentDeviceName)
+    public Future<TaskResponse<FaceStopPreviewResponse>> stopPreview(final String currentDeviceName)
     {
-        Callable<ServiceResponse<FaceStopPreviewResponse>> callable =
-                                                            new Callable<ServiceResponse<FaceStopPreviewResponse>>()
+        Callable<TaskResponse<FaceStopPreviewResponse>> callable =
+                                                            new Callable<TaskResponse<FaceStopPreviewResponse>>()
         {
             @Override
-            public ServiceResponse<FaceStopPreviewResponse> call() throws TimeoutException, NotConnectedException,
-                                                                          CancellationException
+            public TaskResponse<FaceStopPreviewResponse> call() throws TimeoutException, NotConnectedException,
+                                                                       CancellationException
             {
                 String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
                 
@@ -435,7 +435,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(RequestException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00017.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(NotConnectedException e)
                 {
@@ -444,7 +444,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00018.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -453,10 +453,10 @@ public class WebsocketFaceServiceImpl implements FaceService
                 
                 try
                 {
-                    ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return ServiceResponse.cast(messageServiceResponse,
-                                                    new ServiceResponse.TypeCaster<FaceStopPreviewResponse, Message>()
+                    TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                    return TaskResponse.cast(taskResponse,
+                                             new TaskResponse.TypeCaster<FaceStopPreviewResponse, Message>()
                     {
                         @Override
                         public FaceStopPreviewResponse cast(Message m)
@@ -468,7 +468,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(InterruptedException e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00019.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 catch(TimeoutException e)
                 {
@@ -481,7 +481,7 @@ public class WebsocketFaceServiceImpl implements FaceService
                 catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00020.getCode();
-                    return ServiceResponse.failure(errorCode, e);
+                    return TaskResponse.failure(errorCode, e);
                 }
                 finally
                 {
@@ -490,7 +490,7 @@ public class WebsocketFaceServiceImpl implements FaceService
             }
         };
         
-        FutureTask<ServiceResponse<FaceStopPreviewResponse>> futureTask = new FutureTask<ServiceResponse<FaceStopPreviewResponse>>(callable);
+        FutureTask<TaskResponse<FaceStopPreviewResponse>> futureTask = new FutureTask<TaskResponse<FaceStopPreviewResponse>>(callable);
         executorService.submit(futureTask);
         return futureTask;
     }

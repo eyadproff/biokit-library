@@ -2,7 +2,7 @@ package sa.gov.nic.bio.biokit.scanner;
 
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.AsyncConsumer;
-import sa.gov.nic.bio.commons.ServiceResponse;
+import sa.gov.nic.bio.commons.TaskResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
@@ -31,13 +31,13 @@ public class WebsocketScannerServiceImpl implements ScannerService
     }
 	
 	@Override
-	public Future<ServiceResponse<ScanResponse>> scan()
+	public Future<TaskResponse<ScanResponse>> scan()
 	{
-		Callable<ServiceResponse<ScanResponse>> callable = new Callable<ServiceResponse<ScanResponse>>()
+		Callable<TaskResponse<ScanResponse>> callable = new Callable<TaskResponse<ScanResponse>>()
 		{
 			@Override
-			public ServiceResponse<ScanResponse> call() throws TimeoutException, NotConnectedException,
-                                                               CancellationException
+			public TaskResponse<ScanResponse> call() throws TimeoutException, NotConnectedException,
+			                                                CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -59,7 +59,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00001.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -68,7 +68,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(Exception e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00002.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -77,10 +77,10 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				
 				try
 				{
-					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                                                            1, TimeUnit.HOURS);
-					return ServiceResponse.cast(messageServiceResponse,
-					                                            new ServiceResponse.TypeCaster<ScanResponse, Message>()
+					TaskResponse<Message> taskResponse = consumer.processResponses(null,
+					                                                               1, TimeUnit.HOURS);
+					return TaskResponse.cast(taskResponse,
+					                         new TaskResponse.TypeCaster<ScanResponse, Message>()
 					{
 					    @Override
 					    public ScanResponse cast(Message m)
@@ -92,7 +92,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00003.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -105,7 +105,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 				catch(Exception e)
 				{
 					String errorCode = WebsocketScannerErrorCodes.L0007_00004.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -114,7 +114,7 @@ public class WebsocketScannerServiceImpl implements ScannerService
 			}
 		};
 		
-		FutureTask<ServiceResponse<ScanResponse>> futureTask = new FutureTask<ServiceResponse<ScanResponse>>(callable);
+		FutureTask<TaskResponse<ScanResponse>> futureTask = new FutureTask<TaskResponse<ScanResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}

@@ -2,7 +2,7 @@ package sa.gov.nic.bio.commons;
 
 import java.util.Arrays;
 
-public class ServiceResponse<T>
+public class TaskResponse<T>
 {
     public interface TypeCaster<T1, T2>
     {
@@ -15,7 +15,7 @@ public class ServiceResponse<T>
     private String[] errorDetails;
     private T result;
     
-    public ServiceResponse(boolean success, String errorCode, Exception exception, String[] errorDetails, T result)
+    public TaskResponse(boolean success, String errorCode, Exception exception, String[] errorDetails, T result)
     {
         this.success = success;
         this.errorCode = errorCode;
@@ -24,41 +24,41 @@ public class ServiceResponse<T>
         this.result = result;
     }
     
-    public static <T> ServiceResponse<T> success()
+    public static <T> TaskResponse<T> success()
     {
         return success(null);
     }
     
-    public static <T> ServiceResponse<T> success(T result)
+    public static <T> TaskResponse<T> success(T result)
     {
-        return new ServiceResponse<T>(true, null, null, null, result);
+        return new TaskResponse<T>(true, null, null, null, result);
     }
     
-    public static <T> ServiceResponse<T> failure(String errorCode)
+    public static <T> TaskResponse<T> failure(String errorCode)
     {
-        return new ServiceResponse<T>(false, errorCode, null, null, null);
+        return new TaskResponse<T>(false, errorCode, null, null, null);
     }
     
-    public static <T> ServiceResponse<T> failure(String errorCode, Exception exception)
+    public static <T> TaskResponse<T> failure(String errorCode, Exception exception)
     {
-        return new ServiceResponse<T>(false, errorCode, exception, null, null);
+        return new TaskResponse<T>(false, errorCode, exception, null, null);
     }
     
-    public static <T> ServiceResponse<T> failure(String errorCode, String[] errorDetails)
+    public static <T> TaskResponse<T> failure(String errorCode, String[] errorDetails)
     {
-        return new ServiceResponse<T>(false, errorCode, null, errorDetails, null);
+        return new TaskResponse<T>(false, errorCode, null, errorDetails, null);
     }
     
-    public static <T> ServiceResponse<T> failure(String errorCode, Exception exception, String[] errorDetails)
+    public static <T> TaskResponse<T> failure(String errorCode, Exception exception, String[] errorDetails)
     {
-        return new ServiceResponse<T>(false, errorCode, exception, errorDetails, null);
+        return new TaskResponse<T>(false, errorCode, exception, errorDetails, null);
     }
     
-    public static <T1, T2> ServiceResponse<T1> cast(ServiceResponse<T2> input,
-                                                    ServiceResponse.TypeCaster<T1, T2> typeCaster)
+    public static <T1, T2> TaskResponse<T1> cast(TaskResponse<T2> input,
+                                                 TaskResponse.TypeCaster<T1, T2> typeCaster)
     {
-        return new ServiceResponse<T1>(input.success, input.errorCode, input.exception, input.errorDetails,
-                                       typeCaster != null ? typeCaster.cast(input.result) : null);
+        return new TaskResponse<T1>(input.success, input.errorCode, input.exception, input.errorDetails,
+                                    typeCaster != null ? typeCaster.cast(input.result) : null);
     }
     
     public boolean isSuccess(){return success;}
@@ -82,7 +82,7 @@ public class ServiceResponse<T>
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
         
-        ServiceResponse<?> that = (ServiceResponse<?>) o;
+        TaskResponse<?> that = (TaskResponse<?>) o;
         
         if(success != that.success) return false;
         if(errorCode != null ? !errorCode.equals(that.errorCode) : that.errorCode != null) return false;
@@ -105,7 +105,7 @@ public class ServiceResponse<T>
     @Override
     public String toString()
     {
-        return "ServiceResponse{" + "success=" + success + ", errorCode='" + errorCode + '\'' + ", exception=" +
+        return "TaskResponse{" + "success=" + success + ", errorCode='" + errorCode + '\'' + ", exception=" +
                 exception + ", errorDetails=" + Arrays.toString(errorDetails) + ", result=" + result + '}';
     }
 }

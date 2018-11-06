@@ -13,6 +13,7 @@ import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
+import javax.websocket.CloseReason.CloseCode;
 import javax.websocket.ContainerProvider;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -134,7 +135,17 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     @OnClose
     public void onClose(CloseReason closeReason)
     {
-        if(websocketLogger != null) websocketLogger.logConnectionClosure(closeReason);
+        if(websocketLogger != null)
+        {
+            if(closeReason != null)
+            {
+                CloseCode closeCode = closeReason.getCloseCode();
+                if(closeCode != null) websocketLogger.logConnectionClosure(closeCode.toString(),
+                                                                           closeReason.getReasonPhrase());
+                else websocketLogger.logConnectionClosure(null, closeReason.getReasonPhrase());
+            }
+            else websocketLogger.logConnectionClosure(null, null);
+        }
         
         CloseReason.CloseCode closeCode = closeReason.getCloseCode();
         String reasonPhrase = closeReason.getReasonPhrase();

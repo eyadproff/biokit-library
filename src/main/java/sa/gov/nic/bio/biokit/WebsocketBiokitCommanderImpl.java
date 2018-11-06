@@ -1,6 +1,6 @@
 package sa.gov.nic.bio.biokit;
 
-import sa.gov.nic.bio.commons.ServiceResponse;
+import sa.gov.nic.bio.commons.TaskResponse;
 import sa.gov.nic.bio.biokit.beans.ShutdownResponse;
 import sa.gov.nic.bio.biokit.beans.UpdateResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
@@ -29,13 +29,13 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
     }
 	
 	@Override
-	public Future<ServiceResponse<ShutdownResponse>> shutdown()
+	public Future<TaskResponse<ShutdownResponse>> shutdown()
 	{
-		final Callable<ServiceResponse<ShutdownResponse>> callable = new Callable<ServiceResponse<ShutdownResponse>>()
+		final Callable<TaskResponse<ShutdownResponse>> callable = new Callable<TaskResponse<ShutdownResponse>>()
 		{
 			@Override
-			public ServiceResponse<ShutdownResponse> call() throws TimeoutException, NotConnectedException,
-			                                                       CancellationException
+			public TaskResponse<ShutdownResponse> call() throws TimeoutException, NotConnectedException,
+			                                                    CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -56,7 +56,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00001.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -65,7 +65,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00002.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -74,10 +74,10 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				
 				try
 				{
-					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-					return ServiceResponse.cast(messageServiceResponse,
-					                                        new ServiceResponse.TypeCaster<ShutdownResponse, Message>()
+					TaskResponse<Message> taskResponse = consumer.processResponses(null,
+					                                                               asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return TaskResponse.cast(taskResponse,
+					                         new TaskResponse.TypeCaster<ShutdownResponse, Message>()
 					{
 						@Override
 						public ShutdownResponse cast(Message m)
@@ -89,7 +89,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00003.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -102,7 +102,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00004.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -111,19 +111,19 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 			}
 		};
 		
-		FutureTask<ServiceResponse<ShutdownResponse>> futureTask = new FutureTask<ServiceResponse<ShutdownResponse>>(callable);
+		FutureTask<TaskResponse<ShutdownResponse>> futureTask = new FutureTask<TaskResponse<ShutdownResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}
 	
 	@Override
-	public Future<ServiceResponse<UpdateResponse>> update()
+	public Future<TaskResponse<UpdateResponse>> update()
 	{
-		final Callable<ServiceResponse<UpdateResponse>> callable = new Callable<ServiceResponse<UpdateResponse>>()
+		final Callable<TaskResponse<UpdateResponse>> callable = new Callable<TaskResponse<UpdateResponse>>()
 		{
 			@Override
-			public ServiceResponse<UpdateResponse> call() throws TimeoutException, NotConnectedException,
-			                                                     CancellationException
+			public TaskResponse<UpdateResponse> call() throws TimeoutException, NotConnectedException,
+			                                                  CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -144,7 +144,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00005.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -153,7 +153,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00006.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -162,10 +162,10 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				
 				try
 				{
-					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-					return ServiceResponse.cast(messageServiceResponse,
-				                                            new ServiceResponse.TypeCaster<UpdateResponse, Message>()
+					TaskResponse<Message> taskResponse = consumer.processResponses(null,
+					                                                               asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return TaskResponse.cast(taskResponse,
+					                         new TaskResponse.TypeCaster<UpdateResponse, Message>()
 					{
 						@Override
 						public UpdateResponse cast(Message m)
@@ -177,7 +177,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00007.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -190,7 +190,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 				catch(Exception e)
 				{
 					String errorCode = WebsocketBiokitCommanderErrorCodes.L0005_00008.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -199,7 +199,7 @@ public class WebsocketBiokitCommanderImpl implements BiokitCommander
 			}
 		};
 		
-		FutureTask<ServiceResponse<UpdateResponse>> futureTask = new FutureTask<ServiceResponse<UpdateResponse>>(callable);
+		FutureTask<TaskResponse<UpdateResponse>> futureTask = new FutureTask<TaskResponse<UpdateResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}

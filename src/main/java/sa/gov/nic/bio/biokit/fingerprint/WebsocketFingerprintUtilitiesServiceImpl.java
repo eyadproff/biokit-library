@@ -1,7 +1,7 @@
 package sa.gov.nic.bio.biokit.fingerprint;
 
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
-import sa.gov.nic.bio.commons.ServiceResponse;
+import sa.gov.nic.bio.commons.TaskResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
@@ -38,16 +38,16 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
     }
 
 	@Override
-	public Future<ServiceResponse<DuplicatedFingerprintsResponse>> findDuplicatedFingerprints(
+	public Future<TaskResponse<DuplicatedFingerprintsResponse>> findDuplicatedFingerprints(
 												final Map<Integer, String> gallery, final Map<Integer, String> probes)
 	{
-		final Callable<ServiceResponse<DuplicatedFingerprintsResponse>> callable =
-													new Callable<ServiceResponse<DuplicatedFingerprintsResponse>>()
+		final Callable<TaskResponse<DuplicatedFingerprintsResponse>> callable =
+													new Callable<TaskResponse<DuplicatedFingerprintsResponse>>()
 		{
 			@Override
-			public ServiceResponse<DuplicatedFingerprintsResponse> call() throws TimeoutException,
-			                                                                     NotConnectedException,
-			                                                                     CancellationException
+			public TaskResponse<DuplicatedFingerprintsResponse> call() throws TimeoutException,
+			                                                                  NotConnectedException,
+			                                                                  CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -91,7 +91,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00001.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -100,7 +100,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00002.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -109,10 +109,10 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				
 				try
 				{
-					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-					return ServiceResponse.cast(messageServiceResponse,
-				                            new ServiceResponse.TypeCaster<DuplicatedFingerprintsResponse, Message>()
+					TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                       asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return TaskResponse.cast(taskResponse,
+					                         new TaskResponse.TypeCaster<DuplicatedFingerprintsResponse, Message>()
 					{
 						@Override
 						public DuplicatedFingerprintsResponse cast(Message m)
@@ -124,7 +124,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00003.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -137,7 +137,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00004.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -146,26 +146,26 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 			}
 		};
 		
-		FutureTask<ServiceResponse<DuplicatedFingerprintsResponse>> futureTask =
-										new FutureTask<ServiceResponse<DuplicatedFingerprintsResponse>>(callable);
+		FutureTask<TaskResponse<DuplicatedFingerprintsResponse>> futureTask =
+										new FutureTask<TaskResponse<DuplicatedFingerprintsResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}
 	
 	@Override
-	public Future<ServiceResponse<SegmentFingerprintsResponse>> segmentSlap(final String slapImageBase64,
-	                                                                        final String slapImageFormat,
-	                                                                        final int position,
-	                                                                        final int expectedFingersCount,
-	                                                                        final List<Integer> missingFingers)
+	public Future<TaskResponse<SegmentFingerprintsResponse>> segmentSlap(final String slapImageBase64,
+	                                                                     final String slapImageFormat,
+	                                                                     final int position,
+	                                                                     final int expectedFingersCount,
+	                                                                     final List<Integer> missingFingers)
 	{
-		final Callable<ServiceResponse<SegmentFingerprintsResponse>> callable =
-													new Callable<ServiceResponse<SegmentFingerprintsResponse>>()
+		final Callable<TaskResponse<SegmentFingerprintsResponse>> callable =
+													new Callable<TaskResponse<SegmentFingerprintsResponse>>()
 		{
 			@Override
-			public ServiceResponse<SegmentFingerprintsResponse> call() throws TimeoutException,
-			                                                                     NotConnectedException,
-			                                                                     CancellationException
+			public TaskResponse<SegmentFingerprintsResponse> call() throws TimeoutException,
+			                                                               NotConnectedException,
+			                                                               CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -192,7 +192,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00005.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -201,7 +201,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00006.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -210,10 +210,10 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				
 				try
 				{
-					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-					return ServiceResponse.cast(messageServiceResponse,
-					new ServiceResponse.TypeCaster<SegmentFingerprintsResponse, Message>()
+					TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                       asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return TaskResponse.cast(taskResponse,
+					                         new TaskResponse.TypeCaster<SegmentFingerprintsResponse, Message>()
 					{
 					    @Override
 					    public SegmentFingerprintsResponse cast(Message m)
@@ -225,7 +225,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00007.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -238,7 +238,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00008.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -247,23 +247,23 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 			}
 		};
 		
-		FutureTask<ServiceResponse<SegmentFingerprintsResponse>> futureTask =
-											new FutureTask<ServiceResponse<SegmentFingerprintsResponse>>(callable);
+		FutureTask<TaskResponse<SegmentFingerprintsResponse>> futureTask =
+											new FutureTask<TaskResponse<SegmentFingerprintsResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}
 	
 	@Override
-	public Future<ServiceResponse<ConvertedFingerprintImagesResponse>> convertWsqToImages(
+	public Future<TaskResponse<ConvertedFingerprintImagesResponse>> convertWsqToImages(
 																final Map<Integer, String> fingerprintWsqMap)
 	{
-		final Callable<ServiceResponse<ConvertedFingerprintImagesResponse>> callable =
-												new Callable<ServiceResponse<ConvertedFingerprintImagesResponse>>()
+		final Callable<TaskResponse<ConvertedFingerprintImagesResponse>> callable =
+												new Callable<TaskResponse<ConvertedFingerprintImagesResponse>>()
 		{
 			@Override
-			public ServiceResponse<ConvertedFingerprintImagesResponse> call() throws TimeoutException,
-			                                                                         NotConnectedException,
-			                                                                         CancellationException
+			public TaskResponse<ConvertedFingerprintImagesResponse> call() throws TimeoutException,
+			                                                                      NotConnectedException,
+			                                                                      CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -296,7 +296,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00009.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -305,7 +305,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00010.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -314,10 +314,10 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				
 				try
 				{
-					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-					return ServiceResponse.cast(messageServiceResponse,
-					new ServiceResponse.TypeCaster<ConvertedFingerprintImagesResponse, Message>()
+					TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                       asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return TaskResponse.cast(taskResponse,
+					                         new TaskResponse.TypeCaster<ConvertedFingerprintImagesResponse, Message>()
 					{
 					    @Override
 					    public ConvertedFingerprintImagesResponse cast(Message m)
@@ -329,7 +329,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00011.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -342,7 +342,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00012.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -351,23 +351,23 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 			}
 		};
 		
-		FutureTask<ServiceResponse<ConvertedFingerprintImagesResponse>> futureTask =
-											new FutureTask<ServiceResponse<ConvertedFingerprintImagesResponse>>(callable);
+		FutureTask<TaskResponse<ConvertedFingerprintImagesResponse>> futureTask =
+											new FutureTask<TaskResponse<ConvertedFingerprintImagesResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}
 	
 	@Override
-	public Future<ServiceResponse<ConvertedFingerprintWsqResponse>> convertImagesToWsq(
+	public Future<TaskResponse<ConvertedFingerprintWsqResponse>> convertImagesToWsq(
 																		final Map<Integer, String> fingerprintImagesMap)
 	{
-		final Callable<ServiceResponse<ConvertedFingerprintWsqResponse>> callable =
-														new Callable<ServiceResponse<ConvertedFingerprintWsqResponse>>()
+		final Callable<TaskResponse<ConvertedFingerprintWsqResponse>> callable =
+														new Callable<TaskResponse<ConvertedFingerprintWsqResponse>>()
 		{
 			@Override
-			public ServiceResponse<ConvertedFingerprintWsqResponse> call() throws TimeoutException,
-			                                                                      NotConnectedException,
-			                                                                      CancellationException
+			public TaskResponse<ConvertedFingerprintWsqResponse> call() throws TimeoutException,
+			                                                                   NotConnectedException,
+			                                                                   CancellationException
 			{
 				String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
 				
@@ -400,7 +400,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(RequestException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00013.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(NotConnectedException e)
 				{
@@ -409,7 +409,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00014.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -418,10 +418,10 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				
 				try
 				{
-					ServiceResponse<Message> messageServiceResponse = consumer.processResponses(null,
-                                                        asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-					return ServiceResponse.cast(messageServiceResponse,
-				                            new ServiceResponse.TypeCaster<ConvertedFingerprintWsqResponse, Message>()
+					TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                       asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+					return TaskResponse.cast(taskResponse,
+					                         new TaskResponse.TypeCaster<ConvertedFingerprintWsqResponse, Message>()
 					{
 					    @Override
 					    public ConvertedFingerprintWsqResponse cast(Message m)
@@ -433,7 +433,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(InterruptedException e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00015.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				catch(TimeoutException e)
 				{
@@ -446,7 +446,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				catch(Exception e)
 				{
 					String errorCode = WebsocketFingerprintUtilitiesErrorCodes.L0004_00016.getCode();
-					return ServiceResponse.failure(errorCode, e);
+					return TaskResponse.failure(errorCode, e);
 				}
 				finally
 				{
@@ -455,8 +455,8 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 			}
 		};
 		
-		FutureTask<ServiceResponse<ConvertedFingerprintWsqResponse>> futureTask =
-											new FutureTask<ServiceResponse<ConvertedFingerprintWsqResponse>>(callable);
+		FutureTask<TaskResponse<ConvertedFingerprintWsqResponse>> futureTask =
+											new FutureTask<TaskResponse<ConvertedFingerprintWsqResponse>>(callable);
 		executorService.submit(futureTask);
 		return futureTask;
 	}

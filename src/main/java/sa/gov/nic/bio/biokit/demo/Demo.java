@@ -10,7 +10,7 @@ import sa.gov.nic.bio.biokit.DeviceUtilitiesServiceFactory;
 import sa.gov.nic.bio.biokit.ResponseProcessor;
 import sa.gov.nic.bio.biokit.beans.InitializeResponse;
 import sa.gov.nic.bio.biokit.beans.LivePreviewingResponse;
-import sa.gov.nic.bio.commons.ServiceResponse;
+import sa.gov.nic.bio.commons.TaskResponse;
 import sa.gov.nic.bio.biokit.beans.ShutdownResponse;
 import sa.gov.nic.bio.biokit.beans.UpdateResponse;
 import sa.gov.nic.bio.biokit.exceptions.AlreadyConnectedException;
@@ -1210,11 +1210,11 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<Future<ServiceResponse<ShutdownResponse>>, String> swingWorker =
-												new SwingWorker<Future<ServiceResponse<ShutdownResponse>>, String>()
+		final SwingWorker<Future<TaskResponse<ShutdownResponse>>, String> swingWorker =
+												new SwingWorker<Future<TaskResponse<ShutdownResponse>>, String>()
 		{
 			@Override
-			protected Future<ServiceResponse<ShutdownResponse>> doInBackground()
+			protected Future<TaskResponse<ShutdownResponse>> doInBackground()
 			{
 				boolean isListening = BclUtils.isLocalhostPortListening(BIO_KIT_PORT);
 				if(cancelCommand.isCanceled()) return null;
@@ -1251,14 +1251,14 @@ public class Demo
 				
 				try
 				{
-					final Future<ServiceResponse<ShutdownResponse>> future = get();
+					final Future<TaskResponse<ShutdownResponse>> future = get();
 					
 					if(future == null) return;
 					
-					new SwingWorker<ServiceResponse<ShutdownResponse>, String>()
+					new SwingWorker<TaskResponse<ShutdownResponse>, String>()
 					{
 						@Override
-						protected ServiceResponse<ShutdownResponse> doInBackground() throws Exception
+						protected TaskResponse<ShutdownResponse> doInBackground() throws Exception
 						{
 							return future.get();
 						}
@@ -1274,13 +1274,13 @@ public class Demo
 									return;
 								}
 								
-								ServiceResponse<ShutdownResponse> serviceResponse = get();
+								TaskResponse<ShutdownResponse> taskResponse = get();
 								
-								if(serviceResponse.isSuccess())
+								if(taskResponse.isSuccess())
 								{
 									logDemo("BiokitShutdown() receives a response.");
 									
-									ShutdownResponse result = serviceResponse.getResult();
+									ShutdownResponse result = taskResponse.getResult();
 									
 									if(result.getReturnCode() == ShutdownResponse.SuccessCodes.BIOKIT_IS_SHUTTING_DOWN)
 									{
@@ -1304,8 +1304,8 @@ public class Demo
 								else
 								{
 									logDemo("BiokitShutdown() failed to receive a response. errorCode = " +
-									        serviceResponse.getErrorCode());
-									Exception exception = serviceResponse.getException();
+									        taskResponse.getErrorCode());
+									Exception exception = taskResponse.getException();
 									if(exception != null) exception.printStackTrace();
 								}
 							}
@@ -1371,7 +1371,7 @@ public class Demo
 	
 	private static void onUpdateBiokit()
 	{
-		final Future<ServiceResponse<UpdateResponse>> future = biokitCommander.update();
+		final Future<TaskResponse<UpdateResponse>> future = biokitCommander.update();
 		final JLabel lblStatus = new JLabel("Sending update command to Bio-Kit...");
 		final JDialog dialog = createProgressDialog(frame, "Updating Bio-Kit", lblStatus, new ActionListener()
 		{
@@ -1382,11 +1382,11 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<UpdateResponse>, String> swingWorker =
-															new SwingWorker<ServiceResponse<UpdateResponse>, String>()
+		final SwingWorker<TaskResponse<UpdateResponse>, String> swingWorker =
+															new SwingWorker<TaskResponse<UpdateResponse>, String>()
 		{
 			@Override
-			protected ServiceResponse<UpdateResponse> doInBackground() throws Exception
+			protected TaskResponse<UpdateResponse> doInBackground() throws Exception
 			{
 				return future.get();
 			}
@@ -1402,13 +1402,13 @@ public class Demo
 						return;
 					}
 					
-					ServiceResponse<UpdateResponse> serviceResponse = get();
+					TaskResponse<UpdateResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("BiokitUpdate() receives a response.");
 						
-						UpdateResponse result = serviceResponse.getResult();
+						UpdateResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == UpdateResponse.SuccessCodes.GOING_TO_UPDATE)
 						{
@@ -1436,8 +1436,8 @@ public class Demo
 					else
 					{
 						logDemo("BiokitUpdate() failed to receive a response. errorCode = " +
-						        serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+						        taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -1628,7 +1628,7 @@ public class Demo
 	
 	private static void onFaceDeviceInitialize()
 	{
-		final Future<ServiceResponse<InitializeResponse>> future = faceService.initialize();
+		final Future<TaskResponse<InitializeResponse>> future = faceService.initialize();
 		final JLabel lblStatus = new JLabel("Initializing the Face Device...");
 		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
 		                                            new ActionListener()
@@ -1640,11 +1640,11 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
-														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<TaskResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<TaskResponse<InitializeResponse>, String>()
 		{
 			@Override
-			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
+			protected TaskResponse<InitializeResponse> doInBackground() throws Exception
 			{
 				return future.get();
 			}
@@ -1660,13 +1660,13 @@ public class Demo
 						return;
 					}
 					
-					ServiceResponse<InitializeResponse> serviceResponse = get();
+					TaskResponse<InitializeResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FaceDeviceInitialize() receives a response.");
 						
-						InitializeResponse result = serviceResponse.getResult();
+						InitializeResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
@@ -1696,8 +1696,8 @@ public class Demo
 					else
 					{
 						logDemo("FaceDeviceInitialize() failed to receive a response. errorCode = " +
-								                                                    serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+								                                                    taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -1745,10 +1745,10 @@ public class Demo
 	
 	private static void onFaceStartPreview()
 	{
-		new SwingWorker<ServiceResponse<FaceStartPreviewResponse>, LivePreviewingResponse>()
+		new SwingWorker<TaskResponse<FaceStartPreviewResponse>, LivePreviewingResponse>()
 		{
 			@Override
-			protected ServiceResponse<FaceStartPreviewResponse> doInBackground() throws Exception
+			protected TaskResponse<FaceStartPreviewResponse> doInBackground() throws Exception
 			{
 				ResponseProcessor<LivePreviewingResponse> responseProcessor = new ResponseProcessor<LivePreviewingResponse>()
 				{
@@ -1758,8 +1758,8 @@ public class Demo
 						publish(response);
 					}
 				};
-				Future<ServiceResponse<FaceStartPreviewResponse>> future = faceService.startPreview(faceDeviceName,
-			                                                                                        responseProcessor);
+				Future<TaskResponse<FaceStartPreviewResponse>> future = faceService.startPreview(faceDeviceName,
+				                                                                                 responseProcessor);
 				return future.get();
 			}
 			
@@ -1775,13 +1775,13 @@ public class Demo
 			{
 				try
 				{
-					ServiceResponse<FaceStartPreviewResponse> serviceResponse = get();
+					TaskResponse<FaceStartPreviewResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FaceStartPreview() receives a response.");
 						
-						FaceStartPreviewResponse result = serviceResponse.getResult();
+						FaceStartPreviewResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
@@ -1798,8 +1798,8 @@ public class Demo
 					else
 					{
 						logDemo("FaceStartPreview() failed to receive a response. errorCode = " +
-						        serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+						        taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -1829,14 +1829,14 @@ public class Demo
 	
 	private static void onFaceCapture()
 	{
-		new SwingWorker<ServiceResponse<CaptureFaceResponse>, LivePreviewingResponse>()
+		new SwingWorker<TaskResponse<CaptureFaceResponse>, LivePreviewingResponse>()
 		{
 			@Override
-			protected ServiceResponse<CaptureFaceResponse> doInBackground() throws Exception
+			protected TaskResponse<CaptureFaceResponse> doInBackground() throws Exception
 			{
 				boolean applyIcao = cboApplyIcao.isSelected();
-				Future<ServiceResponse<CaptureFaceResponse>> future = faceService.captureFace(faceDeviceName,
-				                                                                              applyIcao);
+				Future<TaskResponse<CaptureFaceResponse>> future = faceService.captureFace(faceDeviceName,
+				                                                                           applyIcao);
 				return future.get();
 			}
 			
@@ -1845,13 +1845,13 @@ public class Demo
 			{
 				try
 				{
-					ServiceResponse<CaptureFaceResponse> serviceResponse = get();
+					TaskResponse<CaptureFaceResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FaceCapture() receives a response.");
 						
-						CaptureFaceResponse result = serviceResponse.getResult();
+						CaptureFaceResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == CaptureFaceResponse.SuccessCodes.SUCCESS)
 						{
@@ -1900,8 +1900,8 @@ public class Demo
 					else
 					{
 						logDemo("FaceCapture() failed to receive a response. errorCode = " +
-								                                                    serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+								                                                    taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -1934,12 +1934,12 @@ public class Demo
 	
 	private static void onFaceStopPreview()
 	{
-		new SwingWorker<ServiceResponse<FaceStopPreviewResponse>, LivePreviewingResponse>()
+		new SwingWorker<TaskResponse<FaceStopPreviewResponse>, LivePreviewingResponse>()
 		{
 			@Override
-			protected ServiceResponse<FaceStopPreviewResponse> doInBackground() throws Exception
+			protected TaskResponse<FaceStopPreviewResponse> doInBackground() throws Exception
 			{
-				Future<ServiceResponse<FaceStopPreviewResponse>> future = faceService.stopPreview(faceDeviceName);
+				Future<TaskResponse<FaceStopPreviewResponse>> future = faceService.stopPreview(faceDeviceName);
 				return future.get();
 			}
 			
@@ -1948,13 +1948,13 @@ public class Demo
 			{
 				try
 				{
-					ServiceResponse<FaceStopPreviewResponse> serviceResponse = get();
+					TaskResponse<FaceStopPreviewResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FaceStopPreview() receives a response.");
 						
-						FaceStopPreviewResponse result = serviceResponse.getResult();
+						FaceStopPreviewResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == FaceStopPreviewResponse.SuccessCodes.SUCCESS)
 						{
@@ -1978,8 +1978,8 @@ public class Demo
 					else
 					{
 						logDemo("FaceStopPreview() failed to receive a response. errorCode = " +
-								                                                    serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+								                                                    taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -2007,7 +2007,7 @@ public class Demo
 	
 	private static void onDeinitializeFaceDevice()
 	{
-		final Future<ServiceResponse<InitializeResponse>> future = faceService.deinitialize(faceDeviceName);
+		final Future<TaskResponse<InitializeResponse>> future = faceService.deinitialize(faceDeviceName);
 		final JLabel lblStatus = new JLabel("Deinitializing the Face Device...");
 		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
 	                                                new ActionListener()
@@ -2019,11 +2019,11 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
-														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<TaskResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<TaskResponse<InitializeResponse>, String>()
 		{
 			@Override
-			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
+			protected TaskResponse<InitializeResponse> doInBackground() throws Exception
 			{
 				return future.get();
 			}
@@ -2039,13 +2039,13 @@ public class Demo
 						return;
 					}
 					
-					ServiceResponse<InitializeResponse> serviceResponse = get();
+					TaskResponse<InitializeResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FaceDeviceDeinitialize() receives a response.");
 						
-						InitializeResponse result = serviceResponse.getResult();
+						InitializeResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
@@ -2075,8 +2075,8 @@ public class Demo
 					else
 					{
 						logDemo("FaceDeviceDeinitialize() failed to receive a response. errorCode = " +
-						        serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+						        taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -2155,7 +2155,7 @@ public class Demo
 			}
 		}
 		
-		final Future<ServiceResponse<DuplicatedFingerprintsResponse>> future =
+		final Future<TaskResponse<DuplicatedFingerprintsResponse>> future =
 											fingerprintUtilitiesService.findDuplicatedFingerprints(gallery, probes);
 		final JLabel lblStatus = new JLabel("Initializing the Fingerprint Device...");
 		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
@@ -2168,11 +2168,11 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<DuplicatedFingerprintsResponse>, String> swingWorker =
-											new SwingWorker<ServiceResponse<DuplicatedFingerprintsResponse>, String>()
+		final SwingWorker<TaskResponse<DuplicatedFingerprintsResponse>, String> swingWorker =
+											new SwingWorker<TaskResponse<DuplicatedFingerprintsResponse>, String>()
 		{
 			@Override
-			protected ServiceResponse<DuplicatedFingerprintsResponse> doInBackground() throws Exception
+			protected TaskResponse<DuplicatedFingerprintsResponse> doInBackground() throws Exception
 			{
 				return future.get();
 			}
@@ -2188,13 +2188,13 @@ public class Demo
 						return;
 					}
 					
-					ServiceResponse<DuplicatedFingerprintsResponse> serviceResponse = get();
+					TaskResponse<DuplicatedFingerprintsResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FingerprintFindDuplicates() receives a response.");
 						
-						DuplicatedFingerprintsResponse result = serviceResponse.getResult();
+						DuplicatedFingerprintsResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == DuplicatedFingerprintsResponse.SuccessCodes.SUCCESS)
 						{
@@ -2222,8 +2222,8 @@ public class Demo
 					else
 					{
 						logDemo("FingerprintFindDuplicates() failed to receive a response. errorCode = " +
-						        serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+						        taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -2274,7 +2274,7 @@ public class Demo
 	
 	private static void onFingerprintDeviceInitialize(int position)
 	{
-		final Future<ServiceResponse<InitializeResponse>> future = fingerprintService.initialize(position);
+		final Future<TaskResponse<InitializeResponse>> future = fingerprintService.initialize(position);
 		final JLabel lblStatus = new JLabel("Initializing the Fingerprint Device...");
 		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
 		                                            new ActionListener()
@@ -2286,11 +2286,11 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
-														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<TaskResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<TaskResponse<InitializeResponse>, String>()
 		{
 			@Override
-			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
+			protected TaskResponse<InitializeResponse> doInBackground() throws Exception
 			{
 				return future.get();
 			}
@@ -2306,13 +2306,13 @@ public class Demo
 						return;
 					}
 					
-					ServiceResponse<InitializeResponse> serviceResponse = get();
+					TaskResponse<InitializeResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FingerprintDeviceInitialize() receives a response.");
 						
-						InitializeResponse result = serviceResponse.getResult();
+						InitializeResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
@@ -2347,8 +2347,8 @@ public class Demo
 					else
 					{
 						logDemo("FingerprintDeviceInitialize() failed to receive a response. errorCode = " +
-								                                                    serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+								                                                    taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -2397,10 +2397,10 @@ public class Demo
 	private static void onFingerprintStartPreviewAndAutoCapture(final int position, final int expectedFingersCount,
                                                                 final List<Integer> missingFingers)
 	{
-		new SwingWorker<ServiceResponse<CaptureFingerprintResponse>, LivePreviewingResponse>()
+		new SwingWorker<TaskResponse<CaptureFingerprintResponse>, LivePreviewingResponse>()
 		{
 			@Override
-			protected ServiceResponse<CaptureFingerprintResponse> doInBackground() throws Exception
+			protected TaskResponse<CaptureFingerprintResponse> doInBackground() throws Exception
 			{
 				currentFingerprintDeviceCapturingPosition = position;
 				ResponseProcessor<LivePreviewingResponse> responseProcessor =
@@ -2412,7 +2412,7 @@ public class Demo
 						publish(response);
 					}
 				};
-				Future<ServiceResponse<CaptureFingerprintResponse>> future =
+				Future<TaskResponse<CaptureFingerprintResponse>> future =
 						fingerprintService.startPreviewAndAutoCapture(fingerprintDeviceName, position,
 						                                              expectedFingersCount, missingFingers,
 						                                              true, true,
@@ -2432,13 +2432,13 @@ public class Demo
 			{
 				try
 				{
-					ServiceResponse<CaptureFingerprintResponse> serviceResponse = get();
+					TaskResponse<CaptureFingerprintResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FingerprintStartPreviewAndAutoCapture() receives a response.");
 						
-						CaptureFingerprintResponse result = serviceResponse.getResult();
+						CaptureFingerprintResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == CaptureFingerprintResponse.SuccessCodes.SUCCESS)
 						{
@@ -2640,8 +2640,8 @@ public class Demo
 					{
 						logDemo(
 							"FingerprintStartPreviewAndAutoCapture() failed to receive a response. errorCode = " +
-							serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+							taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -2672,12 +2672,12 @@ public class Demo
 	
 	private static void onFingerprintStopPreview()
 	{
-		new SwingWorker<ServiceResponse<FingerprintStopPreviewResponse>, LivePreviewingResponse>()
+		new SwingWorker<TaskResponse<FingerprintStopPreviewResponse>, LivePreviewingResponse>()
 		{
 			@Override
-			protected ServiceResponse<FingerprintStopPreviewResponse> doInBackground() throws Exception
+			protected TaskResponse<FingerprintStopPreviewResponse> doInBackground() throws Exception
 			{
-				Future<ServiceResponse<FingerprintStopPreviewResponse>> future =
+				Future<TaskResponse<FingerprintStopPreviewResponse>> future =
 					fingerprintService.cancelCapture(fingerprintDeviceName, currentFingerprintDeviceCapturingPosition);
 				return future.get();
 			}
@@ -2687,13 +2687,13 @@ public class Demo
 			{
 				try
 				{
-					ServiceResponse<FingerprintStopPreviewResponse> serviceResponse = get();
+					TaskResponse<FingerprintStopPreviewResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FingerprintStopPreview() receives a response.");
 						
-						FingerprintStopPreviewResponse result = serviceResponse.getResult();
+						FingerprintStopPreviewResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == CaptureFingerprintResponse.SuccessCodes.SUCCESS)
 						{
@@ -2724,8 +2724,8 @@ public class Demo
 					else
 					{
 						logDemo("FingerprintStopPreview() failed to receive a response. errorCode = " +
-		                        serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+		                        taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}
@@ -2753,8 +2753,8 @@ public class Demo
 	
 	private static void onDeinitializeFingerprintDevice(int position)
 	{
-		final Future<ServiceResponse<InitializeResponse>> future = fingerprintService.deinitialize(position,
-	                                                                                           fingerprintDeviceName);
+		final Future<TaskResponse<InitializeResponse>> future = fingerprintService.deinitialize(position,
+		                                                                                        fingerprintDeviceName);
 		final JLabel lblStatus = new JLabel("Deinitializing the Fingerprint Device...");
 		final JDialog dialog = createProgressDialog(frame, "Waiting for Bio-Kit", lblStatus,
 		                                            new ActionListener()
@@ -2766,11 +2766,11 @@ public class Demo
 			}
 		});
 		
-		final SwingWorker<ServiceResponse<InitializeResponse>, String> swingWorker =
-														new SwingWorker<ServiceResponse<InitializeResponse>, String>()
+		final SwingWorker<TaskResponse<InitializeResponse>, String> swingWorker =
+														new SwingWorker<TaskResponse<InitializeResponse>, String>()
 		{
 			@Override
-			protected ServiceResponse<InitializeResponse> doInBackground() throws Exception
+			protected TaskResponse<InitializeResponse> doInBackground() throws Exception
 			{
 				return future.get();
 			}
@@ -2786,13 +2786,13 @@ public class Demo
 						return;
 					}
 					
-					ServiceResponse<InitializeResponse> serviceResponse = get();
+					TaskResponse<InitializeResponse> taskResponse = get();
 					
-					if(serviceResponse.isSuccess())
+					if(taskResponse.isSuccess())
 					{
 						logDemo("FingerprintDeviceDeinitialize() receives a response.");
 						
-						InitializeResponse result = serviceResponse.getResult();
+						InitializeResponse result = taskResponse.getResult();
 						
 						if(result.getReturnCode() == InitializeResponse.SuccessCodes.SUCCESS)
 						{
@@ -2827,8 +2827,8 @@ public class Demo
 					else
 					{
 						logDemo("FingerprintDeviceDeinitialize() failed to receive a response. errorCode = " +
-						        serviceResponse.getErrorCode());
-						Exception exception = serviceResponse.getException();
+						        taskResponse.getErrorCode());
+						Exception exception = taskResponse.getException();
 						if(exception != null) exception.printStackTrace();
 					}
 				}

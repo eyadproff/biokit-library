@@ -2,6 +2,6 @@ package sa.gov.nic.bio.biokit;
 
 public interface DeviceService
 {
-	//Future<ServiceResponse<InitializeResponse>> initialize();
-	//Future<ServiceResponse<InitializeResponse>> reinitialize(String currentDeviceName);
+	//Future<TaskResponse<InitializeResponse>> initialize();
+	//Future<TaskResponse<InitializeResponse>> reinitialize(String currentDeviceName);
 }

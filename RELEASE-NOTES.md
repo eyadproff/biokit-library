@@ -13,9 +13,14 @@
 
 ---
 
+## v2018.11.1
+
+- ENH: Unify the task response.
+- ENH: Hide javax.websocket.CloseReason from the API.
+
 ## v2018.09.1
 
-- ENH: move the class ServiceResponse from sa.gov.nic.bio.biokit.beans to sa.gov.nic.bio.commons.
+- ENH: Rename the class ServiceResponse to TaskResponse and move it from sa.gov.nic.bio.biokit.beans to sa.gov.nic.bio.commons.
 
 ## v2018.08.2
 

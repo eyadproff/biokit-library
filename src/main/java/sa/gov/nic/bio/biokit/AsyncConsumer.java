@@ -1,6 +1,6 @@
 package sa.gov.nic.bio.biokit;
 
-import sa.gov.nic.bio.commons.ServiceResponse;
+import sa.gov.nic.bio.commons.TaskResponse;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
@@ -78,8 +78,8 @@ public class AsyncConsumer
         cancelled.set(true);
     }
 
-    public ServiceResponse<Message> processResponses(ResponseProcessor<Message> responseProcessor, long timeout,
-                                                     TimeUnit unit) throws InterruptedException, TimeoutException,
+    public TaskResponse<Message> processResponses(ResponseProcessor<Message> responseProcessor, long timeout,
+                                                  TimeUnit unit) throws InterruptedException, TimeoutException,
                                                                            CancellationException
     {
         while(true)
@@ -93,11 +93,11 @@ public class AsyncConsumer
             {
                 Message message = response.getMessage();
 
-                if(message.isEnd()) return ServiceResponse.success(message);
+                if(message.isEnd()) return TaskResponse.success(message);
                 else if(responseProcessor != null) responseProcessor.processResponse(message);
                 else LOGGER.warning("It is not a final response and the response processor is null!");
             }
-            else return ServiceResponse.failure(response.errorCode, response.exception);
+            else return TaskResponse.failure(response.errorCode, response.exception);
         }
     }
 
