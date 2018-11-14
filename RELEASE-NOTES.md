@@ -9,7 +9,7 @@
 | NEW    | new feature added            |
 | CHN    | change functionality         |
 
-**VERSION SCHEMA:** vYYYY.MM.#SEQ
+VERSION SCHEMA: vYYYY.MM.#SEQ
 
 ---
 

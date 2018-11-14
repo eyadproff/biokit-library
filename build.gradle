@@ -6,7 +6,7 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
-mainClassName = 'sa.gov.nic.bio.biokit.demo.Demo';
+mainClassName = 'sa.gov.nic.bio.biokit.demo.Demo'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -26,8 +26,9 @@ dependencies {
     implementation name: "tomcat-util-9.0.2"
     implementation name: "tomcat-websocket-9.0.2"
     implementation name: "javax.websocket-api-1.1"
-    implementation name: "gson-2.8.2"
-    implementation name: "bcl-utils-2018.03.1"
+    implementation name: "gson-2.8.5"
+    implementation name: "bio.commons-2018.11.1"
+    implementation name: "bcl-utils-2018.11.1"
 }
 
 jar {
