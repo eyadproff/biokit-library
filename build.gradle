@@ -1,5 +1,5 @@
 group 'sa.gov.nic.bio'
-version '2018.11.1'
+version '2019.02.1'
 
 apply plugin: 'java-library'
 apply plugin: 'application'
