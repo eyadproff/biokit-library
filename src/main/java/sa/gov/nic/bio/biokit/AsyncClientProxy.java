@@ -8,10 +8,12 @@ import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class AsyncClientProxy<T>
 {
-	protected List<AsyncConsumer> consumers = Collections.synchronizedList(new ArrayList<AsyncConsumer>());
+	protected Queue<AsyncConsumer> consumers = new ConcurrentLinkedQueue<AsyncConsumer>();
 	protected final String serverUrl;
 	private final int responseTimeoutSeconds;
 	
