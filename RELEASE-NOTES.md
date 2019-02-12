@@ -13,7 +13,7 @@ VERSION SCHEMA: vYYYY.MM.#SEQ
 
 ---
 
-## v2018.02.1
+## v2019.02.1
 
 - FIX: Replace ArrayList-with-locks with ConcurrentLinkedQueue to avoid ArrayIndexOutOfBoundsException (#1) and ConcurrentModificationException (#2).
 
