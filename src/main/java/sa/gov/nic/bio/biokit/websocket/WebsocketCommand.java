@@ -14,7 +14,8 @@ public enum WebsocketCommand
     CONVERT_IMAGE_TO_WSQ("CONVERT_IMAGE_TO_WSQ"),
     SHUTDOWN("shutdown"),
     UPDATER("update"),
-    SCAN_TENPRINT("SCAN_TENPRINT");
+    SCAN_TENPRINT("SCAN_TENPRINT"),
+    GET_ICAO_IMAGE("GET_ICAO_IMAGE");
 
     private final String command;
 
