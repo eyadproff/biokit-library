@@ -13,6 +13,12 @@ VERSION SCHEMA: vYYYY.MM.#SEQ
 
 ---
 
+## v2019.05.1
+
+- NEW: Add segmentationRequired parameter to FingerprintService.startPreviewAndAutoCapture().
+
+---
+
 ## v2019.03.1
 
 - NEW: Add Get-Icao-Image service.
