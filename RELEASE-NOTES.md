@@ -13,6 +13,12 @@ VERSION SCHEMA: vYYYY.MM.#SEQ
 
 ---
 
+## v2019.08.1
+
+- FIX: Retrieve WSQ images with segment slaps.
+
+---
+
 ## v2019.03.1
 
 - NEW: Add Get-Icao-Image service.
