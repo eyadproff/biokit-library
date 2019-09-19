@@ -178,7 +178,9 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				message.setPosition(position);
 				message.setExpectedFingersCount(String.valueOf(expectedFingersCount));
 				message.setMissingFingersList(missingFingers);
-				
+				message.setSegmentedWsqRequired(true);
+				message.setWsqRequired(true);
+
 				AsyncConsumer consumer = new AsyncConsumer();
 				consumer.setTransactionId(transactionId);
 				asyncClientProxy.registerConsumer(consumer);
@@ -282,7 +284,7 @@ public class WebsocketFingerprintUtilitiesServiceImpl implements FingerprintUtil
 				message.setType(ServiceType.FINGERPRINT.getType());
 				message.setOperation(WebsocketCommand.CONVERT_WSQ_TO_IMAGE.getCommand());
 				message.setDmSegmentedFingers(dmFingerDataList);
-				
+
 				AsyncConsumer consumer = new AsyncConsumer();
 				consumer.setTransactionId(transactionId);
 				asyncClientProxy.registerConsumer(consumer);
