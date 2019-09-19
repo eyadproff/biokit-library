@@ -13,6 +13,12 @@ VERSION SCHEMA: vYYYY.MM.#SEQ
 
 ---
 
+## v2019.09.1
+
+- NEW: Add segmentationRequired parameter to FingerprintService.startPreviewAndAutoCapture().
+
+---
+
 ## v2019.08.1
 
 - FIX: Retrieve WSQ images with segment slaps.
