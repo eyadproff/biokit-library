@@ -2,7 +2,7 @@ package sa.gov.nic.bio.biokit.websocket;
 
 public enum ServiceType
 {
-    FINGERPRINT("FINGER"), FACE("FACE"), PASSPORT("PASSPORT");
+    FINGERPRINT("FINGER"), FACE("FACE"), IRIS("IRIS"), PASSPORT("PASSPORT");
 
     private final String type;
 

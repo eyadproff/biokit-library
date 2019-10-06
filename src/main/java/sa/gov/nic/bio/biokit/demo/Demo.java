@@ -2413,7 +2413,7 @@ public class Demo
 						fingerprintService.startPreviewAndAutoCapture(fingerprintDeviceName, position,
 						                                              expectedFingersCount, missingFingers,
 						                                              true, true,
-						                                              responseProcessor);
+						                                              true, responseProcessor);
 				return future.get();
 			}
 			

@@ -3,7 +3,6 @@ package sa.gov.nic.bio.biokit.websocket.beans;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Message implements Serializable
 {
@@ -39,6 +38,8 @@ public class Message implements Serializable
 	private String slapImageForSegmentation;
 	private String imageFormat;
 	private MRZData mrzData;
+	private String rightIrisImage;
+	private String leftIrisImage;
 	
 	public String getType(){return type;}
 	public void setType(String type){this.type = type;}
@@ -139,6 +140,12 @@ public class Message implements Serializable
 	public MRZData getMrzData(){return mrzData;}
 	public void setMrzData(MRZData mrzData){this.mrzData = mrzData;}
 	
+	public String getRightIrisImage(){return rightIrisImage;}
+	public void setRightIrisImage(String rightIrisImage){this.rightIrisImage = rightIrisImage;}
+	
+	public String getLeftIrisImage(){return leftIrisImage;}
+	public void setLeftIrisImage(String leftIrisImage){this.leftIrisImage = leftIrisImage;}
+	
 	@Override
 	public String toString()
 	{
@@ -155,7 +162,8 @@ public class Message implements Serializable
 			   currentDeviceName + '\'' + ", noTimeout=" + noTimeout + ", segmentedWsqRequired=" +
 			   segmentedWsqRequired + ", fingerDeviceStatus=" + fingerDeviceStatus + ", faceDeviceStatus=" +
 			   faceDeviceStatus + ", slapImageForSegmentation='" + slapImageForSegmentation + '\'' +
-			   ", imageFormat='" + imageFormat + '\'' + ", mrzData='" + mrzData + '\'' + '}';
+			   ", imageFormat='" + imageFormat + '\'' + ", mrzData='" + mrzData + '\'' + ", rightIrisImage='" +
+				rightIrisImage + '\'' + ", leftIrisImage='" + leftIrisImage + '\'' + '}';
 	}
 	
 	public String toShortString()
@@ -176,6 +184,7 @@ public class Message implements Serializable
 			   ", segmentedWsqRequired=" + segmentedWsqRequired + ", fingerDeviceStatus=" + fingerDeviceStatus +
 			   ", faceDeviceStatus=" + faceDeviceStatus + ", slapImageForSegmentation=isNull?='" +
 			   (slapImageForSegmentation == null) + '\'' + ", imageFormat='" + imageFormat + '\'' + ", mrzData='" +
-			   mrzData + '\'' + '}';
+			   mrzData + '\'' + ", rightIrisImage=isNull?'" + (rightIrisImage == null) + '\'' +
+			   ", leftIrisImage=isNull?'" + (leftIrisImage == null) + '\'' + '}';
 	}
 }

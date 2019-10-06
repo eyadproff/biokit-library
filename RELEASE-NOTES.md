@@ -16,6 +16,7 @@ VERSION SCHEMA: vYYYY.MM.#SEQ
 ## v2019.09.1
 
 - NEW: Add segmentationRequired parameter to FingerprintService.startPreviewAndAutoCapture().
+- NEW: Add iris scanner.
 
 ---
 
