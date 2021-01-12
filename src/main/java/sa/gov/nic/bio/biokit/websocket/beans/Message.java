@@ -40,6 +40,8 @@ public class Message implements Serializable
 	private MRZData mrzData;
 	private String rightIrisImage;
 	private String leftIrisImage;
+	public String rightIrisCompressed;
+	public String leftIrisCompressed;
 	
 	public String getType(){return type;}
 	public void setType(String type){this.type = type;}
@@ -186,5 +188,21 @@ public class Message implements Serializable
 			   (slapImageForSegmentation == null) + '\'' + ", imageFormat='" + imageFormat + '\'' + ", mrzData='" +
 			   mrzData + '\'' + ", rightIrisImage=isNull?'" + (rightIrisImage == null) + '\'' +
 			   ", leftIrisImage=isNull?'" + (leftIrisImage == null) + '\'' + '}';
+	}
+
+	public String getRightIrisCompressed() {
+		return rightIrisCompressed;
+	}
+
+	public void setRightIrisCompressed(String rightIrisCompressed) {
+		this.rightIrisCompressed = rightIrisCompressed;
+	}
+
+	public String getLeftIrisCompressed() {
+		return leftIrisCompressed;
+	}
+
+	public void setLeftIrisCompressed(String leftIrisCompressed) {
+		this.leftIrisCompressed = leftIrisCompressed;
 	}
 }

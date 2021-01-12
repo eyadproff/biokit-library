@@ -12,6 +12,9 @@
 VERSION SCHEMA: vYYYY.MM.#SEQ
 
 ---
+## v2021.01.1
+
+- NEW: added new integration with biokit to retrieve Iris images and compressed one.
 
 ## v2019.09.1
 

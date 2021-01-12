@@ -21,6 +21,8 @@ public class CaptureIrisResponse
 	private String returnMessage;
 	private String rightIrisImageBase64;
 	private String leftIrisImageBase64;
+	private String rightIrisCompressedImageBase64;
+	private String leftIrisCompressedImageBase64;
     
     public CaptureIrisResponse(){}
 	
@@ -31,8 +33,10 @@ public class CaptureIrisResponse
 			this.transactionId = message.getTransactionId();
 			this.returnCode = message.getReturnCode();
 			this.returnMessage = message.getReturnMessage();
-			this.rightIrisImageBase64 = message.getRightIrisImage();
 			this.leftIrisImageBase64 = message.getLeftIrisImage();
+			this.leftIrisCompressedImageBase64 = message.getLeftIrisCompressed();
+			this.rightIrisImageBase64 = message.getRightIrisImage();
+			this.rightIrisCompressedImageBase64 = message.getRightIrisCompressed();
 		}
 	}
 	
@@ -65,5 +69,21 @@ public class CaptureIrisResponse
 			   ", returnMessage='" + returnMessage + '\'' + ", rightIrisImageBase64=isNull?" + "='" +
 			   (rightIrisImageBase64 == null) + '\'' + ", leftIrisImageBase64isNull?='" + (leftIrisImageBase64 == null) +
 			   '\'' + '}';
+	}
+
+	public String getRightIrisCompressedImageBase64() {
+		return rightIrisCompressedImageBase64;
+	}
+
+	public void setRightIrisCompressedImageBase64(String rightIrisCompressedImageBase64) {
+		this.rightIrisCompressedImageBase64 = rightIrisCompressedImageBase64;
+	}
+
+	public String getLeftIrisCompressedImageBase64() {
+		return leftIrisCompressedImageBase64;
+	}
+
+	public void setLeftIrisCompressedImageBase64(String leftIrisCompressedImageBase64) {
+		this.leftIrisCompressedImageBase64 = leftIrisCompressedImageBase64;
 	}
 }
