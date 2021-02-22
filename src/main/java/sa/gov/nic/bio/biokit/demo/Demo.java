@@ -38,27 +38,7 @@ import sa.gov.nic.bio.biokit.websocket.beans.Message;
 import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-import javax.swing.UIManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.websocket.CloseReason;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -122,6 +102,7 @@ public class Demo
 	private static JLabel lblFingerprintCaptured;
 	private static JButton btnRightSlapFindDuplicates;
 	private static JButton btnLeftSlapFindDuplicates;
+	private static JButton btnSegmentFingeprintsFromImages;
 	private static JButton btnThumbsFindDuplicates;
 	
 	private static JTextField txtIcaoResult;
@@ -585,7 +566,8 @@ public class Demo
 		panSouth.add(btnCapture);
 		panSouth.add(btnStopPreview);
 		panSouth.add(btnClearFields);
-		
+
+
 		btnInitialize.addActionListener(new ActionListener()
 		{
 			@Override
@@ -639,6 +621,7 @@ public class Demo
 				onFaceFieldsClear();
 			}
 		});
+
 		
 		
 		return panMain;
@@ -665,6 +648,8 @@ public class Demo
 		JPanel panFingerprintCaptured = new JPanel(new BorderLayout());
 		panFingerprintCaptured.setBorder(BorderFactory.createTitledBorder("Fingerprint Captured"));
 		panFingerprintCaptured.setPreferredSize(new Dimension(0, 189));
+		JButton btnSegmentFingeprintsFromImages = new JButton("Segment Fingerprints");
+		panSouth.add(btnSegmentFingeprintsFromImages);
 		
 		JSplitPane horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panFingerprintPreview,
 		                                                panFingerprintCaptured);
@@ -922,6 +907,13 @@ public class Demo
             }
         });
 
+
+		btnSegmentFingeprintsFromImages.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OnSegmentFingeprints();
+			}
+		});
         btnStartPreviewAndAutoCapture.addActionListener(new ActionListener()
         {
             @Override
@@ -1089,7 +1081,18 @@ public class Demo
 		txtMinutiaeCountLeftLittle.setText("");
 		txtIntensityLeftLittle.setText("");
 	}
-	
+	private static void OnSegmentFingeprints(){
+
+		JFileChooser jFileChooser = new JFileChooser();
+		jFileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = jFileChooser.showDialog(dialog.getParent(), "OK");
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = jFileChooser.getSelectedFile();
+		}
+
+
+
+	}
 	private static void onStartBiokit()
 	{
 		final CancelCommand cancelCommand = new CancelCommand();

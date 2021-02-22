@@ -12,6 +12,10 @@
 VERSION SCHEMA: vYYYY.MM.#SEQ
 
 ---
+## v2021.02.1
+
+- NEW: added new cancel capture iris.
+---
 ## v2021.01.1
 
 - NEW: added new integration with biokit to retrieve Iris images and compressed one.

@@ -6,20 +6,16 @@ import sa.gov.nic.bio.biokit.beans.InitializeResponse;
 import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
 import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.exceptions.TimeoutException;
+import sa.gov.nic.bio.biokit.fingerprint.WebsocketFingerprintErrorCodes;
 import sa.gov.nic.bio.biokit.iris.beans.CaptureIrisResponse;
+import sa.gov.nic.bio.biokit.iris.beans.IrisiStopCaptureResponse;
 import sa.gov.nic.bio.biokit.websocket.ServiceType;
 import sa.gov.nic.bio.biokit.websocket.WebsocketClient;
 import sa.gov.nic.bio.biokit.websocket.WebsocketCommand;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 import sa.gov.nic.bio.commons.TaskResponse;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class WebsocketIrisServiceImpl implements IrisService
 {
@@ -210,4 +206,96 @@ public class WebsocketIrisServiceImpl implements IrisService
 	    executorService.submit(futureTask);
 	    return futureTask;
     }
+
+	@Override
+	public Future<TaskResponse<IrisiStopCaptureResponse>> cancelCapture(final String currentDeviceName, final int position) {
+		Callable<TaskResponse<IrisiStopCaptureResponse>> callable =
+				new Callable<TaskResponse<IrisiStopCaptureResponse>>()
+				{
+					@Override
+					public TaskResponse<IrisiStopCaptureResponse> call() throws TimeoutException,
+							NotConnectedException,
+							CancellationException
+					{
+						String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+
+						Message message = new Message();
+						message.setTransactionId(transactionId);
+						message.setType(ServiceType.IRIS.getType());
+						message.setOperation(WebsocketCommand.CANCEL_CAPTURE.getCommand());
+						message.setPosition(position);
+						message.setCurrentDeviceName(currentDeviceName);
+
+						AsyncConsumer consumer = new AsyncConsumer();
+						consumer.setTransactionId(transactionId);
+						asyncClientProxy.registerConsumer(consumer);
+
+						boolean successfullySent = false;
+						try
+						{
+							asyncClientProxy.sendCommandAsync(message);
+							successfullySent = true;
+						}
+						catch(RequestException e)
+						{
+							String errorCode = WebsocketFingerprintErrorCodes.L0003_00013.getCode();
+							return TaskResponse.failure(errorCode, e);
+						}
+						catch(NotConnectedException e)
+						{
+							throw e;
+						}
+						catch(Exception e)
+						{
+							String errorCode = WebsocketFingerprintErrorCodes.L0003_00014.getCode();
+							return TaskResponse.failure(errorCode, e);
+						}
+						finally
+						{
+							if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+						}
+
+						try
+						{
+							TaskResponse<Message> taskResponse = consumer.processResponses(null,
+									asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+							return TaskResponse.cast(taskResponse,
+									new TaskResponse.TypeCaster<IrisiStopCaptureResponse, Message>()
+									{
+										@Override
+										public IrisiStopCaptureResponse cast(Message m)
+										{
+											return new IrisiStopCaptureResponse(m);
+										}
+									});
+						}
+						catch(InterruptedException e)
+						{
+							String errorCode = WebsocketFingerprintErrorCodes.L0003_00015.getCode();
+							return TaskResponse.failure(errorCode, e);
+						}
+						catch(TimeoutException e)
+						{
+							throw e;
+						}
+						catch(CancellationException e)
+						{
+							throw e;
+						}
+						catch(Exception e)
+						{
+							String errorCode = WebsocketFingerprintErrorCodes.L0003_00016.getCode();
+							return TaskResponse.failure(errorCode, e);
+						}
+						finally
+						{
+							asyncClientProxy.unregisterConsumer(consumer);
+						}
+					}
+				};
+
+		FutureTask<TaskResponse<IrisiStopCaptureResponse>> futureTask = new FutureTask<TaskResponse<IrisiStopCaptureResponse>>(callable);
+		executorService.submit(futureTask);
+		return futureTask;
+	}
 }

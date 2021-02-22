@@ -20,10 +20,13 @@ public class CaptureIrisResponse
     private int returnCode;
 	private String returnMessage;
 	private String rightIrisImageBase64;
+	private String rightIrisScore;
 	private String leftIrisImageBase64;
+	private String leftIrisScore;
 	private String rightIrisCompressedImageBase64;
 	private String leftIrisCompressedImageBase64;
-    
+	private String capturedFaceImage;
+
     public CaptureIrisResponse(){}
 	
 	public CaptureIrisResponse(Message message)
@@ -31,12 +34,17 @@ public class CaptureIrisResponse
 		if(message != null)
 		{
 			this.transactionId = message.getTransactionId();
+			this.capturedFaceImage = message.getFinalImage();
 			this.returnCode = message.getReturnCode();
 			this.returnMessage = message.getReturnMessage();
 			this.leftIrisImageBase64 = message.getLeftIrisImage();
 			this.leftIrisCompressedImageBase64 = message.getLeftIrisCompressed();
 			this.rightIrisImageBase64 = message.getRightIrisImage();
 			this.rightIrisCompressedImageBase64 = message.getRightIrisCompressed();
+			this.rightIrisCompressedImageBase64 = message.getRightIrisCompressed();
+			this.rightIrisCompressedImageBase64 = message.getRightIrisCompressed();
+			this.rightIrisScore = message.getRightIrisScore();
+			this.leftIrisScore = message.getLeftIrisScore();
 		}
 	}
 	
@@ -85,5 +93,29 @@ public class CaptureIrisResponse
 
 	public void setLeftIrisCompressedImageBase64(String leftIrisCompressedImageBase64) {
 		this.leftIrisCompressedImageBase64 = leftIrisCompressedImageBase64;
+	}
+
+	public String getRightIrisScore() {
+		return rightIrisScore;
+	}
+
+	public void setRightIrisScore(String rightIrisScore) {
+		this.rightIrisScore = rightIrisScore;
+	}
+
+	public String getLeftIrisScore() {
+		return leftIrisScore;
+	}
+
+	public void setLeftIrisScore(String leftIrisScore) {
+		this.leftIrisScore = leftIrisScore;
+	}
+
+	public String getCapturedFaceImage() {
+		return capturedFaceImage;
+	}
+
+	public void setCapturedFaceImage(String capturedFaceImage) {
+		this.capturedFaceImage = capturedFaceImage;
 	}
 }
