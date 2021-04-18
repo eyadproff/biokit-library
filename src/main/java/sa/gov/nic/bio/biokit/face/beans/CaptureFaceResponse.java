@@ -27,6 +27,7 @@ public class CaptureFaceResponse
 		public static final String RIGHT_EYE_CLOSED = "RIGHT_EYE_CLOSED";
 		public static final String LEFT_EYE_CLOSED = "LEFT_EYE_CLOSED";
 		public static final String EYE_GAZE_ERROR = "EYE_GAZE_ERROR";
+		public static final String IMAGE_IS_OUT_OF_BOUNDARY = "IMAGE_IS_OUT_OF_BOUNDARY";
 	}
 	
 	private String transactionId;
