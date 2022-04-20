@@ -10,17 +10,11 @@ import sa.gov.nic.bio.biokit.exceptions.RequestException;
 import sa.gov.nic.bio.biokit.utils.JsonMapper;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.ContainerProvider;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
+import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
@@ -69,7 +63,34 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         }
         catch(Exception e)
         {
-            throw new ConnectionException("Failed to connect to the websocket server: " + serverUrl, e);
+            if(e instanceof DeploymentException){
+                //try again after
+                int tries = 0;boolean connected = false;
+                while (tries<=3 && !connected) {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                        session = webSocketContainer.connectToServer(this, new URI(serverUrl));
+                        connected = true;
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                        tries++;
+                    } catch (DeploymentException deploymentException) {
+                        deploymentException.printStackTrace();
+                        tries++;
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                        tries++;
+                    } catch (URISyntaxException uriSyntaxException) {
+                        uriSyntaxException.printStackTrace();
+                        tries++;
+                    }
+                }
+                if(!connected){
+                    throw new ConnectionException("Failed to connect to the websocket server: " + serverUrl, e);
+                }
+            }else {
+                throw new ConnectionException("Failed to connect to the websocket server: " + serverUrl, e);
+            }
         }
         
         session.setMaxTextMessageBufferSize(maxTextMessageBufferSize);
