@@ -28,4 +28,6 @@ public enum WebsocketCommand
     {
         return command;
     }
+
+
 }

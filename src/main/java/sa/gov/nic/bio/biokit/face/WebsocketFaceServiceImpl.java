@@ -37,79 +37,76 @@ public class WebsocketFaceServiceImpl implements FaceService
     @Override
     public Future<TaskResponse<InitializeResponse>> initialize()
     {
-        Callable<TaskResponse<InitializeResponse>> callable = new Callable<TaskResponse<InitializeResponse>>()
-        {
-            @Override
-            public TaskResponse<InitializeResponse> call() throws TimeoutException, NotConnectedException
+        Callable<TaskResponse<InitializeResponse>> callable = () -> {
+            String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+
+            Message message = new Message();
+            message.setTransactionId(transactionId);
+            message.setType(ServiceType.FACE.getType());
+            message.setOperation(WebsocketCommand.INITIALIZE_DEVICE.getCommand());
+
+            AsyncConsumer consumer = new AsyncConsumer();
+            consumer.setTransactionId(transactionId);
+            asyncClientProxy.registerConsumer(consumer);
+
+
+            //SEND #####################################################################################
+            boolean successfullySent = false;
+            try
             {
-                String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
-                
-                Message message = new Message();
-                message.setTransactionId(transactionId);
-                message.setType(ServiceType.FACE.getType());
-                message.setOperation(WebsocketCommand.INITIALIZE_DEVICE.getCommand());
-                
-                AsyncConsumer consumer = new AsyncConsumer();
-                consumer.setTransactionId(transactionId);
-                asyncClientProxy.registerConsumer(consumer);
-                
-                boolean successfullySent = false;
-                try
+                asyncClientProxy.sendCommandAsync(message);
+                successfullySent = true;
+            }
+            catch(RequestException e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00001.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            catch(NotConnectedException e)
+            {
+                throw e;
+            }
+            catch(Exception e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00002.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            finally
+            {
+                if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+            }
+            //END #####################################################################################
+            try
+            {
+                TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                                               asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                return TaskResponse.cast(taskResponse,
+                                         new TaskResponse.TypeCaster<InitializeResponse, Message>()
                 {
-                    asyncClientProxy.sendCommandAsync(message);
-                    successfullySent = true;
-                }
-                catch(RequestException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00001.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(NotConnectedException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00002.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
-                }
-                
-                try
-                {
-                    TaskResponse<Message> taskResponse = consumer.processResponses(null,
-                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return TaskResponse.cast(taskResponse,
-                                             new TaskResponse.TypeCaster<InitializeResponse, Message>()
+                    @Override
+                    public InitializeResponse cast(Message m)
                     {
-                        @Override
-                        public InitializeResponse cast(Message m)
-                        {
-                            return new InitializeResponse(m);
-                        }
-                    });
-                }
-                catch(InterruptedException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00003.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(TimeoutException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00004.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    asyncClientProxy.unregisterConsumer(consumer);
-                }
+                        return new InitializeResponse(m);
+                    }
+                });
+            }
+            catch(InterruptedException e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00003.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            catch(TimeoutException e)
+            {
+                throw e;
+            }
+            catch(Exception e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00004.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            finally
+            {
+                asyncClientProxy.unregisterConsumer(consumer);
             }
         };
         
@@ -182,15 +179,10 @@ public class WebsocketFaceServiceImpl implements FaceService
                     String errorCode = WebsocketFaceErrorCodes.L0002_00007.getCode();
                     return TaskResponse.failure(errorCode, e);
                 }
-                catch(TimeoutException e)
+                catch(TimeoutException | CancellationException e)
                 {
                     throw e;
-                }
-                catch(CancellationException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
+                } catch(Exception e)
                 {
                     String errorCode = WebsocketFaceErrorCodes.L0002_00008.getCode();
                     return TaskResponse.failure(errorCode, e);
@@ -212,86 +204,73 @@ public class WebsocketFaceServiceImpl implements FaceService
     public Future<TaskResponse<CaptureFaceResponse>> captureFace(final String currentDeviceName,
                                                                  final boolean applyIcao)
     {
-        Callable<TaskResponse<CaptureFaceResponse>> callable = new Callable<TaskResponse<CaptureFaceResponse>>()
-        {
-            @Override
-            public TaskResponse<CaptureFaceResponse> call() throws TimeoutException, NotConnectedException,
-                                                                   CancellationException
+        Callable<TaskResponse<CaptureFaceResponse>> callable = () -> {
+            String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+
+            Message message = new Message();
+            message.setTransactionId(transactionId);
+            message.setType(ServiceType.FACE.getType());
+            message.setOperation(WebsocketCommand.CAPTURE.getCommand());
+            message.setCurrentDeviceName(currentDeviceName);
+            message.setNeedIcaoCropping(applyIcao);
+
+            AsyncConsumer consumer = new AsyncConsumer();
+            consumer.setTransactionId(transactionId);
+            asyncClientProxy.registerConsumer(consumer);
+
+            boolean successfullySent = false;
+            try
             {
-                String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
-                
-                Message message = new Message();
-                message.setTransactionId(transactionId);
-                message.setType(ServiceType.FACE.getType());
-                message.setOperation(WebsocketCommand.CAPTURE.getCommand());
-                message.setCurrentDeviceName(currentDeviceName);
-                message.setNeedIcaoCropping(applyIcao);
-                
-                AsyncConsumer consumer = new AsyncConsumer();
-                consumer.setTransactionId(transactionId);
-                asyncClientProxy.registerConsumer(consumer);
-                
-                boolean successfullySent = false;
-                try
-                {
-                    asyncClientProxy.sendCommandAsync(message);
-                    successfullySent = true;
-                }
-                catch(RequestException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00009.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(NotConnectedException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00010.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
-                }
-                
-                try
-                {
-                    TaskResponse<Message> taskResponse = consumer.processResponses(null,
-                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return TaskResponse.cast(taskResponse,
-                                             new TaskResponse.TypeCaster<CaptureFaceResponse, Message>()
-                    {
-                        @Override
-                        public CaptureFaceResponse cast(Message m)
-                        {
-                            return new CaptureFaceResponse(m);
-                        }
-                    });
-                }
-                catch(InterruptedException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00011.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(TimeoutException e)
-                {
-                    throw e;
-                }
-                catch(CancellationException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00012.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    asyncClientProxy.unregisterConsumer(consumer);
-                }
+                asyncClientProxy.sendCommandAsync(message);
+                successfullySent = true;
+            }
+            catch(RequestException e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00009.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            catch(NotConnectedException e)
+            {
+                throw e;
+            }
+            catch(Exception e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00010.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            finally
+            {
+                if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+            }
+
+            try
+            {
+                TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                                               asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                return TaskResponse.cast(taskResponse,
+                        CaptureFaceResponse::new);
+            }
+            catch(InterruptedException e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00011.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            catch(TimeoutException e)
+            {
+                throw e;
+            }
+            catch(CancellationException e)
+            {
+                throw e;
+            }
+            catch(Exception e)
+            {
+                String errorCode = WebsocketFaceErrorCodes.L0002_00012.getCode();
+                return TaskResponse.failure(errorCode, e);
+            }
+            finally
+            {
+                asyncClientProxy.unregisterConsumer(consumer);
             }
         };
         
@@ -306,97 +285,91 @@ public class WebsocketFaceServiceImpl implements FaceService
                                                                        final ResponseProcessor<LivePreviewingResponse> responseProcessor)
     {
         Callable<TaskResponse<FaceStartPreviewResponse>> callable =
-                                                            new Callable<TaskResponse<FaceStartPreviewResponse>>()
-        {
-            @Override
-            public TaskResponse<FaceStartPreviewResponse> call() throws TimeoutException, NotConnectedException,
-                                                                        CancellationException
-            {
-                String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
-                
-                Message message = new Message();
-                message.setTransactionId(transactionId);
-                message.setType(ServiceType.FACE.getType());
-                message.setOperation(WebsocketCommand.START_PREVIEW.getCommand());
-                message.setCurrentDeviceName(currentDeviceName);
-                
-                AsyncConsumer consumer = new AsyncConsumer();
-                consumer.setTransactionId(transactionId);
-                asyncClientProxy.registerConsumer(consumer);
-                
-                boolean successfullySent = false;
-                try
-                {
-                    asyncClientProxy.sendCommandAsync(message);
-                    successfullySent = true;
-                }
-                catch(RequestException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00013.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(NotConnectedException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00014.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
-                }
-                
-                try
-                {
-                    ResponseProcessor<Message> rp = new ResponseProcessor<Message>()
+                () -> {
+                    String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+
+                    Message message = new Message();
+                    message.setTransactionId(transactionId);
+                    message.setType(ServiceType.FACE.getType());
+                    message.setOperation(WebsocketCommand.START_PREVIEW.getCommand());
+                    message.setCurrentDeviceName(currentDeviceName);
+
+                    AsyncConsumer consumer = new AsyncConsumer();
+                    consumer.setTransactionId(transactionId);
+                    asyncClientProxy.registerConsumer(consumer);
+
+                    boolean successfullySent = false;
+                    try
                     {
-                        @Override
-                        public void processResponse(Message response)
-                        {
-                            LivePreviewingResponse livePreviewingResponse = new LivePreviewingResponse(response);
-                            responseProcessor.processResponse(livePreviewingResponse);
-                        }
-                    };
-                    
-                    TaskResponse<Message> taskResponse = consumer.processResponses(rp,
-                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return TaskResponse.cast(taskResponse,
-                                             new TaskResponse.TypeCaster<FaceStartPreviewResponse, Message>()
+                        asyncClientProxy.sendCommandAsync(message);
+                        successfullySent = true;
+                    }
+                    catch(RequestException e)
                     {
-                        @Override
-                        public FaceStartPreviewResponse cast(Message m)
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00013.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    catch(NotConnectedException e)
+                    {
+                        throw e;
+                    }
+                    catch(Exception e)
+                    {
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00014.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    finally
+                    {
+                        if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+                    }
+
+                    try
+                    {
+                        ResponseProcessor<Message> rp = new ResponseProcessor<Message>()
                         {
-                            return new FaceStartPreviewResponse(m);
-                        }
-                    });
-                }
-                catch(InterruptedException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00015.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(TimeoutException e)
-                {
-                    throw e;
-                }
-                catch(CancellationException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00016.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    asyncClientProxy.unregisterConsumer(consumer);
-                }
-            }
-        };
+                            @Override
+                            public void processResponse(Message response)
+                            {
+                                LivePreviewingResponse livePreviewingResponse = new LivePreviewingResponse(response);
+                                responseProcessor.processResponse(livePreviewingResponse);
+                            }
+                        };
+
+                        TaskResponse<Message> taskResponse = consumer.processResponses(rp,
+                                                                                       asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                        return TaskResponse.cast(taskResponse,
+                                                 new TaskResponse.TypeCaster<FaceStartPreviewResponse, Message>()
+                        {
+                            @Override
+                            public FaceStartPreviewResponse cast(Message m)
+                            {
+                                return new FaceStartPreviewResponse(m);
+                            }
+                        });
+                    }
+                    catch(InterruptedException e)
+                    {
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00015.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    catch(TimeoutException e)
+                    {
+                        throw e;
+                    }
+                    catch(CancellationException e)
+                    {
+                        throw e;
+                    }
+                    catch(Exception e)
+                    {
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00016.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    finally
+                    {
+                        asyncClientProxy.unregisterConsumer(consumer);
+                    }
+                };
         
         FutureTask<TaskResponse<FaceStartPreviewResponse>> futureTask =
                                                     new FutureTask<TaskResponse<FaceStartPreviewResponse>>(callable);
@@ -408,87 +381,81 @@ public class WebsocketFaceServiceImpl implements FaceService
     public Future<TaskResponse<FaceStopPreviewResponse>> stopPreview(final String currentDeviceName)
     {
         Callable<TaskResponse<FaceStopPreviewResponse>> callable =
-                                                            new Callable<TaskResponse<FaceStopPreviewResponse>>()
-        {
-            @Override
-            public TaskResponse<FaceStopPreviewResponse> call() throws TimeoutException, NotConnectedException,
-                                                                       CancellationException
-            {
-                String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
-                
-                Message message = new Message();
-                message.setTransactionId(transactionId);
-                message.setType(ServiceType.FACE.getType());
-                message.setOperation(WebsocketCommand.STOP_PREVIEW.getCommand());
-                message.setCurrentDeviceName(currentDeviceName);
-                
-                AsyncConsumer consumer = new AsyncConsumer();
-                consumer.setTransactionId(transactionId);
-                asyncClientProxy.registerConsumer(consumer);
-                
-                boolean successfullySent = false;
-                try
-                {
-                    asyncClientProxy.sendCommandAsync(message);
-                    successfullySent = true;
-                }
-                catch(RequestException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00017.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(NotConnectedException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00018.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
-                }
-                
-                try
-                {
-                    TaskResponse<Message> taskResponse = consumer.processResponses(null,
-                                                                                   asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
-                    return TaskResponse.cast(taskResponse,
-                                             new TaskResponse.TypeCaster<FaceStopPreviewResponse, Message>()
+                () -> {
+                    String transactionId = String.valueOf(WebsocketClient.ID_GENERATOR.incrementAndGet());
+
+                    Message message = new Message();
+                    message.setTransactionId(transactionId);
+                    message.setType(ServiceType.FACE.getType());
+                    message.setOperation(WebsocketCommand.STOP_PREVIEW.getCommand());
+                    message.setCurrentDeviceName(currentDeviceName);
+
+                    AsyncConsumer consumer = new AsyncConsumer();
+                    consumer.setTransactionId(transactionId);
+                    asyncClientProxy.registerConsumer(consumer);
+
+                    boolean successfullySent = false;
+                    try
                     {
-                        @Override
-                        public FaceStopPreviewResponse cast(Message m)
+                        asyncClientProxy.sendCommandAsync(message);
+                        successfullySent = true;
+                    }
+                    catch(RequestException e)
+                    {
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00017.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    catch(NotConnectedException e)
+                    {
+                        throw e;
+                    }
+                    catch(Exception e)
+                    {
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00018.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    finally
+                    {
+                        if(!successfullySent) asyncClientProxy.unregisterConsumer(consumer);
+                    }
+
+                    try
+                    {
+                        TaskResponse<Message> taskResponse = consumer.processResponses(null,
+                                                                                       asyncClientProxy.getResponseTimeoutSeconds(), TimeUnit.SECONDS);
+                        return TaskResponse.cast(taskResponse,
+                                                 new TaskResponse.TypeCaster<FaceStopPreviewResponse, Message>()
                         {
-                            return new FaceStopPreviewResponse(m);
-                        }
-                    });
-                }
-                catch(InterruptedException e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00019.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                catch(TimeoutException e)
-                {
-                    throw e;
-                }
-                catch(CancellationException e)
-                {
-                    throw e;
-                }
-                catch(Exception e)
-                {
-                    String errorCode = WebsocketFaceErrorCodes.L0002_00020.getCode();
-                    return TaskResponse.failure(errorCode, e);
-                }
-                finally
-                {
-                    asyncClientProxy.unregisterConsumer(consumer);
-                }
-            }
-        };
+                            @Override
+                            public FaceStopPreviewResponse cast(Message m)
+                            {
+                                return new FaceStopPreviewResponse(m);
+                            }
+                        });
+                    }
+                    catch(InterruptedException e)
+                    {
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00019.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    catch(TimeoutException e)
+                    {
+                        throw e;
+                    }
+                    catch(CancellationException e)
+                    {
+                        throw e;
+                    }
+                    catch(Exception e)
+                    {
+                        String errorCode = WebsocketFaceErrorCodes.L0002_00020.getCode();
+                        return TaskResponse.failure(errorCode, e);
+                    }
+                    finally
+                    {
+                        asyncClientProxy.unregisterConsumer(consumer);
+                    }
+                };
         
         FutureTask<TaskResponse<FaceStopPreviewResponse>> futureTask = new FutureTask<TaskResponse<FaceStopPreviewResponse>>(callable);
         executorService.submit(futureTask);

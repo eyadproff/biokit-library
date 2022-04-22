@@ -2,19 +2,12 @@ package sa.gov.nic.bio.biokit.websocket;
 
 import sa.gov.nic.bio.biokit.AsyncClientProxy;
 import sa.gov.nic.bio.biokit.AsyncConsumer;
-import sa.gov.nic.bio.biokit.exceptions.AlreadyConnectedException;
-import sa.gov.nic.bio.biokit.exceptions.ConnectionException;
-import sa.gov.nic.bio.biokit.exceptions.JsonMappingException;
-import sa.gov.nic.bio.biokit.exceptions.NotConnectedException;
-import sa.gov.nic.bio.biokit.exceptions.RequestException;
+import sa.gov.nic.bio.biokit.exceptions.*;
+import sa.gov.nic.bio.biokit.signalr.SignalRClient;
 import sa.gov.nic.bio.biokit.utils.JsonMapper;
 import sa.gov.nic.bio.biokit.websocket.beans.Message;
 
 import javax.websocket.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
@@ -24,29 +17,26 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     public static final AtomicLong ID_GENERATOR = new AtomicLong();
     private static final Logger LOGGER = Logger.getLogger(WebsocketClient.class.getName());
     private static final int UPDATE_RETURN_CODE = 777;
-    
-    private int maxTextMessageBufferSize;
-    private int maxBinaryMessageBufferSize;
+
     private WebSocketContainer webSocketContainer;
     private JsonMapper<Message> jsonMapper;
     private ClosureListener closureListener;
     private WebsocketLogger websocketLogger;
     private UpdateListener updateListener;
-    private Session session;
+
 
     public WebsocketClient(String websocketServerUrl, int maxTextMessageBufferSize, int maxBinaryMessageBufferSize,
                            int responseTimeoutSeconds, JsonMapper<Message> jsonMapper, ClosureListener closureListener,
                            WebsocketLogger websocketLogger, UpdateListener updateListener)
     {
-        super(websocketServerUrl, responseTimeoutSeconds);
+        super("http://localhost:5000/cameraOperationHub", responseTimeoutSeconds);
 
-        this.maxTextMessageBufferSize = maxTextMessageBufferSize;
-        this.maxBinaryMessageBufferSize = maxBinaryMessageBufferSize;
-        this.webSocketContainer = ContainerProvider.getWebSocketContainer();
-        this.jsonMapper = jsonMapper;
+        SignalRClient.init();
+
+
         this.closureListener = closureListener;
         this.websocketLogger = websocketLogger;
-        this.updateListener = updateListener;
+
     }
     
     public void setClosureListener(ClosureListener closureListener){this.closureListener = closureListener;}
@@ -55,72 +45,31 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     @Override
     public synchronized void connect() throws AlreadyConnectedException, ConnectionException
     {
-        if(isConnected()) throw new AlreadyConnectedException();
+
     
         try
         {
-            session = webSocketContainer.connectToServer(this, new URI(serverUrl));
+            SignalRClient.startConnection();
+            if(isConnected()) throw new AlreadyConnectedException();
         }
         catch(Exception e)
         {
-            if(e instanceof DeploymentException){
-                //try again after
-                int tries = 0;boolean connected = false;
-                while (tries<=3 && !connected) {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                        session = webSocketContainer.connectToServer(this, new URI(serverUrl));
-                        connected = true;
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                        tries++;
-                    } catch (DeploymentException deploymentException) {
-                        deploymentException.printStackTrace();
-                        tries++;
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                        tries++;
-                    } catch (URISyntaxException uriSyntaxException) {
-                        uriSyntaxException.printStackTrace();
-                        tries++;
-                    }
-                }
-                if(!connected){
-                    throw new ConnectionException("Failed to connect to the websocket server: " + serverUrl, e);
-                }
-            }else {
-                throw new ConnectionException("Failed to connect to the websocket server: " + serverUrl, e);
-            }
+            e.printStackTrace();
         }
-        
-        session.setMaxTextMessageBufferSize(maxTextMessageBufferSize);
-        session.setMaxBinaryMessageBufferSize(maxBinaryMessageBufferSize);
+
     }
     
     @Override
     public synchronized void disconnect() throws NotConnectedException, ConnectionException
     {
-        if(!isConnected()) throw new NotConnectedException();
-    
-        try
-        {
-            session.close();
-        }
-        catch(IOException e)
-        {
-            throw new ConnectionException("Failure occurs on closing the connection with the websocket server: " +
-                                          serverUrl, e);
-        }
-        finally
-        {
-            session = null;
-        }
+        SignalRClient.stopConnection();
+
     }
     
     @Override
     public synchronized boolean isConnected()
     {
-        return session != null && session.isOpen();
+        return SignalRClient.isConnected();
     }
 
     @Override
@@ -131,7 +80,55 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         try
         {
             String json = jsonMapper.toJson(message);
-            session.getBasicRemote().sendText(json);
+
+            if(message.getOperation().equals(WebsocketCommand.SHUTDOWN.getCommand())){
+                //no need to shutdown
+            }
+
+if(message.getOperation().equals(WebsocketCommand.START_PREVIEW.getCommand())){
+
+}
+if(message.getOperation() == WebsocketCommand.STOP_PREVIEW.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.CANCEL_CAPTURE.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.CAPTURE.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.INITIALIZE_DEVICE.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.DEINITIALIZE_DEVICE.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.FIND_DUPLICATES.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.GET_SEGMENTED_FINGERS.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.CONVERT_WSQ_TO_IMAGE.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.CONVERT_IMAGE_TO_WSQ.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.SHUTDOWN.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.UPDATER.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.SCAN_TENPRINT.getCommand()){
+
+}
+if(message.getOperation() == WebsocketCommand.GET_ICAO_IMAGE.getCommand()){
+
+}
+
+
         }
         catch(Exception e)
         {

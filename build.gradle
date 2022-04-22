@@ -29,6 +29,8 @@ dependencies {
     implementation name: "gson-2.8.5"
     implementation name: "bio.commons-2018.11.1"
     implementation name: "bcl-utils-2018.11.1"
+    implementation name: "signalr-6.0.1"
+    implementation name: "rxjava-3.0.11"
 }
 
 jar {
