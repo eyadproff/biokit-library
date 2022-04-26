@@ -186,9 +186,14 @@ public class Demo
 		    }
 	    };
 	    
-	    ClosureListener closureListener = (closeCode, reasonPhrase) -> {
+	    ClosureListener closureListener = new ClosureListener()
+	    {
+		    @Override
+		    public void onClose(String closeCode, String reasonPhrase)
+		    {
 			logDemo("Websocket is disconnected!");
 			lblDeviceConnectivity.setText("Disconnected");
+		    }
 		};
 	    
 	    WebsocketLogger websocketLogger = new WebsocketLogger()

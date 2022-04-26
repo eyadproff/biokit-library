@@ -18,6 +18,8 @@ public class WebsocketClient extends AsyncClientProxy<Message>
     private static final Logger LOGGER = Logger.getLogger(WebsocketClient.class.getName());
     private static final int UPDATE_RETURN_CODE = 777;
 
+    private int maxTextMessageBufferSize;
+    private int maxBinaryMessageBufferSize;
     private WebSocketContainer webSocketContainer;
     private JsonMapper<Message> jsonMapper;
     private ClosureListener closureListener;
@@ -32,6 +34,9 @@ public class WebsocketClient extends AsyncClientProxy<Message>
         super("http://localhost:5000/cameraOperationHub", responseTimeoutSeconds);
 
         SignalRClient.init();
+
+        this.maxTextMessageBufferSize = maxTextMessageBufferSize;
+        this.maxBinaryMessageBufferSize = maxBinaryMessageBufferSize;
 
 
         this.closureListener = closureListener;

@@ -1,13 +1,16 @@
 package sa.gov.nic.bio.biokit.signalr;
 
+import com.microsoft.signalr.Action1;
 import com.microsoft.signalr.HubConnection;
 import com.microsoft.signalr.HubConnectionBuilder;
 import com.microsoft.signalr.HubConnectionState;
 import sa.gov.nic.bio.biokit.face.signalr.CapturedImage;
 
 
+import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.Timer;
+import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 public class SignalRClient {
@@ -63,15 +66,20 @@ public class SignalRClient {
 
 
             hubConnection.on(HUB_METHOD_NK_STATUS,
-                    (sentMsg) -> {
-                try {
-                    System.out.println(">>>> Recevied message from hub on::" + LocalDateTime.now() + ":::connectionId::" + hubConnection.getConnectionId() + ":");
-                    System.out.println(">>>>>>>> Message received::" + sentMsg);
+                    new Action1<String>() {
+                        @Override
+                        public void invoke(String sentMsg) {
+                            try {
+                                System.out.println(">>>> Recevied message from hub on::" + LocalDateTime.now() + ":::connectionId::" + hubConnection.getConnectionId() + ":");
+                                System.out.println(">>>>>>>> Message received::" + sentMsg);
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            },String.class);
+
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+            ,String.class);
 
 
             return true;
@@ -111,7 +119,12 @@ public class SignalRClient {
 
             try {
                 if (hubConnection != null) {
-                    hubConnection.stop().doOnError(Throwable::printStackTrace);
+                    hubConnection.stop().doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Throwable {
+                            throwable.printStackTrace();
+                        }
+                    });
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -144,7 +157,12 @@ public class SignalRClient {
 
             if (targetStream != null) {
                 // Make sure to register once per connection as multi listeners will consume memory and are useless.
-                hubConnection.on(targetStream, capturedImageConsumer::accept, CapturedImage.class);
+                hubConnection.on(targetStream, new Action1<CapturedImage>() {
+                    @Override
+                    public void invoke(CapturedImage t) {
+                        capturedImageConsumer.accept(t);
+                    }
+                }, CapturedImage.class);
                 /*hubConnection.on(targetStream, (sentCapImage) -> {
                     try {
                         SwingUtilities.invokeLater(() -> {
@@ -178,8 +196,13 @@ public class SignalRClient {
 
             if (targetStream != null) {
                 // Make sure to register once per connection as multi listeners will consume memory and are useless.
-                hubConnection.on(targetStream, capturedImageConsumer::accept, CapturedImage.class);
-
+                hubConnection.on(targetStream, new Action1<CapturedImage>() {
+                    @Override
+                    public void invoke(CapturedImage t) {
+                        capturedImageConsumer.accept(t);
+                    }
+                }, CapturedImage.class);
+                hubConnection.invoke("startCapturing", new CapturingInfo("Canon", "", false));
                 /*// Make sure to register once per connection as multi listeners will consume memory and are useless.
                 hubConnection.on(targetStream, (sentLiveFrameImage) -> {
                     try {
@@ -207,8 +230,6 @@ public class SignalRClient {
     }
 
     public static void captureFaceImage(){
-        registerCaptureImageEventListener();
-        registerLiveViewEventListener();
 
         if (getCurrentDevice().equals(DeviceType.CANON_DEVICE)) {
             hubConnection.invoke("startCapturing", new CapturingInfo("Canon", "", false));

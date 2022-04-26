@@ -4,8 +4,8 @@ version '2021.10.1'
 apply plugin: 'java-library'
 apply plugin: 'application'
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 mainClassName = 'sa.gov.nic.bio.biokit.demo.Demo'
 
 tasks.withType(JavaCompile) {

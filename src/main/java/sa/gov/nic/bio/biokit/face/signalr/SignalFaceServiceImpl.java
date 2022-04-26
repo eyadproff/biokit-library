@@ -1,3 +1,4 @@
+/*
 package sa.gov.nic.bio.biokit.face.signalr;
 
 import sa.gov.nic.bio.biokit.ResponseProcessor;
@@ -19,12 +20,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 public class SignalFaceServiceImpl implements FaceService {
     private ExecutorService executorService = Executors.newCachedThreadPool();
     public void getCapturedImage( CapturedImage capturedImage ) {
 
-        BufferedImage image = null;
+        BufferedImage image;
             try {
 
                     InputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(capturedImage.getBase64String()));
@@ -45,23 +47,32 @@ public class SignalFaceServiceImpl implements FaceService {
     }
     @Override
     public Future<TaskResponse<InitializeResponse>> initialize() {
-        Callable<TaskResponse<InitializeResponse>> callable = () -> {
+        Callable<TaskResponse<InitializeResponse>> callable = new Callable<TaskResponse<InitializeResponse>>() {
 
-            try
-            {
-                SignalRClient.init();
+            */
+/**
+             * Computes a result, or throws an exception if unable to do so.
+             *
+             * @return computed result
+             *//*
 
-            } catch(Exception e)
-            {
-                String errorCode = WebsocketFaceErrorCodes.L0002_00002.getCode();
-                return TaskResponse.failure(errorCode, e);
+            @Override
+            public TaskResponse<InitializeResponse> call() {
+                try {
+                    SignalRClient.init();
+
+                } catch (Exception e) {
+                    String errorCode = WebsocketFaceErrorCodes.L0002_00002.getCode();
+                    return TaskResponse.failure(errorCode, e);
+                }
+                InitializeResponse initializeResponse = new InitializeResponse();
+                initializeResponse.setReturnCode(InitializeResponse.SuccessCodes.SUCCESS);
+                initializeResponse.setCurrentDeviceName("Cannon");
+                initializeResponse.setReturnMessage("SUCCESS");
+
+                return new TaskResponse<InitializeResponse>(true, null, null, null, initializeResponse);
+
             }
-
-            InitializeResponse initializeResponse = new InitializeResponse();
-            initializeResponse.setReturnCode(InitializeResponse.SuccessCodes.SUCCESS);
-            initializeResponse.setCurrentDeviceName("Cannon");
-            initializeResponse.setReturnMessage("SUCCESS");
-            return initializeResponse;
         };
 
         FutureTask<TaskResponse<InitializeResponse>> futureTask = new FutureTask<TaskResponse<InitializeResponse>>(callable);
@@ -76,7 +87,46 @@ public class SignalFaceServiceImpl implements FaceService {
 
     @Override
     public Future<TaskResponse<FaceStartPreviewResponse>> startPreview(String currentDeviceName, ResponseProcessor<LivePreviewingResponse> responseProcessor) {
-        return null;
+        Callable<TaskResponse<FaceStartPreviewResponse>> callable = new Callable<TaskResponse<FaceStartPreviewResponse>>() {
+            */
+/**
+             * Computes a result, or throws an exception if unable to do so.
+             *
+             * @return computed result
+             *//*
+
+            @Override
+            public TaskResponse<FaceStartPreviewResponse> call() {
+                try
+                {
+                    SignalRClient.registerLiveViewEventListener(new Consumer<CapturedImage>() {
+                        @Override
+                        public void accept(CapturedImage capturedImage) {
+                            LivePreviewingResponse livePreviewingResponse = new LivePreviewingResponse();
+                            livePreviewingResponse.setPreviewImage(capturedImage.getBase64String());
+                            responseProcessor.processResponse(livePreviewingResponse);
+                        }
+                    });
+                } catch(Exception e)
+                {
+                    String errorCode = WebsocketFaceErrorCodes.L0002_00002.getCode();
+                    return TaskResponse.failure(errorCode, e);
+                }
+
+                FaceStartPreviewResponse faceStartPreviewResponse = new FaceStartPreviewResponse();
+                faceStartPreviewResponse.setReturnCode(FaceStartPreviewResponse.SuccessCodes.SUCCESS);
+
+                return new TaskResponse<FaceStartPreviewResponse>(true, null, null, null, faceStartPreviewResponse);
+            }
+        };
+
+
+
+
+
+        FutureTask<TaskResponse<FaceStartPreviewResponse>> futureTask = new FutureTask<FaceStartPreviewResponse>(callable);
+        executorService.submit(futureTask);
+        return futureTask;
     }
 
     @Override
@@ -100,3 +150,4 @@ public class SignalFaceServiceImpl implements FaceService {
     }
 
 }
+*/
